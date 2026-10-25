@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "YiChinese",
+  "@appTitle": {
+    "description": "Application name shown in the OS task switcher."
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Home destination label."
+  },
+  "navBooks": "Books",
+  "@navBooks": {
+    "description": "Books destination label."
+  },
+  "loginTitle": "Sign in",
+  "@loginTitle": {
+    "description": "Title of the login screen."
+  }
+}
