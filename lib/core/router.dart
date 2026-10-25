@@ -6,11 +6,12 @@
 /// authenticated users are bounced off `/login` back home.
 ///
 /// Routes: `/login`, `/` (home), `/books`, `/books/:code`,
-/// `/lesson/:passageId`. The guard is live but currently reads the Phase 1
-/// auth stub; Phase 3 swaps in the real auth notifier (and a
-/// `refreshListenable`) without changing these routes.
+/// `/lesson/:passageId`. The guard reads [authStatusProvider] and re-runs
+/// whenever it changes (via a [refreshListenable]); while the launch-time auth
+/// check is pending the status is `unknown` and no redirect happens.
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,8 +23,15 @@ import '../features/lessons/screens/books_screen.dart';
 import '../features/lessons/screens/lesson_study_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  // Bridge Riverpod auth-status changes to go_router's redirect re-evaluation
+  // without rebuilding the router (which would drop navigation state).
+  final refresh = ValueNotifier<int>(0);
+  ref.onDispose(refresh.dispose);
+  ref.listen<AuthStatus>(authStatusProvider, (_, _) => refresh.value++);
+
   return GoRouter(
     initialLocation: '/',
+    refreshListenable: refresh,
     redirect: (context, state) {
       final status = ref.read(authStatusProvider);
       final goingToLogin = state.matchedLocation == '/login';
