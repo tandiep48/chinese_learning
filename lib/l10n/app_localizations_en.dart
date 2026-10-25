@@ -69,4 +69,81 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoutTooltip => 'Sign out';
+
+  @override
+  String get booksTitle => 'Books';
+
+  @override
+  String get booksSubtitle => 'Choose a book to study';
+
+  @override
+  String get booksEmpty => 'No books found';
+
+  @override
+  String get booksError => 'Couldn\'t load books.';
+
+  @override
+  String booksLessonsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lessons',
+      one: '1 lesson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String booksPartsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parts',
+      one: '1 part',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bookError => 'Couldn\'t load lessons.';
+
+  @override
+  String lessonLabel(String lesson) {
+    return 'Lesson $lesson';
+  }
+
+  @override
+  String partLabel(String part) {
+    return 'Part $part';
+  }
+
+  @override
+  String get studyError => 'Couldn\'t load the passage.';
+
+  @override
+  String get studyEmpty => 'No lines in this passage.';
+
+  @override
+  String get studyShowPinyin => 'Show pinyin';
+
+  @override
+  String get studyHidePinyin => 'Hide pinyin';
+
+  @override
+  String get studyShowMeaning => 'Show meaning';
+
+  @override
+  String get studyHideMeaning => 'Hide meaning';
+
+  @override
+  String get wordNotFound => 'Not in this lesson\'s vocabulary.';
+
+  @override
+  String get wordListen => 'Listen';
+
+  @override
+  String get wordStroke => 'Strokes';
+
+  @override
+  String get comingSoon => 'Coming soon';
 }

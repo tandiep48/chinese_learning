@@ -207,6 +207,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get logoutTooltip;
+
+  /// Title of the books list screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get booksTitle;
+
+  /// Subtitle under the books list title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a book to study'**
+  String get booksSubtitle;
+
+  /// Empty state when there are no books.
+  ///
+  /// In en, this message translates to:
+  /// **'No books found'**
+  String get booksEmpty;
+
+  /// Error shown when the books list fails to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load books.'**
+  String get booksError;
+
+  /// Lesson count for a book.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 lesson} other{{count} lessons}}'**
+  String booksLessonsCount(int count);
+
+  /// Part count for a book or lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 part} other{{count} parts}}'**
+  String booksPartsCount(int count);
+
+  /// Error shown when a book's lessons fail to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load lessons.'**
+  String get bookError;
+
+  /// Label for a lesson in a book.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson {lesson}'**
+  String lessonLabel(String lesson);
+
+  /// Label for a part within a lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Part {part}'**
+  String partLabel(String part);
+
+  /// Error shown when a passage fails to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the passage.'**
+  String get studyError;
+
+  /// Empty state when a passage has no lines.
+  ///
+  /// In en, this message translates to:
+  /// **'No lines in this passage.'**
+  String get studyEmpty;
+
+  /// Toggle label to reveal pinyin.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pinyin'**
+  String get studyShowPinyin;
+
+  /// Toggle label to hide pinyin.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide pinyin'**
+  String get studyHidePinyin;
+
+  /// Toggle label to reveal translations.
+  ///
+  /// In en, this message translates to:
+  /// **'Show meaning'**
+  String get studyShowMeaning;
+
+  /// Toggle label to hide translations.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide meaning'**
+  String get studyHideMeaning;
+
+  /// Shown in the word popup when a word has no vocab entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in this lesson\'s vocabulary.'**
+  String get wordNotFound;
+
+  /// Word popup button to play the word audio.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen'**
+  String get wordListen;
+
+  /// Word popup button to show stroke order.
+  ///
+  /// In en, this message translates to:
+  /// **'Strokes'**
+  String get wordStroke;
+
+  /// Message for features not yet wired (audio, stroke order).
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
 }
 
 class _AppLocalizationsDelegate
