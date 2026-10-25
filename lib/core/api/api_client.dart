@@ -21,10 +21,19 @@ import '../env.dart';
 import 'api_exception.dart';
 import 'validators.dart';
 
-/// The current access token injected on every request, or null when signed
-/// out. Phase 1/2 default is null; Phase 3's auth notifier overrides this
-/// provider with the token loaded from secure storage.
-final bearerTokenProvider = Provider<String?>((ref) => null);
+/// Holds the current access token the request interceptor injects, or null
+/// when signed out. This is the seam between core (which reads it) and the
+/// auth module (which sets it): the auth notifier calls
+/// `ref.read(bearerTokenProvider.notifier).set(...)` on launch/login/logout.
+class BearerTokenHolder extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void set(String? token) => state = token;
+}
+
+final bearerTokenProvider =
+    NotifierProvider<BearerTokenHolder, String?>(BearerTokenHolder.new);
 
 final apiClientProvider = Provider<ApiClient>((ref) {
   final dio = Dio(BaseOptions(
