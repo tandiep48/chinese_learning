@@ -117,6 +117,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in'**
   String get loginTitle;
+
+  /// Label for the username field on the login screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get loginUsernameLabel;
+
+  /// Label for the password field on the login screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// Label of the login submit button.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get loginSubmit;
+
+  /// Validation message shown under an empty required field.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get loginFieldRequired;
+
+  /// Generic error shown when login fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in failed. Check your username and password.'**
+  String get loginFailed;
 }
 
 class _AppLocalizationsDelegate

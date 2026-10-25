@@ -15,5 +15,25 @@
   "loginTitle": "Sign in",
   "@loginTitle": {
     "description": "Title of the login screen."
+  },
+  "loginUsernameLabel": "Username",
+  "@loginUsernameLabel": {
+    "description": "Label for the username field on the login screen."
+  },
+  "loginPasswordLabel": "Password",
+  "@loginPasswordLabel": {
+    "description": "Label for the password field on the login screen."
+  },
+  "loginSubmit": "Sign in",
+  "@loginSubmit": {
+    "description": "Label of the login submit button."
+  },
+  "loginFieldRequired": "Required",
+  "@loginFieldRequired": {
+    "description": "Validation message shown under an empty required field."
+  },
+  "loginFailed": "Sign in failed. Check your username and password.",
+  "@loginFailed": {
+    "description": "Generic error shown when login fails."
   }
 }

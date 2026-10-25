@@ -20,4 +20,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginTitle => 'Sign in';
+
+  @override
+  String get loginUsernameLabel => 'Username';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginSubmit => 'Sign in';
+
+  @override
+  String get loginFieldRequired => 'Required';
+
+  @override
+  String get loginFailed => 'Sign in failed. Check your username and password.';
 }
