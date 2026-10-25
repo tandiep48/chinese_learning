@@ -90,7 +90,7 @@ class _ContinueCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       child: InkWell(
-        onTap: () => context.go('/lesson/${lesson.passageId}'),
+        onTap: () => context.push('/lesson/${lesson.passageId}'),
         child: Padding(
           padding: HomeStyles.cardPadding,
           child: Row(
@@ -132,7 +132,7 @@ class _BooksEntry extends StatelessWidget {
         leading: const Icon(Icons.library_books_outlined),
         title: Text(label),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () => context.go('/books'),
+        onTap: () => context.push('/books'),
       ),
     );
   }
