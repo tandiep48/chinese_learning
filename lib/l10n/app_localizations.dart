@@ -147,6 +147,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in failed. Check your username and password.'**
   String get loginFailed;
+
+  /// Greeting on the home screen when the username is known.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi, {name}'**
+  String homeGreeting(String name);
+
+  /// Greeting on the home screen when the username is not available.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get homeGreetingGeneric;
+
+  /// Title of the resume-lesson card.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue where you left off'**
+  String get homeContinueTitle;
+
+  /// Subtitle of the resume-lesson card describing the lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'{hskLevel} · Lesson {lesson} · Part {part}'**
+  String homeContinueSubtitle(String hskLevel, int lesson, int part);
+
+  /// Empty-state title when there is no recent lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons yet'**
+  String get homeNoRecentTitle;
+
+  /// Empty-state message when there is no recent lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Books tab to pick a lesson.'**
+  String get homeNoRecentMessage;
+
+  /// Label of the entry point to the Books list.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse books'**
+  String get homeBrowseBooks;
+
+  /// Error shown when the dashboard fails to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your dashboard.'**
+  String get homeError;
+
+  /// Generic retry button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get commonRetry;
+
+  /// Tooltip for the sign-out action.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get logoutTooltip;
 }
 
 class _AppLocalizationsDelegate

@@ -35,5 +35,61 @@
   "loginFailed": "Sign in failed. Check your username and password.",
   "@loginFailed": {
     "description": "Generic error shown when login fails."
+  },
+  "homeGreeting": "Hi, {name}",
+  "@homeGreeting": {
+    "description": "Greeting on the home screen when the username is known.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingGeneric": "Welcome back",
+  "@homeGreetingGeneric": {
+    "description": "Greeting on the home screen when the username is not available."
+  },
+  "homeContinueTitle": "Continue where you left off",
+  "@homeContinueTitle": {
+    "description": "Title of the resume-lesson card."
+  },
+  "homeContinueSubtitle": "{hskLevel} · Lesson {lesson} · Part {part}",
+  "@homeContinueSubtitle": {
+    "description": "Subtitle of the resume-lesson card describing the lesson.",
+    "placeholders": {
+      "hskLevel": {
+        "type": "String"
+      },
+      "lesson": {
+        "type": "int"
+      },
+      "part": {
+        "type": "int"
+      }
+    }
+  },
+  "homeNoRecentTitle": "No lessons yet",
+  "@homeNoRecentTitle": {
+    "description": "Empty-state title when there is no recent lesson."
+  },
+  "homeNoRecentMessage": "Open the Books tab to pick a lesson.",
+  "@homeNoRecentMessage": {
+    "description": "Empty-state message when there is no recent lesson."
+  },
+  "homeBrowseBooks": "Browse books",
+  "@homeBrowseBooks": {
+    "description": "Label of the entry point to the Books list."
+  },
+  "homeError": "Couldn't load your dashboard.",
+  "@homeError": {
+    "description": "Error shown when the dashboard fails to load."
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Generic retry button label."
+  },
+  "logoutTooltip": "Sign out",
+  "@logoutTooltip": {
+    "description": "Tooltip for the sign-out action."
   }
 }
