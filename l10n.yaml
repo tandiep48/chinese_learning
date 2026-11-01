@@ -1,0 +1,7 @@
+# Localization codegen config. One language (en) ships in this slice; the infra
+# is in place so more ARB files can be dropped into lib/l10n/ later.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false

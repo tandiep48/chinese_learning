@@ -1,0 +1,191 @@
+{
+  "@@locale": "en",
+  "appTitle": "YiChinese",
+  "@appTitle": {
+    "description": "Application name shown in the OS task switcher."
+  },
+  "navHome": "Home",
+  "@navHome": {
+    "description": "Home destination label."
+  },
+  "navBooks": "Books",
+  "@navBooks": {
+    "description": "Books destination label."
+  },
+  "loginTitle": "Sign in",
+  "@loginTitle": {
+    "description": "Title of the login screen."
+  },
+  "loginUsernameLabel": "Username",
+  "@loginUsernameLabel": {
+    "description": "Label for the username field on the login screen."
+  },
+  "loginPasswordLabel": "Password",
+  "@loginPasswordLabel": {
+    "description": "Label for the password field on the login screen."
+  },
+  "loginSubmit": "Sign in",
+  "@loginSubmit": {
+    "description": "Label of the login submit button."
+  },
+  "loginFieldRequired": "Required",
+  "@loginFieldRequired": {
+    "description": "Validation message shown under an empty required field."
+  },
+  "loginFailed": "Sign in failed. Check your username and password.",
+  "@loginFailed": {
+    "description": "Generic error shown when login fails."
+  },
+  "homeGreeting": "Hi, {name}",
+  "@homeGreeting": {
+    "description": "Greeting on the home screen when the username is known.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeGreetingGeneric": "Welcome back",
+  "@homeGreetingGeneric": {
+    "description": "Greeting on the home screen when the username is not available."
+  },
+  "homeContinueTitle": "Continue where you left off",
+  "@homeContinueTitle": {
+    "description": "Title of the resume-lesson card."
+  },
+  "homeContinueSubtitle": "{hskLevel} · Lesson {lesson} · Part {part}",
+  "@homeContinueSubtitle": {
+    "description": "Subtitle of the resume-lesson card describing the lesson.",
+    "placeholders": {
+      "hskLevel": {
+        "type": "String"
+      },
+      "lesson": {
+        "type": "int"
+      },
+      "part": {
+        "type": "int"
+      }
+    }
+  },
+  "homeNoRecentTitle": "No lessons yet",
+  "@homeNoRecentTitle": {
+    "description": "Empty-state title when there is no recent lesson."
+  },
+  "homeNoRecentMessage": "Open the Books tab to pick a lesson.",
+  "@homeNoRecentMessage": {
+    "description": "Empty-state message when there is no recent lesson."
+  },
+  "homeBrowseBooks": "Browse books",
+  "@homeBrowseBooks": {
+    "description": "Label of the entry point to the Books list."
+  },
+  "homeError": "Couldn't load your dashboard.",
+  "@homeError": {
+    "description": "Error shown when the dashboard fails to load."
+  },
+  "commonRetry": "Retry",
+  "@commonRetry": {
+    "description": "Generic retry button label."
+  },
+  "logoutTooltip": "Sign out",
+  "@logoutTooltip": {
+    "description": "Tooltip for the sign-out action."
+  },
+  "booksTitle": "Books",
+  "@booksTitle": {
+    "description": "Title of the books list screen."
+  },
+  "booksSubtitle": "Choose a book to study",
+  "@booksSubtitle": {
+    "description": "Subtitle under the books list title."
+  },
+  "booksEmpty": "No books found",
+  "@booksEmpty": {
+    "description": "Empty state when there are no books."
+  },
+  "booksError": "Couldn't load books.",
+  "@booksError": {
+    "description": "Error shown when the books list fails to load."
+  },
+  "booksLessonsCount": "{count, plural, =1{1 lesson} other{{count} lessons}}",
+  "@booksLessonsCount": {
+    "description": "Lesson count for a book.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "booksPartsCount": "{count, plural, =1{1 part} other{{count} parts}}",
+  "@booksPartsCount": {
+    "description": "Part count for a book or lesson.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookError": "Couldn't load lessons.",
+  "@bookError": {
+    "description": "Error shown when a book's lessons fail to load."
+  },
+  "lessonLabel": "Lesson {lesson}",
+  "@lessonLabel": {
+    "description": "Label for a lesson in a book.",
+    "placeholders": {
+      "lesson": {
+        "type": "String"
+      }
+    }
+  },
+  "partLabel": "Part {part}",
+  "@partLabel": {
+    "description": "Label for a part within a lesson.",
+    "placeholders": {
+      "part": {
+        "type": "String"
+      }
+    }
+  },
+  "studyError": "Couldn't load the passage.",
+  "@studyError": {
+    "description": "Error shown when a passage fails to load."
+  },
+  "studyEmpty": "No lines in this passage.",
+  "@studyEmpty": {
+    "description": "Empty state when a passage has no lines."
+  },
+  "studyShowPinyin": "Show pinyin",
+  "@studyShowPinyin": {
+    "description": "Toggle label to reveal pinyin."
+  },
+  "studyHidePinyin": "Hide pinyin",
+  "@studyHidePinyin": {
+    "description": "Toggle label to hide pinyin."
+  },
+  "studyShowMeaning": "Show meaning",
+  "@studyShowMeaning": {
+    "description": "Toggle label to reveal translations."
+  },
+  "studyHideMeaning": "Hide meaning",
+  "@studyHideMeaning": {
+    "description": "Toggle label to hide translations."
+  },
+  "wordNotFound": "Not in this lesson's vocabulary.",
+  "@wordNotFound": {
+    "description": "Shown in the word popup when a word has no vocab entry."
+  },
+  "wordListen": "Listen",
+  "@wordListen": {
+    "description": "Word popup button to play the word audio."
+  },
+  "wordStroke": "Strokes",
+  "@wordStroke": {
+    "description": "Word popup button to show stroke order."
+  },
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Message for features not yet wired (audio, stroke order)."
+  }
+}
