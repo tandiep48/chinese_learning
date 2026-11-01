@@ -1,6 +1,6 @@
 # Plan: Port YiChinese learner UI/logic → Flutter (`chinese_learning`)
 
-_Last updated: 2026-10-25_
+_Last updated: 2026-11-01_
 
 ## The reality this plan is built on
 
@@ -28,15 +28,22 @@ against the current learner code and detailed below: (1) only the auth endpoints
 ## Decisions locked in
 
 - **Scope:** thin learner vertical slice first (not full parity, not `/manage`).
-- **UI fidelity:** native-idiomatic Material 3; reuse brand colors/typography, adapt
-  layout/navigation to native patterns.
+- **UI fidelity:** ~~native-idiomatic Material 3~~ → **match the web** (revised
+  2026-11-01). The web is already phone-responsive and users know that layout, so port
+  the learner CSS (layout, spacing, component styles) faithfully rather than
+  re-interpreting it with native patterns. Still Flutter widgets + the brand palette,
+  but the web's mobile layout is the reference. Phases 1–5 were built native-idiomatic
+  and get a restyle pass (Slice R-UI).
 - **Auth:** add a mobile token endpoint to the Flask backend (non-breaking, alongside
   the existing session-cookie auth).
 - **Stack:** Riverpod + go_router + dio.
 - **Core flow:** Lesson study (login → home → lesson study).
 - **Backend work:** done in `Learning/` on `dev_version_2.0` as part of this effort.
 - **API target during dev:** local Flask.
-- **i18n:** scaffold localization infra, ship one language for now.
+- **i18n:** scaffold localization infra; **ship Vietnamese now** as the default/focus
+  language (revised 2026-11-01). Keep the EN infra and add `app_vi.arb`; default locale
+  VI; the reader shows `meaning_vn` / `translation_vi` first. The runtime CJK hanzi-font
+  swap stays deferred.
 
 ## The slice
 
@@ -284,3 +291,133 @@ full multi-language i18n, and the entire `/manage` admin surface.
 - Flask login manager (`login_manager` :59, `@user_loader` :62 — add `request_loader`
   right after): `Learning/web_app/app.py:59-66`
 - Design tokens + learner theme: `yi-chinese-manage/app/styles/{tokens.css,learner-theme.css}`
+
+---
+
+# Post-slice roadmap — building out the full learner app
+
+_Added 2026-11-01._ Phases 0–5 shipped the **thin vertical slice** (login → minimal
+home → lesson-study **reading** view). That was intentional: the home is the
+scoped-down Phase 4, and everything below was in the plan's "Explicitly deferred"
+list. This roadmap turns the deferred surface into prioritized, independently
+reviewable slices. It is **planning only** — nothing here is built yet.
+
+## Where the web learner app actually is (the gap)
+
+The web home (`app/learner/page.tsx` → `components/page/learner/home/HomeShell.tsx`)
+is **not a stats dashboard**. It is a tabbed shell — **Lesson / Review / Recommend**
+tabs, each running its activity in place — plus a **current-lesson rail** and, inside
+a lesson part, a **milestone bar**. Learning statistics live on **`/learner/profile`**,
+not the home. So "the dashboard looks different" is really three separate gaps:
+the **HSK browse path**, the **milestone study flow**, and the **home activity tabs**
+(Review/Recommend) — on top of profile/stats, grammar, translation, exam, pinyin and
+competition.
+
+**Milestone = the 6-step lesson study flow** (`MilestoneBar.tsx`), not a widget:
+1. Vocab Summary · 2. Vocab Learner · 3. Vocab Trainer · 4. **Lesson Summary** ·
+5. Lesson Learner · 6. Lesson Trainer. **We built only step 4** (the reader). The
+other five are the graded trainers / flashcard learners the slice deferred.
+
+## Slices (each independently reviewable; sizes S/M/L)
+
+### Slice R-UI — Web-match restyle + Vietnamese default (retrofit) · M
+Foundational, because it sets the design system every later slice follows. Phases 1–5
+were built native-idiomatic; this pass re-skins them to the web's phone layout and
+makes Vietnamese the default.
+- **Design port:** translate the learner CSS — `app/styles/{tokens.css,
+  learner-theme.css}` and the per-screen stylesheets (`books.css`, `lesson-picker.css`,
+  `lesson-summary.css`, `home-shell.css`, `word-popup.css`, …) — into the module
+  `styles/` files, matching layout, spacing, radii, card/toolbar/button styling and the
+  teal header (`#007a61`). Extend `app_theme.dart` only where it stays colors+sizes.
+- **Screens retrofit:** login, home, books, book detail, lesson study, word popup.
+- **Vietnamese:** add `app_vi.arb` (translate all keys), set default locale to VI in
+  `MaterialApp`, and switch the reader to `translation_vi` / `meaning_vn` first (EN
+  fallback). Keep EN as the secondary locale.
+- **Reference:** the web is mobile-first (sm 480 · md 768 …); emulate its ≤480 layout.
+
+### Slice R0 — Audio & stroke order (cross-cutting) · S
+Wire the buttons already stubbed in the reader and word popup. Lesson-line audio and
+vocab audio play from GCS (`/lesson_audio/*`, `/audio/*` redirects); stroke order
+needs a hanzi-writer equivalent.
+- **Deps:** `just_audio` (or `audioplayers`) + a stroke-order package or a WebView of
+  hanzi-writer. **Native setup** (iOS background-audio flag, Android INTERNET).
+- **Why first:** small, unblocks the reading UX everywhere.
+
+### Slice R1 — HSK browse flow (parallel to Books) · S–M
+Second browse path: **HSK1–6 (+7–9) → lesson → part**, mirroring the web picker's HSK
+tab. Group `/api/lesson/passages?hsk_level=` rows into lessons/parts by parsing
+`H<level>_<lesson>_<part>`.
+- **Endpoints:** `/api/lesson/passages` (have), `/api/lesson/picker-progress?hsk_level=`
+  (optional progress).
+- **Port:** `lib/lessons/lessons.ts` grouping helpers + `HSK_LEVELS` metadata
+  (`lib/types/constants`); reuse `LessonStudyScreen`.
+- **Screens/routes:** `HskLevelsScreen` (`/hsk`), `HskLessonsScreen` (`/hsk/:level`);
+  add an HSK/Books switch on home.
+- **Defer:** HSK1 special-cases — the pinyin passage `H1_1_1` and Numbers part
+  `H1_5_99` (`PINYIN_PASSAGE_ID`, `NUMBER_PART_ID`).
+
+### Slice R2 — Progress & milestone display (read-only) · S–M
+Progress bars on books/HSK lessons and a **milestone bar** on the study screen showing
+step 4/6 and which steps are done. Display-only until the trainer steps land (R5).
+- **Endpoints:** `/api/lesson/picker-progress?hsk_level=`, `/api/lesson/milestone`.
+- **Widgets:** `PickerProgress` bars (shared), `MilestoneBar` (lessons module).
+
+### Slice R3 — Profile & learning stats · M
+The web's statistics surface (`/learner/profile`): global stats, 3-day activity,
+learned-vocab list, and account/preferences.
+- **Endpoints:** `/api/user/{global-stats, learned-words-last-3-days,
+  time-learned-last-3-days, profile-summary}`, `/api/user/learned-vocab/query`,
+  and settings `/api/user/{hanzi-font, hanzi-script, ui-language}`.
+- **Screens:** `ProfileScreen` (stat cards + simple charts), `SettingsScreen`.
+- **Deps:** a chart lib (`fl_chart`) — **new dependency**.
+
+### Slice R4 — Home activity tabs (Review + Recommend) · M
+Rebuild the home as the web shell: **Lesson / Review / Recommend** tabs + current-lesson
+rail. The tab *chrome* is small; the tab *contents* depend on R5/R6.
+- **Review (SRS):** `/api/vocab/{review/count, review/query, submit-batch,
+  review-recent/query, has_history}`.
+- **Recommend:** `/api/practice/recommend`, practice history/sessions.
+- **Depends on** the trainer engine (R5) for the actual activities.
+
+### Slice R5 — Trainer engine + milestone steps (the big one) · L, multi-slice
+The core learning loop. Split into sub-slices:
+- **R5a — Lesson trainer:** `/api/lesson/{start, submit, part-complete}`; task types
+  `listening | meaning | typing | reorder` (4 widgets — `LessonTrainerPage` +
+  `ChoiceTask/TypingTask/ReorderTask`).
+- **R5b — Vocab learner:** flashcard/card viewers (steps 2 & 5).
+- **R5c — Vocab trainer:** the ~11 question-type widgets (`MCOptions`, `Reorder`,
+  `BlankedContent`, `ImageOptions`, `KeyButtons`, `TrueFalse`, `T5*`, `Type2/6Group`,
+  `SingleGroup`) + `/api/vocab/{words, submit-batch}`.
+- **R5d — Milestone runner:** orchestrate the 6 steps (soft gating, replayable),
+  `/api/lesson/milestone`.
+
+### Slice R6 — Remaining surfaces · varies
+- **Grammar panel** on the study screen — `/api/lesson/grammar/:id` · S.
+- **Translation** list — `/api/translation/lesson` · S.
+- **Exam** flow · M. **Pinyin lessons** (basic/advanced, special content) · M.
+- **Competition / learn-together** (realtime, `SocketIO`) — `/api/competition/rooms` +
+  `socket_io_client` dep · L.
+- **Full i18n** (ship VI alongside EN; wire `ui_language` + the CJK hanzi-font swap).
+
+## Recommended order & rationale
+
+1. **R-UI Web-match restyle + VI** — do first: it sets the design system and default
+   language every later slice inherits, and directly answers the "looks different"
+   feedback.
+2. **R0 Audio/stroke** — small, improves what already exists.
+3. **R1 HSK browse** — quick win; completes browse parity with the web.
+4. **R2 Progress/milestone display** — cheap, makes the app feel alive.
+5. **R3 Profile/stats** — self-contained read-only; this is the real "dashboard".
+6. **R5 Trainer engine** — the heart of the app; largest, so sequence R5a→R5d.
+7. **R4 Review/Recommend tabs** — land once R5 provides the activities.
+8. **R6 Remaining surfaces** — grammar/translation first (cheap). **Competition is
+   OUT for this phase** (deferred, see below).
+
+## Resolved scope decisions (2026-11-01)
+
+- **(a) UI:** **match the web** (phone-responsive layout), not native-idiomatic — the
+  locked-in decision above is revised and Slice R-UI implements it.
+- **(b) Language:** **ship Vietnamese now** as the default/focus language (EN kept as
+  secondary) — folded into Slice R-UI; R6 i18n is just the remaining polish.
+- **(c) Competition / learn-together (realtime, SocketIO):** **held off** for this
+  phase. It stays in R6 as explicitly deferred; no `socket_io_client` work now.
