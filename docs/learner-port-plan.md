@@ -1,6 +1,6 @@
 # Plan: Port YiChinese learner UI/logic → Flutter (`chinese_learning`)
 
-_Last updated: 2026-11-01_
+_Last updated: 2026-11-03_
 
 ## The reality this plan is built on
 
@@ -10,12 +10,12 @@ scaffold (`lib/main.dart` only, default test, pubspec has just `cupertino_icons`
 
 **No code copies across** — this is a rewrite:
 
-| Web (source)                                    | Flutter (target)                         |
-| ----------------------------------------------- | ---------------------------------------- |
-| React components (`.tsx`) + CSS                 | Widgets + `ThemeData`                    |
-| Hooks (`usePassage`, `useVocab`) + `lib/api/*`  | Riverpod providers + Dart service classes |
-| TS interfaces (`lib/types/*`)                   | Dart model classes (`fromJson`)          |
-| `fetch(..., credentials:"include")`             | `dio` + `Authorization: Bearer`          |
+| Web (source)                                   | Flutter (target)                          |
+| ---------------------------------------------- | ----------------------------------------- |
+| React components (`.tsx`) + CSS                | Widgets + `ThemeData`                     |
+| Hooks (`usePassage`, `useVocab`) + `lib/api/*` | Riverpod providers + Dart service classes |
+| TS interfaces (`lib/types/*`)                  | Dart model classes (`fromJson`)           |
+| `fetch(..., credentials:"include")`            | `dio` + `Authorization: Bearer`           |
 
 What **does** carry over for free: the **API contract** (endpoints and JSON shapes) and
 the **design language** (the learner brand palette + type scale in
@@ -72,6 +72,7 @@ against the actual code:
 
    → This single hook makes **every existing `@login_required` route** accept the token
    transparently. No per-route changes; session auth for the web keeps working.
+
 3. Tests in `web_app/tests` following the suite's no-conftest conventions (valid token,
    expired, tampered, missing header).
 
@@ -291,6 +292,7 @@ full multi-language i18n, and the entire `/manage` admin surface.
 - Flask login manager (`login_manager` :59, `@user_loader` :62 — add `request_loader`
   right after): `Learning/web_app/app.py:59-66`
 - Design tokens + learner theme: `yi-chinese-manage/app/styles/{tokens.css,learner-theme.css}`
+- Approved R5a lesson trainer mockup: `mockup/approve design/lesson_trainer_typing/{code.html,DESIGN.md,screen.png}`
 
 ---
 
@@ -314,18 +316,21 @@ the **HSK browse path**, the **milestone study flow**, and the **home activity t
 competition.
 
 **Milestone = the 6-step lesson study flow** (`MilestoneBar.tsx`), not a widget:
+
 1. Vocab Summary · 2. Vocab Learner · 3. Vocab Trainer · 4. **Lesson Summary** ·
-5. Lesson Learner · 6. Lesson Trainer. **We built only step 4** (the reader). The
-other five are the graded trainers / flashcard learners the slice deferred.
+2. Lesson Learner · 6. Lesson Trainer. **We built only step 4** (the reader). The
+   other five are the graded trainers / flashcard learners the slice deferred.
 
 ## Slices (each independently reviewable; sizes S/M/L)
 
 ### Slice R-UI — Web-match restyle + Vietnamese default (retrofit) · M
+
 Foundational, because it sets the design system every later slice follows. Phases 1–5
 were built native-idiomatic; this pass re-skins them to the web's phone layout and
 makes Vietnamese the default.
+
 - **Design port:** translate the learner CSS — `app/styles/{tokens.css,
-  learner-theme.css}` and the per-screen stylesheets (`books.css`, `lesson-picker.css`,
+learner-theme.css}` and the per-screen stylesheets (`books.css`, `lesson-picker.css`,
   `lesson-summary.css`, `home-shell.css`, `word-popup.css`, …) — into the module
   `styles/` files, matching layout, spacing, radii, card/toolbar/button styling and the
   teal header (`#007a61`). Extend `app_theme.dart` only where it stays colors+sizes.
@@ -336,17 +341,21 @@ makes Vietnamese the default.
 - **Reference:** the web is mobile-first (sm 480 · md 768 …); emulate its ≤480 layout.
 
 ### Slice R0 — Audio & stroke order (cross-cutting) · S
+
 Wire the buttons already stubbed in the reader and word popup. Lesson-line audio and
 vocab audio play from GCS (`/lesson_audio/*`, `/audio/*` redirects); stroke order
 needs a hanzi-writer equivalent.
+
 - **Deps:** `just_audio` (or `audioplayers`) + a stroke-order package or a WebView of
   hanzi-writer. **Native setup** (iOS background-audio flag, Android INTERNET).
 - **Why first:** small, unblocks the reading UX everywhere.
 
 ### Slice R1 — HSK browse flow (parallel to Books) · S–M
+
 Second browse path: **HSK1–6 (+7–9) → lesson → part**, mirroring the web picker's HSK
 tab. Group `/api/lesson/passages?hsk_level=` rows into lessons/parts by parsing
 `H<level>_<lesson>_<part>`.
+
 - **Endpoints:** `/api/lesson/passages` (have), `/api/lesson/picker-progress?hsk_level=`
   (optional progress).
 - **Port:** `lib/lessons/lessons.ts` grouping helpers + `HSK_LEVELS` metadata
@@ -357,33 +366,68 @@ tab. Group `/api/lesson/passages?hsk_level=` rows into lessons/parts by parsing
   `H1_5_99` (`PINYIN_PASSAGE_ID`, `NUMBER_PART_ID`).
 
 ### Slice R2 — Progress & milestone display (read-only) · S–M
+
 Progress bars on books/HSK lessons and a **milestone bar** on the study screen showing
 step 4/6 and which steps are done. Display-only until the trainer steps land (R5).
+
 - **Endpoints:** `/api/lesson/picker-progress?hsk_level=`, `/api/lesson/milestone`.
 - **Widgets:** `PickerProgress` bars (shared), `MilestoneBar` (lessons module).
 
 ### Slice R3 — Profile & learning stats · M
+
 The web's statistics surface (`/learner/profile`): global stats, 3-day activity,
 learned-vocab list, and account/preferences.
+
 - **Endpoints:** `/api/user/{global-stats, learned-words-last-3-days,
-  time-learned-last-3-days, profile-summary}`, `/api/user/learned-vocab/query`,
+time-learned-last-3-days, profile-summary}`, `/api/user/learned-vocab/query`,
   and settings `/api/user/{hanzi-font, hanzi-script, ui-language}`.
 - **Screens:** `ProfileScreen` (stat cards + simple charts), `SettingsScreen`.
 - **Deps:** a chart lib (`fl_chart`) — **new dependency**.
 
 ### Slice R4 — Home activity tabs (Review + Recommend) · M
+
 Rebuild the home as the web shell: **Lesson / Review / Recommend** tabs + current-lesson
-rail. The tab *chrome* is small; the tab *contents* depend on R5/R6.
+rail. The tab _chrome_ is small; the tab _contents_ depend on R5/R6.
+
 - **Review (SRS):** `/api/vocab/{review/count, review/query, submit-batch,
-  review-recent/query, has_history}`.
+review-recent/query, has_history}`.
 - **Recommend:** `/api/practice/recommend`, practice history/sessions.
 - **Depends on** the trainer engine (R5) for the actual activities.
 
 ### Slice R5 — Trainer engine + milestone steps (the big one) · L, multi-slice
+
 The core learning loop. Split into sub-slices:
+
 - **R5a — Lesson trainer:** `/api/lesson/{start, submit, part-complete}`; task types
   `listening | meaning | typing | reorder` (4 widgets — `LessonTrainerPage` +
   `ChoiceTask/TypingTask/ReorderTask`).
+  - **Approved UI design:** Use the approved mockup in
+    `mockup/approve design/lesson_trainer_typing/` (`code.html`, `DESIGN.md`, `screen.png`)
+    instead of a direct web CSS port for the lesson trainer shell and typing task:
+    - **Top action bar:** Dual 40×40 (`rounded-lg`) header buttons — left solid teal
+      (`#007a61`) menu button with white icon, right white bordered (`#e5e7eb`) lesson
+      settings button with teal icon.
+    - **6-step milestone header:** Horizontal connected step track (`2px` `#576856`/25% line)
+      with `28×28` circular numbered badges — completed/inactive steps in sage (`#576856`),
+      active step (Step 6) in bright teal (`#007a61`) with a `4px` `#007a61`/20% focus ring,
+      followed by a left-aligned step caption (`Bước 6/6 · Luyện bài` in `#738a72`).
+    - **Task progress bar:** Thin `6px` rounded track (`#f3f4f6`) with teal fill (`#007a61`)
+      and right-aligned muted task counter (`Nhiệm vụ X/Y`).
+    - **Outer task card:** Mint container (`#cbe2d4`, border `#afcfbd`, `rounded-2xl`,
+      padding `16–20px`) with centered bold instruction header (e.g. `Nhập câu sau bằng tiếng Trung:`).
+    - **Inner prompt / feedback card (`TypingTask`):** Nested rounded card (`14px` radius,
+      `16px` padding) that shifts to error state (`#fef2f2` bg, `#dc2626` border) on wrong
+      submission, containing:
+      1. Centered bold prompt sentence (`18px`).
+      2. `54px`-tall white input box (`rounded-xl`, border `#e2dcd5`, `18px` Noto Sans SC
+         text with teal `#007a61` caret/focus).
+      3. Centered bold red correction feedback (`✕ <hanzi> (<pinyin>)` in `#dc2626`) when
+         incorrect.
+    - **Sticky bottom control bar:** Fixed bottom bar (`bg-white`, top border `#e5e7eb`,
+      subtle upward shadow) with two actions: outlined sage exit button (`Thoát Phiên Học`
+      with logout icon, border `#576856`/40%, text `#576856`) and flex-1 solid sage primary
+      action button (`Tiếp Tục` / `Kiểm Tra`, bg `#576856`, hover `#4a5849`, white text,
+      `rounded-xl`).
 - **R5b — Vocab learner:** flashcard/card viewers (steps 2 & 5).
 - **R5c — Vocab trainer:** the ~11 question-type widgets (`MCOptions`, `Reorder`,
   `BlankedContent`, `ImageOptions`, `KeyButtons`, `TrueFalse`, `T5*`, `Type2/6Group`,
@@ -392,6 +436,7 @@ The core learning loop. Split into sub-slices:
   `/api/lesson/milestone`.
 
 ### Slice R6 — Remaining surfaces · varies
+
 - **Grammar panel** on the study screen — `/api/lesson/grammar/:id` · S.
 - **Translation** list — `/api/translation/lesson` · S.
 - **Exam** flow · M. **Pinyin lessons** (basic/advanced, special content) · M.
