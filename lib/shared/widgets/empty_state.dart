@@ -5,6 +5,9 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_theme.dart';
+import '../styles/shared_styles.dart';
+
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
@@ -21,29 +24,32 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      padding: SharedStyles.emptyPadding,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: theme.colorScheme.outline),
-          const SizedBox(height: 12),
+          Icon(
+            icon,
+            size: SharedStyles.emptyIconSize,
+            color: BrandColors.mutedText,
+          ),
+          SharedStyles.emptyTitleGap,
           Text(
             title,
-            style: theme.textTheme.titleLarge,
+            style: SharedStyles.emptyTitleStyle,
             textAlign: TextAlign.center,
           ),
           if (message != null) ...[
-            const SizedBox(height: 8),
+            SharedStyles.emptyMessageGap,
             Text(
               message!,
-              style: theme.textTheme.bodyMedium,
+              style: SharedStyles.emptyMessageStyle,
               textAlign: TextAlign.center,
             ),
           ],
           if (action != null) ...[
-            const SizedBox(height: 16),
+            SharedStyles.emptyActionGap,
             action!,
           ],
         ],
