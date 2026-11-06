@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
+import 'app_localizations_vi.dart';
 
 // ignore_for_file: type=lint
 
@@ -92,7 +93,10 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('vi'),
+  ];
 
   /// Application name shown in the OS task switcher.
   ///
@@ -115,7 +119,7 @@ abstract class AppLocalizations {
   /// Title of the login screen.
   ///
   /// In en, this message translates to:
-  /// **'Sign in'**
+  /// **'Sign In'**
   String get loginTitle;
 
   /// Label for the username field on the login screen.
@@ -133,19 +137,19 @@ abstract class AppLocalizations {
   /// Label of the login submit button.
   ///
   /// In en, this message translates to:
-  /// **'Sign in'**
+  /// **'Sign In'**
   String get loginSubmit;
 
   /// Validation message shown under an empty required field.
   ///
   /// In en, this message translates to:
-  /// **'Required'**
+  /// **'Please fill in all fields'**
   String get loginFieldRequired;
 
   /// Generic error shown when login fails.
   ///
   /// In en, this message translates to:
-  /// **'Sign in failed. Check your username and password.'**
+  /// **'Invalid username or password'**
   String get loginFailed;
 
   /// Greeting on the home screen when the username is known.
@@ -160,10 +164,16 @@ abstract class AppLocalizations {
   /// **'Welcome back'**
   String get homeGreetingGeneric;
 
+  /// Uppercase kicker label on the current-lesson card.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Lesson'**
+  String get homeCurrentLessonKicker;
+
   /// Title of the resume-lesson card.
   ///
   /// In en, this message translates to:
-  /// **'Continue where you left off'**
+  /// **'Recent Lesson'**
   String get homeContinueTitle;
 
   /// Subtitle of the resume-lesson card describing the lesson.
@@ -172,22 +182,28 @@ abstract class AppLocalizations {
   /// **'{hskLevel} · Lesson {lesson} · Part {part}'**
   String homeContinueSubtitle(String hskLevel, int lesson, int part);
 
+  /// CTA button label on the recent lesson panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get homeContinueButton;
+
   /// Empty-state title when there is no recent lesson.
   ///
   /// In en, this message translates to:
-  /// **'No lessons yet'**
+  /// **'You haven\'t started a lesson yet.'**
   String get homeNoRecentTitle;
 
   /// Empty-state message when there is no recent lesson.
   ///
   /// In en, this message translates to:
-  /// **'Open the Books tab to pick a lesson.'**
+  /// **'Open the Books section to pick a lesson.'**
   String get homeNoRecentMessage;
 
   /// Label of the entry point to the Books list.
   ///
   /// In en, this message translates to:
-  /// **'Browse books'**
+  /// **'Browse Books'**
   String get homeBrowseBooks;
 
   /// Error shown when the dashboard fails to load.
@@ -202,34 +218,46 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get commonRetry;
 
+  /// Generic close button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonClose;
+
   /// Tooltip for the sign-out action.
   ///
   /// In en, this message translates to:
-  /// **'Sign out'**
+  /// **'Sign Out'**
   String get logoutTooltip;
 
   /// Title of the books list screen.
   ///
   /// In en, this message translates to:
-  /// **'Books'**
+  /// **'Select Book'**
   String get booksTitle;
 
   /// Subtitle under the books list title.
   ///
   /// In en, this message translates to:
-  /// **'Choose a book to study'**
+  /// **'Choose a book to view its lessons'**
   String get booksSubtitle;
+
+  /// Back link label from book detail to books list.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Books'**
+  String get booksBackToBooks;
 
   /// Empty state when there are no books.
   ///
   /// In en, this message translates to:
-  /// **'No books found'**
+  /// **'No books yet.'**
   String get booksEmpty;
 
   /// Error shown when the books list fails to load.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t load books.'**
+  /// **'Failed to load books.'**
   String get booksError;
 
   /// Lesson count for a book.
@@ -244,10 +272,16 @@ abstract class AppLocalizations {
   /// **'{count, plural, =1{1 part} other{{count} parts}}'**
   String booksPartsCount(int count);
 
+  /// Completed badge text on a finished book part.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get booksCompleted;
+
   /// Error shown when a book's lessons fail to load.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t load lessons.'**
+  /// **'Failed to load lessons.'**
   String get bookError;
 
   /// Label for a lesson in a book.
@@ -265,43 +299,49 @@ abstract class AppLocalizations {
   /// Error shown when a passage fails to load.
   ///
   /// In en, this message translates to:
-  /// **'Couldn\'t load the passage.'**
+  /// **'Failed to load passage.'**
   String get studyError;
 
   /// Empty state when a passage has no lines.
   ///
   /// In en, this message translates to:
-  /// **'No lines in this passage.'**
+  /// **'No lines found for this lesson part.'**
   String get studyEmpty;
+
+  /// Toolbar button label to auto-play passage lines.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Play'**
+  String get studyAutoPlay;
 
   /// Toggle label to reveal pinyin.
   ///
   /// In en, this message translates to:
-  /// **'Show pinyin'**
+  /// **'Show Pinyin'**
   String get studyShowPinyin;
 
   /// Toggle label to hide pinyin.
   ///
   /// In en, this message translates to:
-  /// **'Hide pinyin'**
+  /// **'Hide Pinyin'**
   String get studyHidePinyin;
 
   /// Toggle label to reveal translations.
   ///
   /// In en, this message translates to:
-  /// **'Show meaning'**
+  /// **'Show Meaning'**
   String get studyShowMeaning;
 
   /// Toggle label to hide translations.
   ///
   /// In en, this message translates to:
-  /// **'Hide meaning'**
+  /// **'Hide Meaning'**
   String get studyHideMeaning;
 
   /// Shown in the word popup when a word has no vocab entry.
   ///
   /// In en, this message translates to:
-  /// **'Not in this lesson\'s vocabulary.'**
+  /// **'Not in vocabulary'**
   String get wordNotFound;
 
   /// Word popup button to play the word audio.
@@ -313,7 +353,7 @@ abstract class AppLocalizations {
   /// Word popup button to show stroke order.
   ///
   /// In en, this message translates to:
-  /// **'Strokes'**
+  /// **'Stroke'**
   String get wordStroke;
 
   /// Message for features not yet wired (audio, stroke order).
@@ -334,7 +374,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en'].contains(locale.languageCode);
+      <String>['en', 'vi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -345,6 +385,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
+    case 'vi':
+      return AppLocalizationsVi();
   }
 
   throw FlutterError(

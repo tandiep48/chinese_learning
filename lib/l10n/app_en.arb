@@ -12,7 +12,7 @@
   "@navBooks": {
     "description": "Books destination label."
   },
-  "loginTitle": "Sign in",
+  "loginTitle": "Sign In",
   "@loginTitle": {
     "description": "Title of the login screen."
   },
@@ -24,15 +24,15 @@
   "@loginPasswordLabel": {
     "description": "Label for the password field on the login screen."
   },
-  "loginSubmit": "Sign in",
+  "loginSubmit": "Sign In",
   "@loginSubmit": {
     "description": "Label of the login submit button."
   },
-  "loginFieldRequired": "Required",
+  "loginFieldRequired": "Please fill in all fields",
   "@loginFieldRequired": {
     "description": "Validation message shown under an empty required field."
   },
-  "loginFailed": "Sign in failed. Check your username and password.",
+  "loginFailed": "Invalid username or password",
   "@loginFailed": {
     "description": "Generic error shown when login fails."
   },
@@ -49,7 +49,11 @@
   "@homeGreetingGeneric": {
     "description": "Greeting on the home screen when the username is not available."
   },
-  "homeContinueTitle": "Continue where you left off",
+  "homeCurrentLessonKicker": "Current Lesson",
+  "@homeCurrentLessonKicker": {
+    "description": "Uppercase kicker label on the current-lesson card."
+  },
+  "homeContinueTitle": "Recent Lesson",
   "@homeContinueTitle": {
     "description": "Title of the resume-lesson card."
   },
@@ -68,15 +72,19 @@
       }
     }
   },
-  "homeNoRecentTitle": "No lessons yet",
+  "homeContinueButton": "Continue",
+  "@homeContinueButton": {
+    "description": "CTA button label on the recent lesson panel."
+  },
+  "homeNoRecentTitle": "You haven't started a lesson yet.",
   "@homeNoRecentTitle": {
     "description": "Empty-state title when there is no recent lesson."
   },
-  "homeNoRecentMessage": "Open the Books tab to pick a lesson.",
+  "homeNoRecentMessage": "Open the Books section to pick a lesson.",
   "@homeNoRecentMessage": {
     "description": "Empty-state message when there is no recent lesson."
   },
-  "homeBrowseBooks": "Browse books",
+  "homeBrowseBooks": "Browse Books",
   "@homeBrowseBooks": {
     "description": "Label of the entry point to the Books list."
   },
@@ -88,23 +96,31 @@
   "@commonRetry": {
     "description": "Generic retry button label."
   },
-  "logoutTooltip": "Sign out",
+  "commonClose": "Close",
+  "@commonClose": {
+    "description": "Generic close button label."
+  },
+  "logoutTooltip": "Sign Out",
   "@logoutTooltip": {
     "description": "Tooltip for the sign-out action."
   },
-  "booksTitle": "Books",
+  "booksTitle": "Select Book",
   "@booksTitle": {
     "description": "Title of the books list screen."
   },
-  "booksSubtitle": "Choose a book to study",
+  "booksSubtitle": "Choose a book to view its lessons",
   "@booksSubtitle": {
     "description": "Subtitle under the books list title."
   },
-  "booksEmpty": "No books found",
+  "booksBackToBooks": "Back to Books",
+  "@booksBackToBooks": {
+    "description": "Back link label from book detail to books list."
+  },
+  "booksEmpty": "No books yet.",
   "@booksEmpty": {
     "description": "Empty state when there are no books."
   },
-  "booksError": "Couldn't load books.",
+  "booksError": "Failed to load books.",
   "@booksError": {
     "description": "Error shown when the books list fails to load."
   },
@@ -126,7 +142,11 @@
       }
     }
   },
-  "bookError": "Couldn't load lessons.",
+  "booksCompleted": "Completed",
+  "@booksCompleted": {
+    "description": "Completed badge text on a finished book part."
+  },
+  "bookError": "Failed to load lessons.",
   "@bookError": {
     "description": "Error shown when a book's lessons fail to load."
   },
@@ -148,31 +168,35 @@
       }
     }
   },
-  "studyError": "Couldn't load the passage.",
+  "studyError": "Failed to load passage.",
   "@studyError": {
     "description": "Error shown when a passage fails to load."
   },
-  "studyEmpty": "No lines in this passage.",
+  "studyEmpty": "No lines found for this lesson part.",
   "@studyEmpty": {
     "description": "Empty state when a passage has no lines."
   },
-  "studyShowPinyin": "Show pinyin",
+  "studyAutoPlay": "Auto Play",
+  "@studyAutoPlay": {
+    "description": "Toolbar button label to auto-play passage lines."
+  },
+  "studyShowPinyin": "Show Pinyin",
   "@studyShowPinyin": {
     "description": "Toggle label to reveal pinyin."
   },
-  "studyHidePinyin": "Hide pinyin",
+  "studyHidePinyin": "Hide Pinyin",
   "@studyHidePinyin": {
     "description": "Toggle label to hide pinyin."
   },
-  "studyShowMeaning": "Show meaning",
+  "studyShowMeaning": "Show Meaning",
   "@studyShowMeaning": {
     "description": "Toggle label to reveal translations."
   },
-  "studyHideMeaning": "Hide meaning",
+  "studyHideMeaning": "Hide Meaning",
   "@studyHideMeaning": {
     "description": "Toggle label to hide translations."
   },
-  "wordNotFound": "Not in this lesson's vocabulary.",
+  "wordNotFound": "Not in vocabulary",
   "@wordNotFound": {
     "description": "Shown in the word popup when a word has no vocab entry."
   },
@@ -180,7 +204,7 @@
   "@wordListen": {
     "description": "Word popup button to play the word audio."
   },
-  "wordStroke": "Strokes",
+  "wordStroke": "Stroke",
   "@wordStroke": {
     "description": "Word popup button to show stroke order."
   },

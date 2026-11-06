@@ -19,7 +19,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navBooks => 'Books';
 
   @override
-  String get loginTitle => 'Sign in';
+  String get loginTitle => 'Sign In';
 
   @override
   String get loginUsernameLabel => 'Username';
@@ -28,13 +28,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginPasswordLabel => 'Password';
 
   @override
-  String get loginSubmit => 'Sign in';
+  String get loginSubmit => 'Sign In';
 
   @override
-  String get loginFieldRequired => 'Required';
+  String get loginFieldRequired => 'Please fill in all fields';
 
   @override
-  String get loginFailed => 'Sign in failed. Check your username and password.';
+  String get loginFailed => 'Invalid username or password';
 
   @override
   String homeGreeting(String name) {
@@ -45,7 +45,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeGreetingGeneric => 'Welcome back';
 
   @override
-  String get homeContinueTitle => 'Continue where you left off';
+  String get homeCurrentLessonKicker => 'Current Lesson';
+
+  @override
+  String get homeContinueTitle => 'Recent Lesson';
 
   @override
   String homeContinueSubtitle(String hskLevel, int lesson, int part) {
@@ -53,13 +56,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeNoRecentTitle => 'No lessons yet';
+  String get homeContinueButton => 'Continue';
 
   @override
-  String get homeNoRecentMessage => 'Open the Books tab to pick a lesson.';
+  String get homeNoRecentTitle => 'You haven\'t started a lesson yet.';
 
   @override
-  String get homeBrowseBooks => 'Browse books';
+  String get homeNoRecentMessage => 'Open the Books section to pick a lesson.';
+
+  @override
+  String get homeBrowseBooks => 'Browse Books';
 
   @override
   String get homeError => 'Couldn\'t load your dashboard.';
@@ -68,19 +74,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonRetry => 'Retry';
 
   @override
-  String get logoutTooltip => 'Sign out';
+  String get commonClose => 'Close';
 
   @override
-  String get booksTitle => 'Books';
+  String get logoutTooltip => 'Sign Out';
 
   @override
-  String get booksSubtitle => 'Choose a book to study';
+  String get booksTitle => 'Select Book';
 
   @override
-  String get booksEmpty => 'No books found';
+  String get booksSubtitle => 'Choose a book to view its lessons';
 
   @override
-  String get booksError => 'Couldn\'t load books.';
+  String get booksBackToBooks => 'Back to Books';
+
+  @override
+  String get booksEmpty => 'No books yet.';
+
+  @override
+  String get booksError => 'Failed to load books.';
 
   @override
   String booksLessonsCount(int count) {
@@ -105,7 +117,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get bookError => 'Couldn\'t load lessons.';
+  String get booksCompleted => 'Completed';
+
+  @override
+  String get bookError => 'Failed to load lessons.';
 
   @override
   String lessonLabel(String lesson) {
@@ -118,31 +133,34 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get studyError => 'Couldn\'t load the passage.';
+  String get studyError => 'Failed to load passage.';
 
   @override
-  String get studyEmpty => 'No lines in this passage.';
+  String get studyEmpty => 'No lines found for this lesson part.';
 
   @override
-  String get studyShowPinyin => 'Show pinyin';
+  String get studyAutoPlay => 'Auto Play';
 
   @override
-  String get studyHidePinyin => 'Hide pinyin';
+  String get studyShowPinyin => 'Show Pinyin';
 
   @override
-  String get studyShowMeaning => 'Show meaning';
+  String get studyHidePinyin => 'Hide Pinyin';
 
   @override
-  String get studyHideMeaning => 'Hide meaning';
+  String get studyShowMeaning => 'Show Meaning';
 
   @override
-  String get wordNotFound => 'Not in this lesson\'s vocabulary.';
+  String get studyHideMeaning => 'Hide Meaning';
+
+  @override
+  String get wordNotFound => 'Not in vocabulary';
 
   @override
   String get wordListen => 'Listen';
 
   @override
-  String get wordStroke => 'Strokes';
+  String get wordStroke => 'Stroke';
 
   @override
   String get comingSoon => 'Coming soon';

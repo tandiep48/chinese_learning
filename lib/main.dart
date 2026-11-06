@@ -1,7 +1,8 @@
 /// Entry point of the YiChinese learner app.
 ///
-/// Wires the Riverpod scope, the Material 3 learner theme, localization, and
-/// the go_router instance (which owns the auth redirect guard).
+/// Wires the Riverpod scope, the Material 3 learner theme, localization
+/// (Vietnamese default, English secondary per Slice R-UI), and the go_router
+/// instance (which owns the auth redirect guard).
 library;
 
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class YiChineseApp extends ConsumerWidget {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       theme: AppTheme.light,
+      locale: const Locale('vi'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
