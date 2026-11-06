@@ -1,15 +1,17 @@
 /// Lessons module — the word popup shown when a learner taps a passage word.
 ///
-/// Native modal bottom sheet port of `WordPopup.tsx`: the hanzi, its pinyin,
-/// the VN + EN meaning (or a "not found" state), and Listen / Strokes actions.
-/// Audio and stroke order are deferred in this slice (buttons present, wired
-/// later); the book-lesson save toggle is out of this slice.
+/// Web-matched modal bottom sheet port of `WordPopup.tsx` + `word-popup.css`:
+/// left-aligned teal hanzi (`2.8rem`), muted pinyin, primary VN meaning +
+/// secondary EN meaning (or italic "not found" state), top-right circular close
+/// button, and full-width tinted teal Listen / Stroke buttons.
 library;
 
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/models/lesson_vocab_row.dart';
+import '../styles/lessons_styles.dart';
 
 Future<void> showWordPopup(
   BuildContext context, {
@@ -18,7 +20,11 @@ Future<void> showWordPopup(
 }) {
   return showModalBottomSheet<void>(
     context: context,
-    showDragHandle: true,
+    backgroundColor: BrandColors.card,
+    shape: LessonsStyles.wordPopupShape,
+    constraints: const BoxConstraints(
+      maxWidth: LessonsStyles.wordPopupMaxWidth,
+    ),
     builder: (context) => _WordPopupSheet(word: word, entry: entry),
   );
 }
@@ -39,59 +45,98 @@ class _WordPopupSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final entry = this.entry;
+    final hasAudio = entry?.audioKey != null && entry!.audioKey!.isNotEmpty;
+
+    final hasVn = entry != null && entry.meaningVn.isNotEmpty;
+    final hasEn = entry != null && entry.meaningEn.isNotEmpty;
+    final primaryMeaning = hasVn ? entry.meaningVn : (hasEn ? entry.meaningEn : '');
+    final secondaryMeaning = (hasVn && hasEn) ? entry.meaningEn : '';
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: LessonsStyles.wordPopupPadding,
+        child: Stack(
           children: [
-            Center(
-              child: Text(word, style: theme.textTheme.displaySmall),
-            ),
-            if (entry != null) ...[
-              const SizedBox(height: 4),
-              Center(
-                child: Text(entry.pinyin, style: theme.textTheme.titleLarge),
-              ),
-              const SizedBox(height: 16),
-              Text(entry.meaningVn, style: theme.textTheme.bodyLarge),
-              if (entry.meaningEn.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Text(
-                  entry.meaningEn,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                ),
-              ],
-            ] else ...[
-              const SizedBox(height: 16),
-              Text(
-                l10n.wordNotFound,
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-              ),
-            ],
-            const SizedBox(height: 20),
-            Row(
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (entry?.audioKey != null && entry!.audioKey!.isNotEmpty)
-                  OutlinedButton.icon(
-                    onPressed: () => _comingSoon(context),
-                    icon: const Icon(Icons.volume_up),
-                    label: Text(l10n.wordListen),
-                  ),
-                if (entry?.audioKey != null && entry!.audioKey!.isNotEmpty)
-                  const SizedBox(width: 12),
-                OutlinedButton.icon(
-                  onPressed: () => _comingSoon(context),
-                  icon: const Icon(Icons.draw),
-                  label: Text(l10n.wordStroke),
+                Text(word, style: LessonsStyles.wordPopupHanziStyle),
+                LessonsStyles.wordPopupHanziGap,
+                if (entry != null && entry.pinyin.isNotEmpty) ...[
+                  Text(entry.pinyin, style: LessonsStyles.wordPopupPinyinStyle),
+                  LessonsStyles.wordPopupPinyinGap,
+                ],
+                if (entry == null)
+                  Text(
+                    l10n.wordNotFound,
+                    style: LessonsStyles.wordPopupNotFoundStyle,
+                  )
+                else ...[
+                  if (primaryMeaning.isNotEmpty)
+                    Text(
+                      primaryMeaning,
+                      style: LessonsStyles.wordPopupMeaningStyle,
+                    ),
+                  if (secondaryMeaning.isNotEmpty) ...[
+                    LessonsStyles.wordPopupMeaningGap,
+                    Text(
+                      secondaryMeaning,
+                      style: LessonsStyles.wordPopupMeaningSecondaryStyle,
+                    ),
+                  ],
+                ],
+                LessonsStyles.wordPopupActionsTopGap,
+                Row(
+                  children: [
+                    if (hasAudio) ...[
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          style: LessonsStyles.wordPopupButtonStyle,
+                          onPressed: () => _comingSoon(context),
+                          icon: const Icon(
+                            Icons.volume_up,
+                            size: LessonsStyles.toolbarIconSize,
+                          ),
+                          label: Text(l10n.wordListen),
+                        ),
+                      ),
+                      LessonsStyles.wordPopupActionsBetweenGap,
+                    ],
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        style: LessonsStyles.wordPopupButtonStyle,
+                        onPressed: () => _comingSoon(context),
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          size: LessonsStyles.toolbarIconSize,
+                        ),
+                        label: Text(l10n.wordStroke),
+                      ),
+                    ),
+                  ],
                 ),
               ],
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: InkWell(
+                customBorder: const CircleBorder(),
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  width: LessonsStyles.wordPopupCloseSize,
+                  height: LessonsStyles.wordPopupCloseSize,
+                  decoration: LessonsStyles.wordPopupCloseDecoration,
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.close,
+                    size: LessonsStyles.wordPopupCloseIconSize,
+                    color: BrandColors.studyMuted,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

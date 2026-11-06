@@ -1,12 +1,14 @@
 /// Lessons module — one book row in the Books list.
 ///
-/// Shows the cover (with an icon fallback when it fails to load), the name and
-/// the lesson/part counts; tapping drills into the book's lessons.
+/// Ported from `yi-chinese-manage/app/learner/books/page.tsx` and `books.css`
+/// (`.book-card`): horizontal bordered card with a square cover on the left and
+/// the book title + lesson/part counts on the right.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../../../core/env.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/models/learner_book.dart';
 import '../styles/lessons_styles.dart';
@@ -27,42 +29,43 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final title = (book.name != null && book.name!.isNotEmpty) ? book.name! : book.bookCode;
+    final partsText = book.doneCount > 0
+        ? '${l10n.booksPartsCount(book.partCount)} · ${book.doneCount}/${book.partCount}'
+        : l10n.booksPartsCount(book.partCount);
 
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
+    return Container(
+      decoration: LessonsStyles.bookCardDecoration,
+      clipBehavior: Clip.antiAlias,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: _Cover(url: _coverUrl),
-              ),
-              const SizedBox(width: 12),
+              _Cover(url: _coverUrl),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: theme.textTheme.titleLarge),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.booksLessonsCount(book.lessonCount),
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                    Text(
-                      book.doneCount > 0
-                          ? '${l10n.booksPartsCount(book.partCount)} · ${book.doneCount}/${book.partCount}'
-                          : l10n.booksPartsCount(book.partCount),
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ],
+                child: Padding(
+                  padding: LessonsStyles.bookCardBodyPadding,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: LessonsStyles.bookCardTitleStyle),
+                      LessonsStyles.bookCardBodyGap,
+                      Text(
+                        l10n.booksLessonsCount(book.lessonCount),
+                        style: LessonsStyles.bookCardCountStyle,
+                      ),
+                      LessonsStyles.bookCardBodyGap,
+                      Text(
+                        partsText,
+                        style: LessonsStyles.bookCardCountStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const Icon(Icons.chevron_right),
             ],
           ),
         ),
@@ -78,18 +81,17 @@ class _Cover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final fallback = Container(
-      width: LessonsStyles.coverWidth,
-      height: LessonsStyles.coverHeight,
-      color: theme.colorScheme.surfaceContainer,
-      child: Icon(Icons.menu_book, color: theme.colorScheme.outline),
+      width: LessonsStyles.coverSize,
+      height: LessonsStyles.coverSize,
+      decoration: LessonsStyles.coverFallbackDecoration,
+      child: const Icon(Icons.menu_book, color: BrandColors.mutedText),
     );
     if (url.isEmpty) return fallback;
     return Image.network(
       url,
-      width: LessonsStyles.coverWidth,
-      height: LessonsStyles.coverHeight,
+      width: LessonsStyles.coverSize,
+      height: LessonsStyles.coverSize,
       fit: BoxFit.cover,
       errorBuilder: (_, _, _) => fallback,
     );
