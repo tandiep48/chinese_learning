@@ -41,6 +41,11 @@ dependencies:
   dio: ^5.11.1
   flutter_secure_storage: ^11.2.0
   intl: ^0.20.3
+  just_audio: ^0.10.6
+  stroke_order_animator: ^3.3.1
+  http: ^1.6.0
+  flutter_tts: ^4.2.5
+  socket_io_client: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +72,10 @@ flutter:
   # Generate localization delegates from the ARB files in lib/l10n/
   # (configured in l10n.yaml). One language (en) ships in this slice.
   generate: true
+
+  assets:
+    # Advanced pinyin initial×final matrix (HSK 1 Lesson 1 guide).
+    - assets/pinyin/advanced_pinyin_data.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

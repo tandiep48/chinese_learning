@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Streaming lesson/vocab audio from the public GCS bucket. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="chinese_learning"
         android:name="${applicationName}"
