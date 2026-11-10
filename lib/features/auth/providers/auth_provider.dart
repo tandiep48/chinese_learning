@@ -25,16 +25,21 @@ class AuthState {
   final AuthStatus status;
   final AuthUser? user;
 
-  static const AuthState signedOut = AuthState(status: AuthStatus.unauthenticated);
+  static const AuthState signedOut = AuthState(
+    status: AuthStatus.unauthenticated,
+  );
 }
 
-final authNotifierProvider =
-    AsyncNotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
+final authNotifierProvider = AsyncNotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);
 
 /// Synchronous status for the router guard: `unknown` while the launch check
 /// is still loading (or errored), otherwise the resolved status.
 final authStatusProvider = Provider<AuthStatus>((ref) {
-  return ref.watch(authNotifierProvider).maybeWhen(
+  return ref
+      .watch(authNotifierProvider)
+      .maybeWhen(
         data: (state) => state.status,
         orElse: () => AuthStatus.unknown,
       );
@@ -66,7 +71,20 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
   Future<void> login(String username, String password) async {
     final result = await _repo.login(username, password);
     ref.read(bearerTokenProvider.notifier).set(result.token);
-    state = AsyncData(AuthState(status: AuthStatus.authenticated, user: result.user));
+    state = AsyncData(
+      AuthState(status: AuthStatus.authenticated, user: result.user),
+    );
+  }
+
+  /// Create an account and sign in. Throws [ApiException] on a taken
+  /// username/email or validation failure so the register form can show the
+  /// server message; status only flips to authenticated on success.
+  Future<void> register(String username, String email, String password) async {
+    final result = await _repo.register(username, email, password);
+    ref.read(bearerTokenProvider.notifier).set(result.token);
+    state = AsyncData(
+      AuthState(status: AuthStatus.authenticated, user: result.user),
+    );
   }
 
   /// Sign out, clearing the token locally and the status to unauthenticated.
@@ -74,5 +92,27 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     await _repo.logout();
     ref.read(bearerTokenProvider.notifier).set(null);
     state = const AsyncData(AuthState.signedOut);
+  }
+
+  /// Patch the signed-in user's display preferences in place (after a settings
+  /// save). No-op when signed out or while the launch check is still loading.
+  void updateUser({
+    String? uiLanguage,
+    String? hanziFont,
+    String? hanziScript,
+  }) {
+    final current = state.asData?.value;
+    final user = current?.user;
+    if (current == null || user == null) return;
+    state = AsyncData(
+      AuthState(
+        status: current.status,
+        user: user.copyWith(
+          uiLanguage: uiLanguage,
+          hanziFont: hanziFont,
+          hanziScript: hanziScript,
+        ),
+      ),
+    );
   }
 }

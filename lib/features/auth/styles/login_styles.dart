@@ -26,11 +26,7 @@ class LoginStyles {
     borderRadius: BorderRadius.circular(16),
     border: Border.all(color: BrandColors.learnerBorder),
     boxShadow: const [
-      BoxShadow(
-        color: Color(0x0F000000),
-        blurRadius: 32,
-        offset: Offset(0, 8),
-      ),
+      BoxShadow(color: Color(0x0F000000), blurRadius: 32, offset: Offset(0, 8)),
     ],
   );
 
@@ -114,12 +110,21 @@ class LoginStyles {
   static final ButtonStyle submitButtonStyle = FilledButton.styleFrom(
     backgroundColor: BrandColors.primary,
     foregroundColor: BrandColors.card,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(8),
-    ),
-    textStyle: const TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.w700,
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+  );
+
+  /// Footer prompt before the login/register switch link
+  /// (`text-sm text-[var(--learner-text-muted)]`).
+  static const TextStyle footerPromptStyle = TextStyle(
+    fontSize: 14,
+    color: BrandColors.mutedText,
+  );
+
+  /// The login/register switch link (`font-semibold text-[var(--learner-primary)]`).
+  static const TextStyle footerLinkStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.primary,
   );
 }

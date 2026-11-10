@@ -50,6 +50,22 @@ class AuthRepository {
     return (token: token, user: user);
   }
 
+  /// Create an account, then sign in for a bearer token. The register endpoint
+  /// starts a cookie session (web parity) but returns no token, so the mobile
+  /// client exchanges the fresh credentials for one via [login] — the single
+  /// step the web gets from its cookie session.
+  Future<({String token, AuthUser user})> register(
+    String username,
+    String email,
+    String password,
+  ) async {
+    await _api.postEnvelope(
+      '/api/auth/register',
+      body: {'username': username, 'email': email, 'password': password},
+    );
+    return login(username, password);
+  }
+
   /// The current user for the active token (throws [UnauthenticatedException]
   /// on 401). `/api/auth/me` returns the user directly as the envelope `data`.
   Future<AuthUser> fetchCurrentUser() async {

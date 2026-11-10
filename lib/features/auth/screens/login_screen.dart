@@ -8,6 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/theme/app_theme.dart';
@@ -46,14 +47,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _error = null;
     });
     try {
-      await ref.read(authNotifierProvider.notifier).login(
-            _usernameController.text.trim(),
-            _passwordController.text,
-          );
+      await ref
+          .read(authNotifierProvider.notifier)
+          .login(_usernameController.text.trim(), _passwordController.text);
       // On success the router redirects; nothing else to do here.
     } on ApiException catch (e) {
       if (!mounted) return;
-      setState(() => _error = e.message.isNotEmpty ? e.message : l10n.loginFailed);
+      setState(
+        () => _error = e.message.isNotEmpty ? e.message : l10n.loginFailed,
+      );
     } catch (_) {
       if (!mounted) return;
       setState(() => _error = l10n.loginFailed);
@@ -73,7 +75,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: SingleChildScrollView(
             padding: LoginStyles.pagePadding,
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: LoginStyles.maxCardWidth),
+              constraints: const BoxConstraints(
+                maxWidth: LoginStyles.maxCardWidth,
+              ),
               child: Container(
                 padding: LoginStyles.cardPadding,
                 decoration: LoginStyles.cardDecoration,
@@ -101,8 +105,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         autofillHints: const [AutofillHints.username],
                         enabled: !_submitting,
                         decoration: LoginStyles.inputDecoration(),
-                        validator: (v) =>
-                            (v == null || v.trim().isEmpty) ? l10n.loginFieldRequired : null,
+                        validator: (v) => (v == null || v.trim().isEmpty)
+                            ? l10n.loginFieldRequired
+                            : null,
                       ),
                       LoginStyles.fieldGap,
                       Text(
@@ -119,8 +124,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         enabled: !_submitting,
                         onFieldSubmitted: (_) => _submit(),
                         decoration: LoginStyles.inputDecoration(),
-                        validator: (v) =>
-                            (v == null || v.isEmpty) ? l10n.loginFieldRequired : null,
+                        validator: (v) => (v == null || v.isEmpty)
+                            ? l10n.loginFieldRequired
+                            : null,
                       ),
                       if (_error != null) ...[
                         LoginStyles.fieldGap,
@@ -149,6 +155,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                 )
                               : Text(l10n.loginSubmit),
+                        ),
+                      ),
+                      LoginStyles.headingGap,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text(
+                              '${l10n.noAccountPrompt} ',
+                              style: LoginStyles.footerPromptStyle,
+                            ),
+                            GestureDetector(
+                              onTap: _submitting
+                                  ? null
+                                  : () => context.go('/register'),
+                              child: Text(
+                                l10n.registerHere,
+                                style: LoginStyles.footerLinkStyle,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
