@@ -12,6 +12,66 @@
   "@navBooks": {
     "description": "Books destination label."
   },
+  "navDashboard": "Dashboard",
+  "@navDashboard": {
+    "description": "Navigation drawer label for the home/dashboard destination."
+  },
+  "navLibrary": "Library",
+  "@navLibrary": {
+    "description": "Navigation drawer label for the HSK/Books library destination (web nav.hsk)."
+  },
+  "navVocabulary": "Vocabulary",
+  "@navVocabulary": {
+    "description": "Navigation drawer label for the vocabulary destination (disabled until its slice ships)."
+  },
+  "navRecommend": "Recommend",
+  "@navRecommend": {
+    "description": "Navigation drawer label for the recommended-practice destination (disabled until its slice ships)."
+  },
+  "navSettings": "Settings",
+  "@navSettings": {
+    "description": "Navigation drawer label for the settings action."
+  },
+  "navLogout": "Sign Out",
+  "@navLogout": {
+    "description": "Navigation drawer label for the logout action."
+  },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Settings field label for the UI language."
+  },
+  "settingsScript": "Script",
+  "@settingsScript": {
+    "description": "Settings field label for the hanzi script (simplified/traditional)."
+  },
+  "settingsFont": "Font",
+  "@settingsFont": {
+    "description": "Settings field label for the hanzi font."
+  },
+  "settingsLangVi": "Tiếng Việt",
+  "@settingsLangVi": {
+    "description": "Language option: Vietnamese (shown in its own language)."
+  },
+  "settingsLangEn": "English",
+  "@settingsLangEn": {
+    "description": "Language option: English (shown in its own language)."
+  },
+  "settingsScriptSimplified": "简体 Simplified",
+  "@settingsScriptSimplified": {
+    "description": "Hanzi script option: simplified."
+  },
+  "settingsScriptTraditional": "繁體 Traditional",
+  "@settingsScriptTraditional": {
+    "description": "Hanzi script option: traditional."
+  },
+  "settingsHanziNote": "Chinese text styling will apply in a future update.",
+  "@settingsHanziNote": {
+    "description": "Note that the hanzi script/font preference is saved but not yet rendered."
+  },
+  "settingsSaveError": "Couldn't save your preference.",
+  "@settingsSaveError": {
+    "description": "Error shown when saving a settings preference fails."
+  },
   "loginTitle": "Sign In",
   "@loginTitle": {
     "description": "Title of the login screen."
@@ -35,6 +95,42 @@
   "loginFailed": "Invalid username or password",
   "@loginFailed": {
     "description": "Generic error shown when login fails."
+  },
+  "registerTitle": "Register",
+  "@registerTitle": {
+    "description": "Title of the register screen."
+  },
+  "registerEmailLabel": "Email",
+  "@registerEmailLabel": {
+    "description": "Label for the email field on the register screen."
+  },
+  "registerSubmit": "Register",
+  "@registerSubmit": {
+    "description": "Label of the register submit button."
+  },
+  "registerPasswordHint": "At least 8 characters",
+  "@registerPasswordHint": {
+    "description": "Validation message when the chosen password is too short."
+  },
+  "registerFailed": "Registration failed",
+  "@registerFailed": {
+    "description": "Generic error shown when registration fails."
+  },
+  "noAccountPrompt": "Don't have an account?",
+  "@noAccountPrompt": {
+    "description": "Prompt on the login screen before the register link."
+  },
+  "registerHere": "Register here",
+  "@registerHere": {
+    "description": "Link on the login screen to the register screen."
+  },
+  "haveAccountPrompt": "Already have an account?",
+  "@haveAccountPrompt": {
+    "description": "Prompt on the register screen before the login link."
+  },
+  "loginHere": "Log in here",
+  "@loginHere": {
+    "description": "Link on the register screen back to the login screen."
   },
   "homeGreeting": "Hi, {name}",
   "@homeGreeting": {
@@ -87,6 +183,30 @@
   "homeBrowseBooks": "Browse Books",
   "@homeBrowseBooks": {
     "description": "Label of the entry point to the Books list."
+  },
+  "homeBrowseHsk": "Browse by HSK level",
+  "@homeBrowseHsk": {
+    "description": "Label of the entry point to the HSK level picker."
+  },
+  "homeTabLesson": "Lesson",
+  "@homeTabLesson": {
+    "description": "Dashboard tab label for the lesson activity."
+  },
+  "homeTabReview": "Word Review",
+  "@homeTabReview": {
+    "description": "Dashboard tab label for the vocabulary review activity."
+  },
+  "homeTabRecommend": "Recommend",
+  "@homeTabRecommend": {
+    "description": "Dashboard tab label for the recommended-practice activity."
+  },
+  "homeReviewStub": "Vocabulary review is coming soon.",
+  "@homeReviewStub": {
+    "description": "Placeholder message on the Review tab until the SRS slice ships."
+  },
+  "homeRecommendStub": "Recommended practice is coming soon.",
+  "@homeRecommendStub": {
+    "description": "Placeholder message on the Recommend tab until the practice slice ships."
   },
   "homeError": "Couldn't load your dashboard.",
   "@homeError": {
@@ -150,6 +270,47 @@
   "@bookError": {
     "description": "Error shown when a book's lessons fail to load."
   },
+  "libraryTabHsk": "HSK",
+  "@libraryTabHsk": {
+    "description": "Library tab label for the HSK level browse path."
+  },
+  "hskSelectLevelTitle": "Select HSK Level",
+  "@hskSelectLevelTitle": {
+    "description": "Title of the HSK level picker."
+  },
+  "hskSelectLevelSubtitle": "Choose a level to see its lessons",
+  "@hskSelectLevelSubtitle": {
+    "description": "Subtitle under the HSK level picker title."
+  },
+  "hskSelectLessonTitle": "Select Lesson",
+  "@hskSelectLessonTitle": {
+    "description": "Title of the lesson picker within an HSK level."
+  },
+  "hskLessonsAvailable": "{count, plural, =1{1 lesson available} other{{count} lessons available}}",
+  "@hskLessonsAvailable": {
+    "description": "Count of lessons available in an HSK level.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hskSearchPlaceholder": "Search lessons",
+  "@hskSearchPlaceholder": {
+    "description": "Placeholder for the lesson search field in the HSK picker."
+  },
+  "hskNoLessons": "No lessons found for this level.",
+  "@hskNoLessons": {
+    "description": "Empty state when an HSK level has no lessons."
+  },
+  "hskNoMatch": "No lessons match your search.",
+  "@hskNoMatch": {
+    "description": "Empty state when a lesson search returns nothing."
+  },
+  "hskOtherPassages": "Other Passages",
+  "@hskOtherPassages": {
+    "description": "Heading for passages that do not belong to a numbered lesson."
+  },
   "lessonLabel": "Lesson {lesson}",
   "@lessonLabel": {
     "description": "Label for a lesson in a book.",
@@ -208,8 +369,495 @@
   "@wordStroke": {
     "description": "Word popup button to show stroke order."
   },
+  "strokeAnimate": "Animate",
+  "@strokeAnimate": {
+    "description": "Stroke-order panel: animate the strokes step by step."
+  },
+  "strokePractice": "Practice",
+  "@strokePractice": {
+    "description": "Stroke-order panel: practice (quiz) writing the character."
+  },
+  "strokeReset": "Reset",
+  "@strokeReset": {
+    "description": "Stroke-order panel: reset the animation or quiz."
+  },
+  "strokeLoadError": "Couldn't load stroke order.",
+  "@strokeLoadError": {
+    "description": "Stroke-order panel error when the character data fails to load."
+  },
+  "practiceLoading": "Loading practice…",
+  "practiceLoadFailed": "Could not load practice data.",
+  "practiceCompleteTitle": "Practice Complete!",
+  "practiceSetLabel": "Practice Set",
+  "practiceCorrectAnswers": "Correct answers",
+  "practiceRetry": "Retry",
+  "practiceCheck": "Check",
+  "practiceSkip": "Skip",
+  "practicePrevious": "Previous",
+  "practiceSubmitting": "Submitting...",
+  "practiceFinish": "Finish",
+  "practiceBack": "Back",
+  "practiceListening": "Listening",
+  "practiceReading": "Reading",
+  "practiceTrueLabel": "True",
+  "practiceFalseLabel": "False",
+  "practiceYourOrder": "Your order (click to place):",
+  "practiceSentencesClickAdd": "Sentences (click to add):",
+  "practiceChooseFromOptions": "Choose from options:",
+  "practiceChooseImagePerSentence": "Choose the matching image for each sentence.",
+  "practiceChooseAnswerPerSentence": "Choose the answer that matches each sentence below.",
+  "practiceChooseImageForAudio": "Listen to the conversation and choose the appropriate image.",
+  "practicePlayPassage": "Play Passage",
+  "practiceCorrectExclaim": "Correct!",
+  "practiceBack5": "Back 5 seconds",
+  "practiceForward5": "Forward 5 seconds",
+  "practiceStopAudio": "Stop audio",
+  "practiceSeekSlider": "Seek audio position",
+  "practiceAudioFallback": "Audio",
+  "practiceQuestionNumber": "Question {n}",
+  "@practiceQuestionNumber": {
+    "placeholders": { "n": { "type": "int" } }
+  },
+  "practiceQuestionsGroup": "Questions {progress}",
+  "@practiceQuestionsGroup": {
+    "placeholders": { "progress": { "type": "String" } }
+  },
+  "practiceCorrectOrder": "Correct order: {order}",
+  "@practiceCorrectOrder": {
+    "placeholders": { "order": { "type": "String" } }
+  },
+  "practiceCorrectAnswerColon": "Correct answer: {answer}",
+  "@practiceCorrectAnswerColon": {
+    "placeholders": { "answer": { "type": "String" } }
+  },
+  "practiceScoreCorrect": "{correct} / {total} correct",
+  "@practiceScoreCorrect": {
+    "placeholders": { "correct": { "type": "int" }, "total": { "type": "int" } }
+  },
+  "practiceAudioNumbered": "Audio {n}",
+  "@practiceAudioNumbered": {
+    "placeholders": { "n": { "type": "int" } }
+  },
+  "practicePlayLabel": "Play {label}",
+  "@practicePlayLabel": {
+    "placeholders": { "label": { "type": "String" } }
+  },
+  "commonLoadMore": "Load more",
+  "dashboardTotalTime": "Total Time",
+  "dashboardWordsMastered": "Words Mastered",
+  "dashboardTimeLearned3days": "Time Learned (Last 3 Days)",
+  "dashboardWordsMastered3days": "Words Mastered (Last 3 Days)",
+  "dashboardNoChartData": "No recent activity to chart yet.",
+  "dashboardExercise": "Exercise",
+  "dashboardExam": "Exam",
+  "dashboardLessonTrainer": "Lesson Trainer",
+  "dashboardVocabTrainer": "Vocab Trainer",
+  "dashboardLearningStatistics": "Learning Statistics",
+  "profileTitle": "Profile",
+  "profileLearnedWords": "Learned Words",
+  "reviewHeading": "Your Words",
+  "reviewTabRecent": "Recent learn word",
+  "reviewTabReview": "Review word",
+  "reviewSubtitleRecent": "The words you've mastered most recently.",
+  "reviewSubtitleReview": "Words to revisit — not yet mastered, or answered slowly.",
+  "reviewEmptyRecent": "You haven't mastered any words yet.",
+  "reviewEmptyReview": "Nothing to review right now.",
+  "reviewLoading": "Loading your words...",
+  "reviewLoadFailed": "Could not load your words. Please try again.",
+  "reviewPrevPage": "Previous page",
+  "reviewNextPage": "Next page",
+  "reviewPageRange": "{start}-{end} of {total}",
+  "@reviewPageRange": {
+    "placeholders": {
+      "start": { "type": "int" },
+      "end": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "recommendFinding": "Finding recommendations…",
+  "recommendAnalysing": "Analysing your vocabulary progress.",
+  "recommendErrorTitle": "Something went wrong",
+  "recommendConnectFailed": "Could not connect to the server.",
+  "recommendFailedLoad": "Failed to load recommendations.",
+  "recommendEmptyTitle": "No recommendations yet",
+  "recommendEmptySub": "Keep learning vocabulary to unlock recommended practice groups!",
+  "recommendNewUserTitle": "Welcome! You're just getting started.",
+  "recommendNewUserSub": "You haven't practiced any vocabulary yet. Recommended lessons unlock automatically as you learn words — start with the Vocabulary Trainer!",
+  "recommendStart": "Start",
+  "recommendLessonPrefix": "Lesson",
+  "recommendStatusNotStart": "Not start",
+  "recommendStatusFinishSuccess": "Finish and success",
+  "recommendStatusFinishFail": "Finish and fail",
+  "recommendGroupsFound": "Found {count} question group(s) ready to practice.",
+  "@recommendGroupsFound": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "recommendQuestionCount": "{count} question(s)",
+  "@recommendQuestionCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "recommendQuestionSingle": "Question {n}",
+  "@recommendQuestionSingle": {
+    "placeholders": { "n": { "type": "String" } }
+  },
+  "recommendQuestionsRange": "Questions {a}–{b}",
+  "@recommendQuestionsRange": {
+    "placeholders": { "a": { "type": "String" }, "b": { "type": "String" } }
+  },
+  "recommendNewFocus": "New focus: {words}",
+  "@recommendNewFocus": {
+    "placeholders": { "words": { "type": "String" } }
+  },
+  "grammarTitle": "Grammar",
+  "grammarErrorLoading": "Error loading grammar.",
+  "grammarNoRules": "No grammar rules for this passage.",
+  "translationTitle": "Translation",
+  "translationFailedLoad": "Failed to load translations.",
+  "translationEmpty": "No translations found for this lesson.",
+  "translationInputPlaceholder": "Type the Chinese here",
+  "translationReveal": "Show answer",
+  "translationHide": "Hide answer",
+  "translationShuffle": "Shuffle",
+  "translationPrev": "Prev",
+  "translationNext": "Next",
+  "examChooseLevel": "Choose an HSK set to begin your exam.",
+  "examChooseLesson": "Choose a lesson to begin your exam.",
+  "examNoLessons": "No lessons found.",
+  "examListeningReading": "Listening & Reading",
+  "examLessonPrefix": "Lesson",
+  "pinyinTitle": "Pinyin",
+  "pinyinLessonHeading": "HSK 1 - Lesson 1",
+  "pinyinGuideEntry": "Pinyin Guide",
+  "numbersEntry": "Numbers",
+  "pinyinBasic": "Basic",
+  "pinyinAdvanced": "Advanced",
+  "pinyinInitials": "Initials",
+  "pinyinFinals": "Finals",
+  "pinyinTones": "Tones",
+  "pinyinPronunciationFor": "Pronunciation for {syllable}",
+  "@pinyinPronunciationFor": {
+    "placeholders": { "syllable": { "type": "String" } }
+  },
   "comingSoon": "Coming soon",
   "@comingSoon": {
     "description": "Message for features not yet wired (audio, stroke order)."
-  }
+  },
+  "milestoneStepCounter": "Step {n} of {total}",
+  "@milestoneStepCounter": {
+    "description": "Caption under the milestone bar naming the current step.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "milestoneStepVocabSummary": "Vocab Summary",
+  "@milestoneStepVocabSummary": {
+    "description": "Milestone step 1 title."
+  },
+  "milestoneStepVocabLearner": "Vocab Learner",
+  "@milestoneStepVocabLearner": {
+    "description": "Milestone step 2 title."
+  },
+  "milestoneStepVocabTrainer": "Vocab Trainer",
+  "@milestoneStepVocabTrainer": {
+    "description": "Milestone step 3 title."
+  },
+  "milestoneStepLessonSummary": "Lesson Summary",
+  "@milestoneStepLessonSummary": {
+    "description": "Milestone step 4 title (the reader)."
+  },
+  "milestoneStepLessonLearner": "Lesson Learner",
+  "@milestoneStepLessonLearner": {
+    "description": "Milestone step 5 title."
+  },
+  "milestoneStepLessonTrainer": "Lesson Trainer",
+  "@milestoneStepLessonTrainer": {
+    "description": "Milestone step 6 title."
+  },
+  "milestoneContinue": "Continue",
+  "@milestoneContinue": {
+    "description": "Milestone runner's advance button."
+  },
+  "milestoneQuit": "Exit",
+  "@milestoneQuit": {
+    "description": "Milestone runner's exit button."
+  },
+  "milestoneStepComingSoon": "This step is coming soon.",
+  "@milestoneStepComingSoon": {
+    "description": "Placeholder message for a milestone step not yet built."
+  },
+  "trainerTaskCounter": "Task {current}/{total}",
+  "@trainerTaskCounter": {
+    "description": "Lesson trainer progress counter.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "trainerScore": "{correct}/{total} correct",
+  "@trainerScore": {
+    "description": "Round score on the trainer recap.",
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "trainerSkip": "Skip",
+  "@trainerSkip": {
+    "description": "Skip the current trainer task."
+  },
+  "trainerCheck": "Check",
+  "@trainerCheck": {
+    "description": "Submit the current trainer answer."
+  },
+  "trainerNext": "Next",
+  "@trainerNext": {
+    "description": "Advance to the next trainer task."
+  },
+  "trainerLoadFailed": "This lesson couldn't be loaded. Please try again.",
+  "@trainerLoadFailed": {
+    "description": "Error when the trainer session fails to start."
+  },
+  "trainerNoTasks": "There are no tasks for this part yet.",
+  "@trainerNoTasks": {
+    "description": "Shown when a part has no gradable tasks."
+  },
+  "lessonInstructionMeaning": "What is the meaning of this sentence?",
+  "@lessonInstructionMeaning": {
+    "description": "Meaning task instruction."
+  },
+  "lessonInstructionTyping": "Type the following sentence in Chinese:",
+  "@lessonInstructionTyping": {
+    "description": "Typing task instruction."
+  },
+  "lessonInstructionReorder": "Reorder the words to form the correct sentence:",
+  "@lessonInstructionReorder": {
+    "description": "Reorder task instruction."
+  },
+  "lessonTypingPlaceholder": "Type the sentence here...",
+  "@lessonTypingPlaceholder": {
+    "description": "Placeholder in the typing task input."
+  },
+  "lessonYourSentence": "Your Sentence:",
+  "@lessonYourSentence": {
+    "description": "Label above the reorder answer row."
+  },
+  "lessonAvailableWords": "Available Words:",
+  "@lessonAvailableWords": {
+    "description": "Label above the reorder source chips."
+  },
+  "lessonCorrectAnswerLabel": "Correct Answer:",
+  "@lessonCorrectAnswerLabel": {
+    "description": "Label before the revealed correct answer."
+  },
+  "lessonCompleteTitle": "Lesson Complete!",
+  "@lessonCompleteTitle": {
+    "description": "Trainer recap heading."
+  },
+  "lessonCompleteBody": "You have successfully finished this practice.",
+  "@lessonCompleteBody": {
+    "description": "Trainer recap subheading."
+  },
+  "lessonRecapTitle": "Missed Tasks Recap",
+  "@lessonRecapTitle": {
+    "description": "Heading of the missed-tasks list."
+  },
+  "lessonTableYourAnswer": "Your Answer",
+  "@lessonTableYourAnswer": {
+    "description": "Recap row label for the learner's answer."
+  },
+  "lessonTableCorrectAnswer": "Correct Answer",
+  "@lessonTableCorrectAnswer": {
+    "description": "Recap row label for the correct answer."
+  },
+  "lessonPerfect": "No missed tasks this round. Excellent work!",
+  "@lessonPerfect": {
+    "description": "Perfect-round message on the trainer recap."
+  },
+  "lessonRetryMissed": "Retry Missed",
+  "@lessonRetryMissed": {
+    "description": "Re-run the missed tasks."
+  },
+  "vocabInstructionTyping": "Type each word in Chinese",
+  "@vocabInstructionTyping": {
+    "description": "Vocab typing activity instruction."
+  },
+  "vocabInstructionMatch": "Match each word to its meaning",
+  "@vocabInstructionMatch": {
+    "description": "Vocab reading-match activity instruction."
+  },
+  "vocabGroupCounter": "Group {current}/{total}",
+  "@vocabGroupCounter": {
+    "description": "Vocab trainer group progress counter.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "vocabNoWords": "This part has no vocabulary to train.",
+  "@vocabNoWords": {
+    "description": "Shown when a part has no vocabulary."
+  },
+  "vocabCompleteTitle": "Vocabulary Complete!",
+  "@vocabCompleteTitle": {
+    "description": "Vocab trainer recap heading."
+  },
+  "flashTapToFlip": "Tap to reveal",
+  "@flashTapToFlip": {
+    "description": "Hint on a flash card's front face."
+  },
+  "competitionTitle": "Learn Together",
+  "@competitionTitle": { "description": "Learn Together (competition) feature title." },
+  "competitionSubtitle": "Compete with other learners in real time",
+  "@competitionSubtitle": { "description": "Subtitle on the competition setup screen." },
+  "competitionCreateRoom": "Create Room",
+  "@competitionCreateRoom": { "description": "Create-room button / heading." },
+  "competitionEditSettings": "Edit Settings",
+  "@competitionEditSettings": { "description": "Host edit-settings button / heading." },
+  "competitionMode": "Mode",
+  "@competitionMode": { "description": "Room mode selector label." },
+  "competitionModeVocab": "Vocabulary",
+  "@competitionModeVocab": { "description": "Vocab room mode." },
+  "competitionModeLesson": "Lesson",
+  "@competitionModeLesson": { "description": "Lesson room mode." },
+  "competitionModeBook": "Book",
+  "@competitionModeBook": { "description": "Book room mode." },
+  "competitionBook": "Book",
+  "@competitionBook": { "description": "Book source picker label." },
+  "competitionSelectBook": "Select a book",
+  "@competitionSelectBook": { "description": "Book picker placeholder." },
+  "competitionType": "Skill types",
+  "@competitionType": { "description": "Skill-type selector label." },
+  "competitionTypeAll": "All types",
+  "@competitionTypeAll": { "description": "Type selector: all skills." },
+  "competitionTypeTyping": "Typing",
+  "@competitionTypeTyping": { "description": "Skill: typing." },
+  "competitionTypeListening": "Listening",
+  "@competitionTypeListening": { "description": "Skill: listening." },
+  "competitionTypeReading": "Reading",
+  "@competitionTypeReading": { "description": "Skill: reading." },
+  "competitionTypeMeaning": "Meaning",
+  "@competitionTypeMeaning": { "description": "Skill: meaning." },
+  "competitionTypeReorder": "Reorder",
+  "@competitionTypeReorder": { "description": "Skill: reorder." },
+  "competitionMaxUsers": "Max learners",
+  "@competitionMaxUsers": { "description": "Room capacity field." },
+  "competitionTimeLimit": "Time limit",
+  "@competitionTimeLimit": { "description": "Section timeout field." },
+  "competitionMinutes": "{n} minutes",
+  "@competitionMinutes": { "description": "A duration in minutes.", "placeholders": { "n": { "type": "int" } } },
+  "competitionSaveChanges": "Save Changes",
+  "@competitionSaveChanges": { "description": "Save edited room settings." },
+  "competitionCancel": "Cancel",
+  "@competitionCancel": { "description": "Cancel editing." },
+  "competitionJoinRoom": "Join Room",
+  "@competitionJoinRoom": { "description": "Join-room button / heading." },
+  "competitionRoomCode": "Room code",
+  "@competitionRoomCode": { "description": "Join-by-code field label." },
+  "competitionOpenRoomsTitle": "Open Rooms",
+  "@competitionOpenRoomsTitle": { "description": "Open-rooms browse heading." },
+  "competitionNoOpenRooms": "No open rooms right now.",
+  "@competitionNoOpenRooms": { "description": "Empty open-rooms list." },
+  "competitionRoomFull": "Full",
+  "@competitionRoomFull": { "description": "Open-room join button when full." },
+  "competitionLearnersCount": "{current}/{max} learners",
+  "@competitionLearnersCount": { "description": "Open-room occupancy.", "placeholders": { "current": { "type": "int" }, "max": { "type": "int" } } },
+  "competitionPageStatus": "Page {current}/{total}",
+  "@competitionPageStatus": { "description": "Open-rooms pagination.", "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } } },
+  "competitionSelectHsk": "Select HSK level",
+  "@competitionSelectHsk": { "description": "HSK picker placeholder." },
+  "competitionSelectAll": "Select all",
+  "@competitionSelectAll": { "description": "Multi-select: select all." },
+  "competitionSelectLesson": "Select a lesson",
+  "@competitionSelectLesson": { "description": "Lesson picker placeholder." },
+  "competitionSelectPart": "Select a part",
+  "@competitionSelectPart": { "description": "Part picker placeholder." },
+  "competitionLessonPrefix": "Lesson",
+  "@competitionLessonPrefix": { "description": "Lesson option prefix." },
+  "competitionPartPrefix": "Part",
+  "@competitionPartPrefix": { "description": "Part option prefix." },
+  "competitionOtherLabel": "Other",
+  "@competitionOtherLabel": { "description": "Lessonless-passage group label." },
+  "competitionNSelected": "{n} selected",
+  "@competitionNSelected": { "description": "Multi-select count.", "placeholders": { "n": { "type": "int" } } },
+  "competitionDone": "Done",
+  "@competitionDone": { "description": "Multi-select confirm button." },
+  "competitionSelectHskLessonPart": "Please select at least one part.",
+  "@competitionSelectHskLessonPart": { "description": "Validation when no part chosen." },
+  "competitionFailedLoadLessons": "Failed to load lessons.",
+  "@competitionFailedLoadLessons": { "description": "Lesson fetch failed." },
+  "competitionNoLessonsFound": "No lessons found.",
+  "@competitionNoLessonsFound": { "description": "No lessons under the picked sources." },
+  "competitionNoSavedBooks": "You haven't saved words in any book yet.",
+  "@competitionNoSavedBooks": { "description": "Book mode has no saved books." },
+  "competitionRoomLabel": "Room",
+  "@competitionRoomLabel": { "description": "Room-code bar label." },
+  "competitionLeave": "Leave",
+  "@competitionLeave": { "description": "Leave-room button." },
+  "competitionRoomSetup": "Room Setup",
+  "@competitionRoomSetup": { "description": "Lobby settings-summary heading." },
+  "competitionLessonsPartsCount": "{lessons} lessons · {parts} parts",
+  "@competitionLessonsPartsCount": { "description": "Lobby lesson/part counts.", "placeholders": { "lessons": { "type": "int" }, "parts": { "type": "int" } } },
+  "competitionWordsCount": "{count} words",
+  "@competitionWordsCount": { "description": "Vocab room word count.", "placeholders": { "count": { "type": "int" } } },
+  "competitionTasksSourceCount": "{count} tasks",
+  "@competitionTasksSourceCount": { "description": "Lesson room task count.", "placeholders": { "count": { "type": "int" } } },
+  "competitionBookPoolNote": "Word pool set when the session starts",
+  "@competitionBookPoolNote": { "description": "Book room pool note." },
+  "competitionUsersCount": "{count}/{max} learners",
+  "@competitionUsersCount": { "description": "Lobby member occupancy.", "placeholders": { "count": { "type": "int" }, "max": { "type": "int" } } },
+  "competitionTimeLimitValue": "Limit: {n} min/section",
+  "@competitionTimeLimitValue": { "description": "Lobby time-limit line.", "placeholders": { "n": { "type": "int" } } },
+  "competitionStartSession": "Start Session",
+  "@competitionStartSession": { "description": "Host start-session button." },
+  "competitionChat": "Chat",
+  "@competitionChat": { "description": "Lobby chat heading." },
+  "competitionMessagePlaceholder": "Type a message…",
+  "@competitionMessagePlaceholder": { "description": "Chat input placeholder." },
+  "competitionSend": "Send",
+  "@competitionSend": { "description": "Chat send button." },
+  "competitionUserFallback": "User",
+  "@competitionUserFallback": { "description": "Fallback chat author name." },
+  "competitionPoints": "{n} pts",
+  "@competitionPoints": { "description": "Live score pill.", "placeholders": { "n": { "type": "int" } } },
+  "competitionScoreboard": "Scoreboard",
+  "@competitionScoreboard": { "description": "Section scoreboard heading." },
+  "competitionNoTasks": "No tasks for this room.",
+  "@competitionNoTasks": { "description": "Empty lesson trainer." },
+  "competitionNoWords": "No words for this room.",
+  "@competitionNoWords": { "description": "Empty vocab trainer." },
+  "competitionLoading": "Loading…",
+  "@competitionLoading": { "description": "Trainer loading state." },
+  "competitionYouFinished": "You finished!",
+  "@competitionYouFinished": { "description": "Waiting screen heading." },
+  "competitionFinishedList": "Finished: {names}",
+  "@competitionFinishedList": { "description": "Who has finished so far.", "placeholders": { "names": { "type": "String" } } },
+  "competitionWaitingOthers": "Waiting for the others to finish…",
+  "@competitionWaitingOthers": { "description": "Waiting screen subtitle." },
+  "competitionRanking": "Final Ranking",
+  "@competitionRanking": { "description": "Ranking screen heading." },
+  "competitionBackToLobby": "Back to Lobby",
+  "@competitionBackToLobby": { "description": "Return-to-lobby button." },
+  "competitionServerConnectFailed": "Could not connect to the server.",
+  "@competitionServerConnectFailed": { "description": "Socket connect error." },
+  "competitionErrorFallback": "Something went wrong.",
+  "@competitionErrorFallback": { "description": "Generic socket error." },
+  "competitionCouldNotCreateRoom": "Could not create room.",
+  "@competitionCouldNotCreateRoom": { "description": "Room creation failed." }
 }
