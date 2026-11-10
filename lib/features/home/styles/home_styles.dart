@@ -16,6 +16,43 @@ class HomeStyles {
   static const EdgeInsets pagePadding = EdgeInsets.all(16);
   static const SizedBox sectionGap = SizedBox(height: 16);
 
+  // ── Dashboard tabs (`.learner-home-tabs`: underline tabs, sage active) ─────
+  static const EdgeInsets greetingPadding = EdgeInsets.fromLTRB(16, 16, 16, 10);
+
+  static const BoxDecoration tabBarDecoration = BoxDecoration(
+    color: BrandColors.background,
+    border: Border(bottom: BorderSide(color: BrandColors.mintBorder, width: 2)),
+  );
+
+  static const TextStyle tabLabelStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const double tabIconSize = 18;
+  static const SizedBox tabIconGap = SizedBox(width: 6);
+
+  /// Words-due count pill on the Review tab.
+  static const BoxDecoration tabBadgeDecoration = BoxDecoration(
+    color: BrandColors.navTeal,
+    borderRadius: BorderRadius.all(Radius.circular(999)),
+  );
+  static const EdgeInsets tabBadgePadding = EdgeInsets.symmetric(
+    horizontal: 6,
+    vertical: 1,
+  );
+  static const TextStyle tabBadgeText = TextStyle(
+    fontSize: 11,
+    fontWeight: FontWeight.w800,
+    color: Colors.white,
+  );
+
+  /// Centered padding for the Review / Recommend "coming soon" stub panels.
+  static const EdgeInsets stubPadding = EdgeInsets.symmetric(
+    horizontal: 24,
+    vertical: 40,
+  );
+
   /// Greeting text style.
   static const TextStyle greetingStyle = TextStyle(
     fontSize: 22,
@@ -69,10 +106,7 @@ class HomeStyles {
       borderRadius: BorderRadius.circular(8),
       side: const BorderSide(color: BrandColors.primaryHover, width: 2),
     ),
-    textStyle: const TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.w800,
-    ),
+    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
   );
 
   /// `.learner-home-aside-empty` & `.learner-home-note-link`.

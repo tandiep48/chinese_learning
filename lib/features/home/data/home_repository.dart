@@ -20,7 +20,10 @@ class HomeRepository {
 
   final ApiClient _api;
 
-  Future<CurrentLesson> getCurrentLesson({int page = 1, int pageSize = 5}) async {
+  Future<CurrentLesson> getCurrentLesson({
+    int page = 1,
+    int pageSize = 5,
+  }) async {
     final data = await _api.getRaw(
       '/api/user/dashboard-current-lesson',
       query: {'page': page, 'page_size': pageSize},

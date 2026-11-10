@@ -1,24 +1,25 @@
-/// Home module — the learner home (minimal first pass, web-matched restyle).
+/// Home module — the learner dashboard (tabbed shell, Slice N3).
 ///
-/// Scoped down from the web dashboard (`HomeShell.tsx` + `CurrentLessonPanel.tsx`
-/// + `RecentLessonPanel.tsx`): a greeting, a "continue where you left off" card
-/// (`GET /api/user/dashboard-current-lesson`) that deep-links into lesson
-/// study, and an entry point to the Books list.
+/// Ported from the web `HomeShell.tsx` + `HomeTabs.tsx`: a greeting followed by
+/// a Lesson / Review / Recommend tab bar. The Lesson tab is the working one
+/// (current-lesson card + Library entry points); Review and Recommend are
+/// "coming soon" stubs until the SRS / practice slices (R4/R5). This screen is
+/// a shell route — the surrounding Scaffold, teal app bar and navigation drawer
+/// come from `AppShell`, so it renders body content only. The web's in-place
+/// activity guard and the lesson-study sidebar dock are deferred (port plan).
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../shared/styles/shared_styles.dart';
-import '../../../shared/widgets/empty_state.dart';
-import '../../../shared/widgets/loading_view.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../data/models/current_lesson.dart';
-import '../providers/home_provider.dart';
+import '../../review/data/review_repository.dart';
 import '../styles/home_styles.dart';
+import '../widgets/lesson_tab.dart';
+import '../widgets/recommend_tab.dart';
+import '../widgets/review_tab.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -26,149 +27,58 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final username = ref.watch(authNotifierProvider).asData?.value.user?.username;
-    final currentLesson = ref.watch(currentLessonProvider);
+    final username = ref
+        .watch(authNotifierProvider)
+        .asData
+        ?.value
+        .user
+        ?.username;
+    final reviewCount = ref.watch(reviewCountProvider).asData?.value;
 
-    return Scaffold(
-      backgroundColor: BrandColors.background,
-      appBar: AppBar(
-        title: Text(l10n.appTitle),
-        actions: [
-          IconButton(
-            tooltip: l10n.logoutTooltip,
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => ref.refresh(currentLessonProvider.future),
-          child: ListView(
-            padding: HomeStyles.pagePadding,
-            children: [
-              Text(
-                username != null ? l10n.homeGreeting(username) : l10n.homeGreetingGeneric,
-                style: HomeStyles.greetingStyle,
-              ),
-              HomeStyles.sectionGap,
-              currentLesson.when(
-                loading: () => Container(
-                  decoration: SharedStyles.learnerCardDecoration,
-                  padding: HomeStyles.asidePadding,
-                  child: const LoadingView(),
-                ),
-                error: (_, _) => Container(
-                  decoration: SharedStyles.learnerCardDecoration,
-                  child: EmptyState(
-                    icon: Icons.cloud_off,
-                    title: l10n.homeError,
-                    action: FilledButton(
-                      style: HomeStyles.continueButtonStyle,
-                      onPressed: () => ref.invalidate(currentLessonProvider),
-                      child: Text(l10n.commonRetry),
-                    ),
-                  ),
-                ),
-                data: (data) => data.hasRecent && data.lesson != null
-                    ? _ContinueCard(lesson: data.lesson!)
-                    : const _NoRecentCard(),
-              ),
-              HomeStyles.sectionGap,
-              _BooksEntry(
-                title: l10n.homeBrowseBooks,
-                subtitle: l10n.booksSubtitle,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Resume-lesson card ported from `CurrentLessonPanel.tsx` + `RecentLessonPanel.tsx`.
-class _ContinueCard extends StatelessWidget {
-  const _ContinueCard({required this.lesson});
-
-  final CurrentLessonInfo lesson;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Container(
-      decoration: SharedStyles.learnerCardDecoration,
-      padding: HomeStyles.asidePadding,
+    return DefaultTabController(
+      length: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            l10n.homeCurrentLessonKicker.toUpperCase(),
-            style: HomeStyles.kickerStyle,
-          ),
-          HomeStyles.asideGap,
-          Container(
-            decoration: HomeStyles.recentPanelDecoration,
-            padding: HomeStyles.recentPanelPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  l10n.homeContinueTitle,
-                  style: HomeStyles.recentTitleStyle,
-                ),
-                HomeStyles.recentTitleGap,
-                Text(
-                  l10n.homeContinueSubtitle(
-                    lesson.hskLevel,
-                    lesson.lesson,
-                    lesson.part,
-                  ),
-                  style: HomeStyles.recentSubtitleStyle,
-                ),
-                HomeStyles.recentButtonGap,
-                FilledButton(
-                  style: HomeStyles.continueButtonStyle,
-                  onPressed: () => context.push('/lesson/${lesson.passageId}'),
-                  child: Text(l10n.homeContinueButton),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Empty current-lesson card ported from `CurrentLessonPanel.tsx` (`.learner-home-aside`).
-class _NoRecentCard extends StatelessWidget {
-  const _NoRecentCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Container(
-      decoration: SharedStyles.learnerCardDecoration,
-      padding: HomeStyles.asidePadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            l10n.homeCurrentLessonKicker.toUpperCase(),
-            style: HomeStyles.kickerStyle,
-          ),
-          HomeStyles.asideGap,
-          Text(
-            l10n.homeNoRecentTitle,
-            style: HomeStyles.emptyBodyStyle,
-          ),
-          HomeStyles.asideGap,
-          InkWell(
-            onTap: () => context.push('/books'),
+          Padding(
+            padding: HomeStyles.greetingPadding,
             child: Text(
-              l10n.homeBrowseBooks,
-              style: HomeStyles.noteLinkStyle,
+              username != null
+                  ? l10n.homeGreeting(username)
+                  : l10n.homeGreetingGeneric,
+              style: HomeStyles.greetingStyle,
+            ),
+          ),
+          DecoratedBox(
+            decoration: HomeStyles.tabBarDecoration,
+            child: TabBar(
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
+              labelColor: BrandColors.primary,
+              unselectedLabelColor: BrandColors.mutedText,
+              indicatorColor: BrandColors.primary,
+              labelStyle: HomeStyles.tabLabelStyle,
+              unselectedLabelStyle: HomeStyles.tabLabelStyle,
+              tabs: [
+                _DashboardTab(
+                  icon: Icons.menu_book_outlined,
+                  label: l10n.homeTabLesson,
+                ),
+                _DashboardTab(
+                  icon: Icons.history,
+                  label: l10n.homeTabReview,
+                  badge: reviewCount,
+                ),
+                _DashboardTab(
+                  icon: Icons.explore_outlined,
+                  label: l10n.homeTabRecommend,
+                ),
+              ],
+            ),
+          ),
+          const Expanded(
+            child: TabBarView(
+              children: [LessonTab(), ReviewTab(), RecommendTab()],
             ),
           ),
         ],
@@ -177,50 +87,35 @@ class _NoRecentCard extends StatelessWidget {
   }
 }
 
-/// Entry point to the Books list, styled after `.learner-home-aside`.
-class _BooksEntry extends StatelessWidget {
-  const _BooksEntry({required this.title, required this.subtitle});
+/// An inline icon + label tab (the web tabs show both side by side).
+class _DashboardTab extends StatelessWidget {
+  const _DashboardTab({required this.icon, required this.label, this.badge});
 
-  final String title;
-  final String subtitle;
+  final IconData icon;
+  final String label;
+
+  /// Words-due count shown as a pill (Review tab); hidden when null or zero.
+  final int? badge;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: SharedStyles.learnerCardDecoration,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: HomeStyles.cardBorderRadius,
-          onTap: () => context.push('/books'),
-          child: Padding(
-            padding: HomeStyles.asidePadding,
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.menu_book_outlined,
-                  color: BrandColors.primary,
-                  size: HomeStyles.booksIconSize,
-                ),
-                HomeStyles.booksIconGap,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title, style: HomeStyles.booksTitleStyle),
-                      HomeStyles.booksSubtitleGap,
-                      Text(subtitle, style: HomeStyles.booksSubtitleStyle),
-                    ],
-                  ),
-                ),
-                const Icon(
-                  Icons.chevron_right,
-                  color: BrandColors.mutedText,
-                ),
-              ],
+    final count = badge;
+    return Tab(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: HomeStyles.tabIconSize),
+          HomeStyles.tabIconGap,
+          Text(label),
+          if (count != null && count > 0) ...[
+            HomeStyles.tabIconGap,
+            Container(
+              decoration: HomeStyles.tabBadgeDecoration,
+              padding: HomeStyles.tabBadgePadding,
+              child: Text('$count', style: HomeStyles.tabBadgeText),
             ),
-          ),
-        ),
+          ],
+        ],
       ),
     );
   }
