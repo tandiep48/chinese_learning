@@ -100,11 +100,7 @@ class LessonsStyles {
     border: Border.all(color: BrandColors.neutralBorder),
     borderRadius: lessonCardRadius,
     boxShadow: const [
-      BoxShadow(
-        color: Color(0x0F576856),
-        blurRadius: 8,
-        offset: Offset(0, 2),
-      ),
+      BoxShadow(color: Color(0x0F576856), blurRadius: 8, offset: Offset(0, 2)),
     ],
   );
 
@@ -152,11 +148,7 @@ class LessonsStyles {
     border: Border.all(color: BrandColors.partItemBorder),
     borderRadius: partItemRadius,
     boxShadow: const [
-      BoxShadow(
-        color: Color(0x0F576856),
-        blurRadius: 10,
-        offset: Offset(0, 3),
-      ),
+      BoxShadow(color: Color(0x0F576856), blurRadius: 10, offset: Offset(0, 3)),
     ],
   );
 
@@ -181,6 +173,95 @@ class LessonsStyles {
 
   static const SizedBox partDoneGap = SizedBox(width: 8);
 
+  // ── Library tabs (`learning-tabs.css`: underline tabs, sage active) ───────
+  static const BoxDecoration libraryTabBarDecoration = BoxDecoration(
+    color: BrandColors.background,
+    border: Border(
+      bottom: BorderSide(color: BrandColors.bookCardBorder, width: 2),
+    ),
+  );
+
+  static const TextStyle libraryTabLabelStyle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+  );
+
+  // ── HSK level picker (`.level-picker-grid` / `.level-picker-card`) ─────────
+  static const EdgeInsets levelGridPadding = EdgeInsets.fromLTRB(
+    16,
+    20,
+    16,
+    24,
+  );
+  static const double levelGridSpacing = 14;
+  static const double levelCardAspectRatio = 1.15;
+  static final BorderRadius levelCardRadius = BorderRadius.circular(16);
+  static const EdgeInsets levelCardImagePadding = EdgeInsets.all(18);
+
+  /// Fallback text shown on a level card when its cover image fails to load.
+  static const TextStyle levelLabelStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+    color: BrandColors.darkText,
+  );
+
+  // ── HSK lesson picker header (`.picker-header-section`) ────────────────────
+  static const EdgeInsets hskListPadding = EdgeInsets.fromLTRB(16, 16, 16, 24);
+  static const EdgeInsets hskHeaderPadding = EdgeInsets.all(16);
+  static final BorderRadius hskHeaderRadius = BorderRadius.circular(16);
+  static const double hskHeaderImageSize = 72;
+  static const SizedBox hskHeaderGap = SizedBox(width: 14);
+  static const SizedBox hskHeaderTitleGap = SizedBox(height: 4);
+  static const SizedBox hskHeaderBottomGap = SizedBox(height: 16);
+
+  static BoxDecoration hskHeaderDecoration(Color color) =>
+      BoxDecoration(color: color, borderRadius: hskHeaderRadius);
+
+  static const TextStyle hskHeaderTitleStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+    color: BrandColors.darkText,
+  );
+
+  static const TextStyle hskHeaderSubtitleStyle = TextStyle(
+    fontSize: 14,
+    color: BrandColors.subtitleText,
+  );
+
+  /// `.picker-header-image` graduation-cap fallback tile.
+  static const double hskHeaderFallbackIconSize = 36;
+
+  // ── HSK lesson search (`.picker-search-row`) ──────────────────────────────
+  static const SizedBox hskSearchGap = SizedBox(height: 16);
+
+  static InputDecoration hskSearchDecoration(String hint) => InputDecoration(
+    hintText: hint,
+    hintStyle: const TextStyle(color: BrandColors.mutedText),
+    prefixIcon: const Icon(Icons.search, color: BrandColors.mutedText),
+    filled: true,
+    fillColor: BrandColors.card,
+    isDense: true,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.neutralBorder),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.neutralBorder),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.navTeal),
+    ),
+  );
+
+  static const EdgeInsets hskEmptyPadding = EdgeInsets.symmetric(vertical: 32);
+  static const TextStyle hskEmptyTextStyle = TextStyle(
+    fontSize: 14,
+    color: BrandColors.mutedText,
+  );
+
   // ── Study reader (`lesson-study.css` + `lesson-summary.css`) ──────────────
 
   static const EdgeInsets studyPagePadding = EdgeInsets.symmetric(
@@ -194,11 +275,7 @@ class LessonsStyles {
     border: Border.all(color: const Color(0x0F000000)),
     borderRadius: BorderRadius.circular(8),
     boxShadow: const [
-      BoxShadow(
-        color: Color(0x0A007A61),
-        blurRadius: 8,
-        offset: Offset(0, 2),
-      ),
+      BoxShadow(color: Color(0x0A007A61), blurRadius: 8, offset: Offset(0, 2)),
     ],
   );
 
@@ -211,19 +288,16 @@ class LessonsStyles {
 
   static ButtonStyle toolbarButtonStyle({required bool active}) {
     return OutlinedButton.styleFrom(
-      backgroundColor: active ? BrandColors.navTeal : BrandColors.toggleInactiveBg,
+      backgroundColor: active
+          ? BrandColors.navTeal
+          : BrandColors.toggleInactiveBg,
       foregroundColor: active ? BrandColors.card : BrandColors.studyMuted,
       side: BorderSide(
         color: active ? BrandColors.navTeal : const Color(0x1A000000),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      textStyle: const TextStyle(
-        fontSize: 13.5,
-        fontWeight: FontWeight.w600,
-      ),
+      textStyle: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600),
     );
   }
 
@@ -233,11 +307,7 @@ class LessonsStyles {
     border: Border.all(color: const Color(0x08000000)),
     borderRadius: BorderRadius.circular(24),
     boxShadow: const [
-      BoxShadow(
-        color: Color(0x0A007A61),
-        blurRadius: 8,
-        offset: Offset(0, 2),
-      ),
+      BoxShadow(color: Color(0x0A007A61), blurRadius: 8, offset: Offset(0, 2)),
     ],
   );
 
@@ -364,13 +434,253 @@ class LessonsStyles {
     backgroundColor: BrandColors.studyTealLight,
     foregroundColor: BrandColors.navTeal,
     side: const BorderSide(color: BrandColors.background),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-    textStyle: const TextStyle(
-      fontSize: 14.4,
-      fontWeight: FontWeight.w600,
+    textStyle: const TextStyle(fontSize: 14.4, fontWeight: FontWeight.w600),
+  );
+
+  // ── Passive learners / summaries (milestone steps 1, 2, 5) ────────────────
+  static const EdgeInsets learnerListPadding = EdgeInsets.all(16);
+
+  /// Read-only vocab card (`.vocab-card`): white, bordered, rounded.
+  static final BoxDecoration vocabCardDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.neutralBorder),
+    borderRadius: BorderRadius.circular(12),
+  );
+  static const EdgeInsets vocabCardPadding = EdgeInsets.all(16);
+  static const SizedBox vocabCardGap = SizedBox(height: 12);
+  static const SizedBox vocabCardInnerGap = SizedBox(height: 4);
+
+  static const TextStyle vocabHanziStyle = TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    color: BrandColors.darkText,
+  );
+
+  /// Flash card (step 2) + lesson-line card (step 5): a tall tappable card.
+  static final BoxDecoration flashCardDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.mintBorder),
+    borderRadius: BorderRadius.circular(20),
+    boxShadow: const [
+      BoxShadow(color: Color(0x0F576856), blurRadius: 10, offset: Offset(0, 3)),
+    ],
+  );
+  static const EdgeInsets flashCardPadding = EdgeInsets.all(24);
+  static const double flashCardMinHeight = 220;
+
+  static const TextStyle flashCardHanziStyle = TextStyle(
+    fontSize: 48,
+    fontWeight: FontWeight.w700,
+    height: 1.2,
+    color: BrandColors.darkText,
+  );
+  static const TextStyle flashCardPinyinStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.navTeal,
+  );
+  static const TextStyle flashCardMeaningStyle = TextStyle(
+    fontSize: 18,
+    color: BrandColors.studyMuted,
+  );
+  static const TextStyle flashCardHintStyle = TextStyle(
+    fontSize: 13,
+    color: BrandColors.mutedText,
+  );
+  static const SizedBox flashCardGap = SizedBox(height: 12);
+
+  /// Card-viewer navigation (Prev / counter / Next).
+  static const SizedBox cardNavGap = SizedBox(height: 16);
+  static const TextStyle cardCounterStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.mutedText,
+  );
+
+  // ── Stroke-order panel (word popup) ───────────────────────────────────────
+  /// Sage stroke color (`#576856`), matching `StrokeOrder.tsx`.
+  static const Color strokeColor = BrandColors.primary;
+  static const double strokeCanvasSize = 240;
+  static const EdgeInsets strokeAreaPadding = EdgeInsets.only(top: 16);
+  static const SizedBox strokeTabGap = SizedBox(width: 8);
+  static const SizedBox strokeControlsTopGap = SizedBox(height: 12);
+  static const SizedBox strokeControlsGap = SizedBox(width: 8);
+
+  static final BoxDecoration strokeCanvasDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.neutralBorder),
+    borderRadius: BorderRadius.circular(12),
+  );
+
+  /// Per-character tab chip in the stroke panel (active = filled sage).
+  static ButtonStyle strokeTabStyle(bool active) => OutlinedButton.styleFrom(
+    backgroundColor: active
+        ? BrandColors.primary
+        : BrandColors.secondarySurface,
+    foregroundColor: active ? BrandColors.card : BrandColors.bodyText,
+    side: BorderSide(
+      color: active ? BrandColors.primary : BrandColors.learnerBorder,
     ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+    minimumSize: const Size(0, 40),
+    textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+  );
+
+  // ── Grammar panel (lesson-wide grammar) ───────────────────────────────────
+  static const EdgeInsets grammarPagePadding = EdgeInsets.all(16);
+  static final BoxDecoration grammarSectionDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.neutralBorder),
+    borderRadius: BorderRadius.circular(12),
+  );
+  static const EdgeInsets grammarSectionPadding = EdgeInsets.all(16);
+  static const SizedBox grammarSectionGap = SizedBox(height: 16);
+  static const SizedBox grammarRowGap = SizedBox(height: 8);
+
+  static const TextStyle grammarTitleStyle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w800,
+    color: BrandColors.navTeal,
+  );
+  static const TextStyle grammarDescStyle = TextStyle(
+    fontSize: 15,
+    height: 1.5,
+    color: BrandColors.studyText,
+  );
+  static const TextStyle grammarExampleCn = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.darkText,
+  );
+  static const TextStyle grammarExampleVn = TextStyle(
+    fontSize: 14,
+    color: BrandColors.studyMuted,
+  );
+  static final BoxDecoration grammarExampleDecoration = BoxDecoration(
+    color: BrandColors.secondarySurface,
+    borderRadius: BorderRadius.circular(8),
+  );
+  static const EdgeInsets grammarExamplePadding = EdgeInsets.all(10);
+
+  static const TextStyle grammarTableHeader = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w700,
+    color: BrandColors.bodyText,
+  );
+  static const TextStyle grammarTableCell = TextStyle(
+    fontSize: 14,
+    color: BrandColors.studyText,
+  );
+  static final BorderSide grammarTableBorder = BorderSide(
+    color: BrandColors.neutralBorder,
+  );
+
+  // ── Translation drill ─────────────────────────────────────────────────────
+  static const EdgeInsets translationPagePadding = EdgeInsets.all(16);
+  static const TextStyle translationCounter = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.mutedText,
+  );
+  static const double translationProgressHeight = 6;
+  static const Color translationProgressTrack = Color(0xFFF1F1F1);
+  static final BoxDecoration translationCardDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.mintBorder),
+    borderRadius: BorderRadius.circular(16),
+  );
+  static const EdgeInsets translationCardPadding = EdgeInsets.all(20);
+  static const TextStyle translationMeaning = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.studyText,
+  );
+  static InputDecoration translationInputDecoration(
+    String hint,
+    bool matched,
+  ) => InputDecoration(
+    hintText: hint,
+    filled: true,
+    fillColor: matched ? const Color(0x1410B981) : BrandColors.card,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: matched ? BrandColors.success : BrandColors.neutralBorder,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: matched ? BrandColors.success : BrandColors.navTeal,
+        width: 2,
+      ),
+    ),
+  );
+  static const TextStyle translationInputText = TextStyle(
+    fontSize: 20,
+    color: BrandColors.darkText,
+  );
+  static const TextStyle translationAnswer = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
+    color: BrandColors.navTeal,
+  );
+  static final ButtonStyle translationNavButton = OutlinedButton.styleFrom(
+    foregroundColor: BrandColors.bodyText,
+    side: const BorderSide(color: BrandColors.neutralBorder),
+    minimumSize: const Size(0, 44),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+  );
+  static final ButtonStyle translationPrimaryNav = FilledButton.styleFrom(
+    backgroundColor: BrandColors.navTeal,
+    foregroundColor: Colors.white,
+    minimumSize: const Size(0, 44),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+  );
+
+  // ── Pinyin guide ──────────────────────────────────────────────────────────
+  static const EdgeInsets pinyinPagePadding = EdgeInsets.all(16);
+  static const TextStyle pinyinHeading = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+    color: BrandColors.darkText,
+  );
+  static const double pinyinCellHeight = 46;
+  static const Color pinyinGridLine = BrandColors.neutralBorder;
+  static const BoxDecoration pinyinHeaderCell = BoxDecoration(
+    color: BrandColors.studyTealLight,
+  );
+  static const TextStyle pinyinHeaderText = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w800,
+    color: BrandColors.navTeal,
+  );
+  static const BoxDecoration pinyinClickableCell = BoxDecoration(
+    color: BrandColors.card,
+  );
+  static const BoxDecoration pinyinEmptyCell = BoxDecoration(
+    color: BrandColors.secondarySurface,
+  );
+  static const TextStyle pinyinCellText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: BrandColors.darkText,
+  );
+
+  /// Basic / Advanced toggle chip.
+  static ButtonStyle pinyinToggle(bool active) => TextButton.styleFrom(
+    backgroundColor: active
+        ? BrandColors.navTeal
+        : BrandColors.secondarySurface,
+    foregroundColor: active ? Colors.white : BrandColors.bodyText,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+    textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
   );
 }
