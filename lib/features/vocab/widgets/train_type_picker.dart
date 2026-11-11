@@ -2,8 +2,8 @@
 ///
 /// Ported from `TrainTypePicker` (vocab engine). Multi-select, all skills checked
 /// by default (= train all). Returns the chosen skill ids, or null if cancelled.
-/// Only the two skills the Flutter vocab trainer supports are offered (typing,
-/// reading); the audio-only "listen" skill is omitted until the trainer has audio.
+/// Offers the vocab engine's three skills — typing, listening (audio match) and
+/// reading.
 library;
 
 import 'package:flutter/material.dart';
@@ -24,6 +24,7 @@ Future<List<String>?> showTrainTypePicker(
 ) {
   final skills = [
     _Skill('typing', l10n.trainPickerSkillTyping),
+    _Skill('listen', l10n.trainPickerSkillListening),
     _Skill('reading', l10n.trainPickerSkillReading),
   ];
   final checked = {for (final s in skills) s.id: true};

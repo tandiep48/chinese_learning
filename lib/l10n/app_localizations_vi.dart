@@ -776,6 +776,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get trainPickerSkillTyping => 'Gõ chữ';
 
   @override
+  String get trainPickerSkillListening => 'Nghe';
+
+  @override
   String get trainPickerSkillReading => 'Đọc';
 
   @override
@@ -783,6 +786,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get trainPickerStart => 'Bắt đầu';
+
+  @override
+  String get vocabInstructionListen => 'Nghe và nối mỗi từ với nghĩa của nó';
+
+  @override
+  String get lessonInstructionListen => 'Nghe và chọn nghĩa của câu';
+
+  @override
+  String get lessonPlayAudio => 'Phát âm thanh';
 
   @override
   String get pinyinTitle => 'Pinyin';

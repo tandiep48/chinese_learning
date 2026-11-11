@@ -1508,6 +1508,12 @@ abstract class AppLocalizations {
   /// **'Typing'**
   String get trainPickerSkillTyping;
 
+  /// No description provided for @trainPickerSkillListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get trainPickerSkillListening;
+
   /// No description provided for @trainPickerSkillReading.
   ///
   /// In en, this message translates to:
@@ -1525,6 +1531,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start'**
   String get trainPickerStart;
+
+  /// No description provided for @vocabInstructionListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen and match each word to its meaning'**
+  String get vocabInstructionListen;
+
+  /// No description provided for @lessonInstructionListen.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen and choose the meaning of the sentence'**
+  String get lessonInstructionListen;
+
+  /// No description provided for @lessonPlayAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Play audio'**
+  String get lessonPlayAudio;
 
   /// No description provided for @pinyinTitle.
   ///

@@ -14,11 +14,12 @@ import 'trainer_word.dart';
 
 const int vocabGroupSize = 5;
 
-/// `typing` records as "typing"; `reading` records as "meaning" (the web
-/// `MATCH_CONFIG.reading.db`).
+/// `typing` records as "typing"; `reading` records as "meaning"; `listen`
+/// records as "listen" (the web `MATCH_CONFIG` `db` values).
 const Map<String, String> vocabActivityDb = {
   'typing': 'typing',
   'reading': 'meaning',
+  'listen': 'listen',
 };
 
 class VocabActivity {
@@ -80,15 +81,75 @@ List<List<TrainerWord>> _buildGroups(List<TrainerWord> rows) {
   return groups;
 }
 
-/// Build the interleaved activity list. Defaults to both no-audio skills
-/// (typing + reading); [types] restricts it to a chosen subset (the Vocab
-/// section's train-type picker), ignoring any audio-only skills this trainer
-/// does not yet support.
+/// Pinyin identity for the homophone check (case/space-insensitive, tones kept);
+/// blank pinyin falls back to the word so distinct words never clash.
+String pinyinKey(TrainerWord row) {
+  final p = row.pinyin.toLowerCase().replaceAll(RegExp(r'\s+'), '');
+  return p.isNotEmpty ? p : '__${row.word}';
+}
+
+List<int> _balancedSizes(int n, int k) {
+  final base = n ~/ k;
+  var rem = n % k;
+  return [for (var i = 0; i < k; i++) base + (rem-- > 0 ? 1 : 0)];
+}
+
+/// Group so no group repeats a [keyFn] value. Homophones (same pinyin) sound
+/// identical, so a listening group holding two of them has no distinguishable
+/// answer; the group count grows to max(ceil(n/5), maxFrequency) and the most
+/// constrained words are placed first. Ported from `buildGroupsAvoidingKey`.
+List<List<TrainerWord>> buildGroupsAvoidingKey(
+  List<TrainerWord> rows,
+  String Function(TrainerWord) keyFn,
+) {
+  final shuffled = _shuffle(rows);
+  final n = shuffled.length;
+  if (n == 0) return const [];
+
+  final freq = <String, int>{};
+  for (final r in shuffled) {
+    final k = keyFn(r);
+    freq[k] = (freq[k] ?? 0) + 1;
+  }
+  final maxFreq = freq.values.fold(0, (a, b) => a > b ? a : b);
+  final groupCount = [
+    (n / vocabGroupSize).ceil(),
+    maxFreq,
+    1,
+  ].reduce((a, b) => a > b ? a : b);
+  final sizes = _balancedSizes(n, groupCount);
+  final ordered = [...shuffled]
+    ..sort((a, b) => freq[keyFn(b)]! - freq[keyFn(a)]!);
+  final groups = List.generate(groupCount, (_) => <TrainerWord>[]);
+
+  int emptiestWithRoom(bool Function(List<TrainerWord>) allow) {
+    var best = -1;
+    for (var idx = 0; idx < groups.length; idx++) {
+      final g = groups[idx];
+      if (g.length >= sizes[idx] || !allow(g)) continue;
+      if (best == -1 || g.length < groups[best].length) best = idx;
+    }
+    return best;
+  }
+
+  for (final row in ordered) {
+    final key = keyFn(row);
+    var slot = emptiestWithRoom((g) => !g.any((r) => keyFn(r) == key));
+    if (slot == -1) slot = emptiestWithRoom((_) => true);
+    groups[slot].add(row);
+  }
+  return groups;
+}
+
+/// Build the interleaved activity list. Defaults to all three skills in the web
+/// order (typing → listen → reading); [types] restricts it to a chosen subset
+/// (the Vocab section's train-type picker). The `listen` match pairs audio →
+/// meaning, so its groups avoid same-pinyin homophones.
 List<VocabActivity> buildActivities(
   List<TrainerWord> rows, {
   List<String>? types,
 }) {
-  const supported = ['typing', 'reading'];
+  const supported = ['typing', 'listen', 'reading'];
   final selected = types == null
       ? supported
       : supported.where(types.contains).toList();
@@ -97,7 +158,12 @@ List<VocabActivity> buildActivities(
 
   final groupsByType = [
     for (final type in effective)
-      (type: type, groups: _buildGroups(_shuffle(rows))),
+      (
+        type: type,
+        groups: type == 'listen'
+            ? buildGroupsAvoidingKey(rows, pinyinKey)
+            : _buildGroups(_shuffle(rows)),
+      ),
   ];
   final roundCount = groupsByType
       .map((g) => g.groups.length)

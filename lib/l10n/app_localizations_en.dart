@@ -788,6 +788,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get trainPickerSkillTyping => 'Typing';
 
   @override
+  String get trainPickerSkillListening => 'Listening';
+
+  @override
   String get trainPickerSkillReading => 'Reading';
 
   @override
@@ -795,6 +798,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trainPickerStart => 'Start';
+
+  @override
+  String get vocabInstructionListen =>
+      'Listen and match each word to its meaning';
+
+  @override
+  String get lessonInstructionListen =>
+      'Listen and choose the meaning of the sentence';
+
+  @override
+  String get lessonPlayAudio => 'Play audio';
 
   @override
   String get pinyinTitle => 'Pinyin';

@@ -1,21 +1,25 @@
-/// Vocab trainer — the reading-match activity (word → meaning).
+/// Vocab trainer — the match activity (word/audio → meaning).
 ///
-/// Ported from `MatchActivity.tsx` (reading mode, solo): two columns of the same
-/// words — left the characters (scored anchor), right their meanings shuffled.
-/// Tap a left then a right item; a correct pair locks green, a wrong pair flashes
-/// red and resets. The board must be fully matched before Continue. The listening
-/// (audio) match is deferred to Slice R0.
+/// Ported from `MatchActivity.tsx`: two columns of the same words — left the
+/// scored anchor (the character for `reading`, an audio button for `listen`),
+/// right their meanings shuffled. Tap a left then a right item; a correct pair
+/// locks green, a wrong pair flashes red and resets. The board must be fully
+/// matched before Continue.
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/audio/audio_player.dart';
+import '../../../core/media/gcs.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/trainer_word.dart';
 import '../data/vocab_activity.dart';
 import '../styles/vocab_trainer_styles.dart';
 import 'vocab_bottom_bar.dart';
 
-class MatchActivity extends StatefulWidget {
+class MatchActivity extends ConsumerStatefulWidget {
   const MatchActivity({
     super.key,
     required this.activity,
@@ -30,10 +34,10 @@ class MatchActivity extends StatefulWidget {
   final VoidCallback onExit;
 
   @override
-  State<MatchActivity> createState() => _MatchActivityState();
+  ConsumerState<MatchActivity> createState() => _MatchActivityState();
 }
 
-class _MatchActivityState extends State<MatchActivity> {
+class _MatchActivityState extends ConsumerState<MatchActivity> {
   late final List<TrainerWord> _right;
   String? _selLeft;
   String? _selRight;
@@ -42,6 +46,8 @@ class _MatchActivityState extends State<MatchActivity> {
   final Map<String, int> _wrongAttempts = {};
 
   List<TrainerWord> get _words => widget.activity.words;
+  bool get _isListen => widget.activity.type == 'listen';
+  String get _dbType => vocabActivityDb[widget.activity.type] ?? 'meaning';
 
   @override
   void initState() {
@@ -51,11 +57,21 @@ class _MatchActivityState extends State<MatchActivity> {
 
   bool get _allSolved => _solved.length == _words.length;
 
+  void _playAudio(TrainerWord row) {
+    if (row.audioKey.isEmpty) return;
+    ref.read(audioPlayerProvider).playUrl(vocabAudioUrl(row.audioKey));
+  }
+
   void _evaluate(String left, String right, bool isVi) {
     final row = _words.firstWhere((w) => w.word == left);
     if (left == right) {
-      widget.onRecord(row, 'meaning', row.meaning(isVi), true,
-          _wrongAttempts[left] ?? 0);
+      widget.onRecord(
+        row,
+        _dbType,
+        row.meaning(isVi),
+        true,
+        _wrongAttempts[left] ?? 0,
+      );
       setState(() {
         _solved.add(left);
         _selLeft = null;
@@ -76,10 +92,14 @@ class _MatchActivityState extends State<MatchActivity> {
     }
   }
 
-  void _tapLeft(String word, bool isVi) {
+  void _tapLeft(TrainerWord row, bool isVi) {
+    final word = row.word;
     if (_solved.contains(word)) return;
+    if (_isListen) _playAudio(row);
     setState(() => _selLeft = _selLeft == word ? null : word);
-    if (_selLeft == word && _selRight != null) _evaluate(word, _selRight!, isVi);
+    if (_selLeft == word && _selRight != null) {
+      _evaluate(word, _selRight!, isVi);
+    }
   }
 
   void _tapRight(String word, bool isVi) {
@@ -104,9 +124,13 @@ class _MatchActivityState extends State<MatchActivity> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(l10n.vocabInstructionMatch,
-                      textAlign: TextAlign.center,
-                      style: VocabTrainerStyles.instructionStyle),
+                  Text(
+                    _isListen
+                        ? l10n.vocabInstructionListen
+                        : l10n.vocabInstructionMatch,
+                    textAlign: TextAlign.center,
+                    style: VocabTrainerStyles.instructionStyle,
+                  ),
                   VocabTrainerStyles.instructionGap,
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,11 +141,12 @@ class _MatchActivityState extends State<MatchActivity> {
                             for (final row in _words) ...[
                               _MatchItem(
                                 label: row.word,
+                                audio: _isListen,
                                 style: VocabTrainerStyles.matchLeftStyle,
                                 solved: _solved.contains(row.word),
                                 selected: _selLeft == row.word,
                                 wrong: _wrong.contains('L:${row.word}'),
-                                onTap: () => _tapLeft(row.word, isVi),
+                                onTap: () => _tapLeft(row, isVi),
                               ),
                               VocabTrainerStyles.matchItemGap,
                             ],
@@ -172,6 +197,7 @@ class _MatchItem extends StatelessWidget {
     required this.selected,
     required this.wrong,
     required this.onTap,
+    this.audio = false,
   });
 
   final String label;
@@ -180,6 +206,9 @@ class _MatchItem extends StatelessWidget {
   final bool selected;
   final bool wrong;
   final VoidCallback onTap;
+
+  /// A `listen` match: show a speaker icon instead of the (hidden) character.
+  final bool audio;
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +226,12 @@ class _MatchItem extends StatelessWidget {
           ),
           padding: VocabTrainerStyles.matchItemPadding,
           alignment: Alignment.center,
-          child: Text(label, textAlign: TextAlign.center, style: style),
+          child: audio
+              ? Icon(
+                  solved ? Icons.check_circle_outline : Icons.volume_up,
+                  color: BrandColors.navTeal,
+                )
+              : Text(label, textAlign: TextAlign.center, style: style),
         ),
       ),
     );

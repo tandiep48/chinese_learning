@@ -5,8 +5,7 @@
 /// group their words client-side (book rooms fetch the server-frozen pool); lesson
 /// rooms walk the task list the server generated at session start. Every answer
 /// goes straight out over the socket. Reuses the solo trainers' activity/task
-/// widgets. Listening tasks are filtered out (audio-less, matching the solo lesson
-/// trainer); vocab rooms build typing + reading activities.
+/// widgets, including the listening (audio) skills.
 library;
 
 import 'package:flutter/material.dart';
@@ -50,9 +49,7 @@ class _CompetitionSectionViewState extends State<CompetitionSectionView> {
   void initState() {
     super.initState();
     if (_isLesson) {
-      _tasks = (c.session?.lessonTasks ?? const [])
-          .where((t) => t.type != 'listening')
-          .toList();
+      _tasks = [...(c.session?.lessonTasks ?? const [])];
       _status = _tasks.isEmpty ? _Status.empty : _Status.playing;
     } else {
       _loadWords();

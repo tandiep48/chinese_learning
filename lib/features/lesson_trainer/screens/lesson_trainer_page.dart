@@ -4,7 +4,7 @@
 /// (`POST /api/lesson/start`), walks its tasks rendering the matching task
 /// widget, logs each answer (`/submit`), then on the last task saves the score
 /// (`/part-complete`) and shows the recap. Retry re-runs the missed tasks.
-/// Listening tasks need audio (Slice R0) and are filtered out for now.
+/// Listening tasks play the line audio (handled by `ChoiceTask`).
 ///
 /// Embedded in the milestone: [onExit] leaves the part, [onFinished] fires once
 /// the round is scored and the learner taps Continue on the recap, so the
@@ -66,9 +66,7 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
   Future<void> _start() async {
     try {
       final session = await _repo.startSession(widget.passageId);
-      // Listening tasks need audio (Slice R0); drop them for now.
-      final tasks =
-          session.tasks.where((t) => t.type != 'listening').toList();
+      final tasks = session.tasks;
       if (!mounted) return;
       if (tasks.isEmpty) {
         setState(() {
@@ -95,7 +93,12 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
   }
 
   void _onResolved(
-      LessonTask task, String answer, bool correct, bool skipped, int ms) {
+    LessonTask task,
+    String answer,
+    bool correct,
+    bool skipped,
+    int ms,
+  ) {
     if (!correct) _missed.add(MissedTask(task, answer));
     _repo.submitAnswer(
       sessionId: _sessionId,
@@ -156,7 +159,7 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
           onAdvance: _advance,
           onExit: widget.onExit,
         );
-      default: // meaning (listening filtered out)
+      default: // meaning / listening (both multiple-choice; ChoiceTask handles audio)
         return ChoiceTask(
           key: key,
           task: task,
@@ -205,7 +208,8 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
                       minHeight: LessonTrainerStyles.progressHeight,
                       backgroundColor: LessonTrainerStyles.progressTrack,
                       valueColor: const AlwaysStoppedAnimation(
-                          LessonTrainerStyles.progressFill),
+                        LessonTrainerStyles.progressFill,
+                      ),
                     ),
                   ),
                   LessonTrainerStyles.progressCounterGap,

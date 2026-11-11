@@ -1,13 +1,17 @@
-/// Lesson trainer — the multiple-choice task (meaning).
+/// Lesson trainer — the multiple-choice task (listening or meaning).
 ///
-/// Ported from the meaning branch of `ChoiceTask.tsx`: the Chinese sentence with
-/// numbered options; tapping an option locks the board, turning the correct
-/// option green and a wrong pick red. The listening variant (audio) is deferred
-/// with Slice R0 and filtered out of the session for now.
+/// Ported from `ChoiceTask.tsx`: numbered options; tapping one locks the board,
+/// turning the correct option green and a wrong pick red. `meaning` shows the
+/// Chinese sentence; `listening` plays the line audio (autoplay on mount + a
+/// replay button) and hides the sentence until answered.
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/audio/audio_player.dart';
+import '../../../core/media/gcs.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/answer_match.dart';
 import '../data/models/lesson_task.dart';
@@ -16,7 +20,7 @@ import 'task_contract.dart';
 import 'task_instruction.dart';
 import 'trainer_bottom_bar.dart';
 
-class ChoiceTask extends StatefulWidget {
+class ChoiceTask extends ConsumerStatefulWidget {
   const ChoiceTask({
     super.key,
     required this.task,
@@ -31,19 +35,44 @@ class ChoiceTask extends StatefulWidget {
   final VoidCallback onExit;
 
   @override
-  State<ChoiceTask> createState() => _ChoiceTaskState();
+  ConsumerState<ChoiceTask> createState() => _ChoiceTaskState();
 }
 
-class _ChoiceTaskState extends State<ChoiceTask> {
+class _ChoiceTaskState extends ConsumerState<ChoiceTask> {
   bool _answered = false;
   String? _selected;
   late final int _start = DateTime.now().millisecondsSinceEpoch;
 
+  bool get _isListening => widget.task.type == 'listening';
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isListening) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _playAudio());
+    }
+  }
+
+  void _playAudio() {
+    final task = widget.task;
+    final key = task.audioKey;
+    if (key == null || key.isEmpty) return;
+    final folder = lessonAudioFolder(
+      hskLevel: task.hskLevel,
+      bookCode: task.bookCode,
+    );
+    ref.read(audioPlayerProvider).playUrl(lessonAudioUrl(folder, key));
+  }
+
   void _commit(String answer, bool correct, bool skipped) {
     if (_answered) return;
     setState(() => _answered = true);
-    widget.onResolved(answer, correct, skipped,
-        DateTime.now().millisecondsSinceEpoch - _start);
+    widget.onResolved(
+      answer,
+      correct,
+      skipped,
+      DateTime.now().millisecondsSinceEpoch - _start,
+    );
   }
 
   void _choose(String opt) {
@@ -70,15 +99,42 @@ class _ChoiceTaskState extends State<ChoiceTask> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TaskInstruction(
-                    icon: Icons.menu_book_outlined,
-                    text: l10n.lessonInstructionMeaning,
+                    icon: _isListening
+                        ? Icons.headphones_outlined
+                        : Icons.menu_book_outlined,
+                    text: _isListening
+                        ? l10n.lessonInstructionListen
+                        : l10n.lessonInstructionMeaning,
                   ),
                   LessonTrainerStyles.instructionGap,
-                  Text(
-                    task.content,
-                    textAlign: TextAlign.center,
-                    style: LessonTrainerStyles.promptSentenceStyle,
-                  ),
+                  if (_isListening)
+                    Center(
+                      child: IconButton.filled(
+                        iconSize: 32,
+                        style: IconButton.styleFrom(
+                          backgroundColor: BrandColors.navTeal,
+                          foregroundColor: BrandColors.card,
+                        ),
+                        onPressed: _playAudio,
+                        icon: const Icon(Icons.play_arrow),
+                        tooltip: l10n.lessonPlayAudio,
+                      ),
+                    )
+                  else
+                    Text(
+                      task.content,
+                      textAlign: TextAlign.center,
+                      style: LessonTrainerStyles.promptSentenceStyle,
+                    ),
+                  // After answering, reveal the sentence for a listening task.
+                  if (_isListening && _answered) ...[
+                    LessonTrainerStyles.instructionGap,
+                    Text(
+                      task.content,
+                      textAlign: TextAlign.center,
+                      style: LessonTrainerStyles.promptSentenceStyle,
+                    ),
+                  ],
                   LessonTrainerStyles.instructionGap,
                   for (var i = 0; i < options.length; i++) ...[
                     if (i > 0) LessonTrainerStyles.optionGap,
@@ -86,8 +142,10 @@ class _ChoiceTaskState extends State<ChoiceTask> {
                       index: i,
                       label: options[i],
                       answered: _answered,
-                      isCorrectOption:
-                          answersMatch(options[i], task.correctAnswer),
+                      isCorrectOption: answersMatch(
+                        options[i],
+                        task.correctAnswer,
+                      ),
                       isSelected: options[i] == _selected,
                       onTap: () => _choose(options[i]),
                     ),
