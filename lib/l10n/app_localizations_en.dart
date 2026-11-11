@@ -625,6 +625,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get examLessonPrefix => 'Lesson';
 
   @override
+  String get libraryTabPractice => 'Practice';
+
+  @override
+  String get practiceChooseLevel => 'Choose an HSK set to practice.';
+
+  @override
+  String get practiceChooseLesson => 'Choose a lesson to practice.';
+
+  @override
+  String get practiceLessonPrefix => 'Lesson';
+
+  @override
+  String get practiceNoLessons => 'No lessons found.';
+
+  @override
   String get pinyinTitle => 'Pinyin';
 
   @override

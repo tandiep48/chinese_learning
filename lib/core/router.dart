@@ -36,6 +36,7 @@ import '../features/lessons/screens/translation_screen.dart';
 import '../features/milestone/screens/milestone_screen.dart';
 import '../features/practice/data/models/practice_question.dart';
 import '../features/practice/screens/exam_lessons_screen.dart';
+import '../features/practice/screens/practice_lessons_screen.dart';
 import '../features/practice/screens/practice_runner_page.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
@@ -130,8 +131,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/competition',
         builder: (context, state) => const CompetitionPage(),
       ),
-      // Practice/exam runner (deep-link entry; the Recommend/Exam pickers that
-      // launch it land with their own slices). `?category=exam&progress=<p>`.
+      // Practice lessons list for an HSK level (Library "Practice" tab → here →
+      // runner). One path segment, so it doesn't collide with the two-segment
+      // runner route below.
+      GoRoute(
+        path: '/practice/:level',
+        builder: (context, state) =>
+            PracticeLessonsScreen(level: state.pathParameters['level']!),
+      ),
+      // Practice/exam runner (deep-link entry; the Recommend/Exam/Practice pickers
+      // that launch it land with their own slices). `?category=exam&progress=<p>`.
       GoRoute(
         path: '/practice/:level/:lesson',
         builder: (context, state) => PracticeRunnerPage(

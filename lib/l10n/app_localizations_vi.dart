@@ -614,6 +614,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get examLessonPrefix => 'Bài';
 
   @override
+  String get libraryTabPractice => 'Luyện tập';
+
+  @override
+  String get practiceChooseLevel => 'Chọn cấp HSK để luyện tập.';
+
+  @override
+  String get practiceChooseLesson => 'Chọn một bài để luyện tập.';
+
+  @override
+  String get practiceLessonPrefix => 'Bài';
+
+  @override
+  String get practiceNoLessons => 'Không tìm thấy bài học.';
+
+  @override
   String get pinyinTitle => 'Pinyin';
 
   @override

@@ -2,9 +2,8 @@
 ///
 /// A shell route (`/library`, reached from the nav drawer) that ports the web
 /// learning tab bar (`components/page/learner/picker/LearningTabs.tsx`,
-/// `learning-tabs.css`): HSK, Books and Exam. The Practice tab is deferred (the
-/// Recommend home tab already launches practice sessions). The surrounding
-/// Scaffold + app bar + drawer come from `AppShell`, so this is body-only.
+/// `learning-tabs.css`): HSK, Books, Exam and Practice. The surrounding Scaffold
+/// + app bar + drawer come from `AppShell`, so this is body-only.
 library;
 
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../practice/widgets/exam_levels_view.dart';
+import '../../practice/widgets/practice_levels_view.dart';
 import '../styles/lessons_styles.dart';
 import '../widgets/books_view.dart';
 import '../widgets/hsk_levels_view.dart';
@@ -23,7 +23,7 @@ class LibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -41,12 +41,18 @@ class LibraryScreen extends StatelessWidget {
                 Tab(text: l10n.libraryTabHsk),
                 Tab(text: l10n.navBooks),
                 Tab(text: l10n.dashboardExam),
+                Tab(text: l10n.libraryTabPractice),
               ],
             ),
           ),
           const Expanded(
             child: TabBarView(
-              children: [HskLevelsView(), BooksView(), ExamLevelsView()],
+              children: [
+                HskLevelsView(),
+                BooksView(),
+                ExamLevelsView(),
+                PracticeLevelsView(),
+              ],
             ),
           ),
         ],

@@ -1196,6 +1196,36 @@ abstract class AppLocalizations {
   /// **'Lesson'**
   String get examLessonPrefix;
 
+  /// No description provided for @libraryTabPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get libraryTabPractice;
+
+  /// No description provided for @practiceChooseLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an HSK set to practice.'**
+  String get practiceChooseLevel;
+
+  /// No description provided for @practiceChooseLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a lesson to practice.'**
+  String get practiceChooseLesson;
+
+  /// No description provided for @practiceLessonPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get practiceLessonPrefix;
+
+  /// No description provided for @practiceNoLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons found.'**
+  String get practiceNoLessons;
+
   /// No description provided for @pinyinTitle.
   ///
   /// In en, this message translates to:
