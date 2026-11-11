@@ -80,26 +80,40 @@ List<List<TrainerWord>> _buildGroups(List<TrainerWord> rows) {
   return groups;
 }
 
-/// Build the interleaved activity list (typing + reading).
-List<VocabActivity> buildActivities(List<TrainerWord> rows) {
-  const types = ['typing', 'reading'];
+/// Build the interleaved activity list. Defaults to both no-audio skills
+/// (typing + reading); [types] restricts it to a chosen subset (the Vocab
+/// section's train-type picker), ignoring any audio-only skills this trainer
+/// does not yet support.
+List<VocabActivity> buildActivities(
+  List<TrainerWord> rows, {
+  List<String>? types,
+}) {
+  const supported = ['typing', 'reading'];
+  final selected = types == null
+      ? supported
+      : supported.where(types.contains).toList();
+  final effective = selected.isEmpty ? supported : selected;
   if (rows.isEmpty) return const [];
 
   final groupsByType = [
-    for (final type in types) (type: type, groups: _buildGroups(_shuffle(rows))),
+    for (final type in effective)
+      (type: type, groups: _buildGroups(_shuffle(rows))),
   ];
-  final roundCount =
-      groupsByType.map((g) => g.groups.length).fold(0, (a, b) => a > b ? a : b);
+  final roundCount = groupsByType
+      .map((g) => g.groups.length)
+      .fold(0, (a, b) => a > b ? a : b);
 
   final list = <VocabActivity>[];
   for (var round = 0; round < roundCount; round++) {
     for (final entry in groupsByType) {
       if (round < entry.groups.length) {
-        list.add(VocabActivity(
-          groupIndex: round,
-          type: entry.type,
-          words: entry.groups[round],
-        ));
+        list.add(
+          VocabActivity(
+            groupIndex: round,
+            type: entry.type,
+            words: entry.groups[round],
+          ),
+        );
       }
     }
   }

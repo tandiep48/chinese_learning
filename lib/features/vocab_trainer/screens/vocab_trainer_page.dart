@@ -29,12 +29,27 @@ enum _Screen { loading, blocked, training, complete }
 class VocabTrainerPage extends ConsumerStatefulWidget {
   const VocabTrainerPage({
     super.key,
-    required this.passageId,
+    this.passageId,
+    this.words,
+    this.activityTypes,
     required this.onExit,
     required this.onFinished,
-  });
+  }) : assert(
+         passageId != null || words != null,
+         'Provide either a passageId to resolve or a pre-resolved word list.',
+       );
 
-  final String passageId;
+  /// Resolve this part's words (milestone step 3). Null when [words] is given.
+  final String? passageId;
+
+  /// A pre-resolved word list (the Vocab section's "Start Training"). When set,
+  /// no resolve call is made.
+  final List<TrainerWord>? words;
+
+  /// The skills chosen in the train-type picker (`typing` / `reading`); null
+  /// trains both.
+  final List<String>? activityTypes;
+
   final VoidCallback onExit;
   final VoidCallback onFinished;
 
@@ -61,14 +76,14 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
   }
 
   Future<void> _start() async {
-    final rows = await _repo.resolveWords(widget.passageId);
+    final rows = widget.words ?? await _repo.resolveWords(widget.passageId!);
     if (!mounted) return;
     if (rows.isEmpty) {
       setState(() => _screen = _Screen.blocked);
       return;
     }
     setState(() {
-      _activities = buildActivities(rows);
+      _activities = buildActivities(rows, types: widget.activityTypes);
       _index = 0;
       _total = 0;
       _correct = 0;
@@ -79,7 +94,12 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
   }
 
   void _record(
-      TrainerWord row, String dbType, String answer, bool correct, int wrongAttempts) {
+    TrainerWord row,
+    String dbType,
+    String answer,
+    bool correct,
+    int wrongAttempts,
+  ) {
     final clean = correct && wrongAttempts == 0;
     _total += 1;
     if (clean) {
@@ -87,15 +107,17 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
     } else {
       _missed.add(row);
     }
-    _pending.add(VocabRecord(
-      type: dbType,
-      word: row.word,
-      roundNum: 1,
-      userAnswer: answer,
-      isCorrect: clean,
-      pinyin: row.pinyin,
-      meaningEn: row.meaningEn,
-    ));
+    _pending.add(
+      VocabRecord(
+        type: dbType,
+        word: row.word,
+        roundNum: 1,
+        userAnswer: answer,
+        isCorrect: clean,
+        pinyin: row.pinyin,
+        meaningEn: row.meaningEn,
+      ),
+    );
   }
 
   void _flush() {
@@ -122,7 +144,7 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
     }
     if (unique.isEmpty) return;
     setState(() {
-      _activities = buildActivities(unique);
+      _activities = buildActivities(unique, types: widget.activityTypes);
       _index = 0;
       _total = 0;
       _correct = 0;
@@ -182,8 +204,9 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
         );
       case _Screen.training:
         final activity = _activities[_index];
-        final totalGroups =
-            _activities.isEmpty ? 1 : _activities.last.groupIndex + 1;
+        final totalGroups = _activities.isEmpty
+            ? 1
+            : _activities.last.groupIndex + 1;
         return Column(
           children: [
             Padding(
@@ -194,18 +217,24 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(999),
                     child: LinearProgressIndicator(
-                      value: _activities.isEmpty ? 0 : _index / _activities.length,
+                      value: _activities.isEmpty
+                          ? 0
+                          : _index / _activities.length,
                       minHeight: VocabTrainerStyles.progressHeight,
                       backgroundColor: VocabTrainerStyles.progressTrack,
-                      valueColor:
-                          const AlwaysStoppedAnimation(BrandColors.navTeal),
+                      valueColor: const AlwaysStoppedAnimation(
+                        BrandColors.navTeal,
+                      ),
                     ),
                   ),
                   VocabTrainerStyles.progressCounterGap,
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      l10n.vocabGroupCounter(activity.groupIndex + 1, totalGroups),
+                      l10n.vocabGroupCounter(
+                        activity.groupIndex + 1,
+                        totalGroups,
+                      ),
                       style: VocabTrainerStyles.counterStyle,
                     ),
                   ),
