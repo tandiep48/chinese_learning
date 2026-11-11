@@ -41,6 +41,7 @@ import '../features/practice/screens/practice_runner_page.dart';
 import '../features/profile/screens/profile_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/shell/screens/app_shell.dart';
+import '../features/vocab/screens/vocab_select_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // Bridge Riverpod auth-status changes to go_router's redirect re-evaluation
@@ -130,6 +131,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/competition',
         builder: (context, state) => const CompetitionPage(),
+      ),
+      GoRoute(
+        path: '/vocab',
+        builder: (context, state) => const VocabSelectScreen(),
       ),
       // Practice lessons list for an HSK level (Library "Practice" tab → here →
       // runner). One path segment, so it doesn't collide with the two-segment

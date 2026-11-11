@@ -56,7 +56,7 @@ class NavDrawer extends ConsumerWidget {
       _NavItem(
         label: l10n.navVocabulary,
         icon: Icons.menu_book_outlined,
-        enabled: false,
+        route: '/vocab',
       ),
       _NavItem(
         label: l10n.navRecommend,

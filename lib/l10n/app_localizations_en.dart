@@ -640,6 +640,163 @@ class AppLocalizationsEn extends AppLocalizations {
   String get practiceNoLessons => 'No lessons found.';
 
   @override
+  String get vocabTitle => 'Vocabulary';
+
+  @override
+  String get vocabSearchPlaceholder => 'Search words, pinyin, meaning…';
+
+  @override
+  String get vocabModeFree => 'Free';
+
+  @override
+  String get vocabModeStandard => 'Standard';
+
+  @override
+  String get vocabModeBook => 'Book';
+
+  @override
+  String get vocabModeUnsure => 'Unsure';
+
+  @override
+  String get vocabModeUnlearn => 'Not learned';
+
+  @override
+  String get vocabModeRecent => 'Recent';
+
+  @override
+  String get vocabHskLabel => 'HSK level';
+
+  @override
+  String get vocabSelectHsk => 'Select HSK level';
+
+  @override
+  String get vocabBookLabel => 'Book';
+
+  @override
+  String get vocabSelectBook => 'Select a book';
+
+  @override
+  String get vocabLessonLabel => 'Lesson';
+
+  @override
+  String get vocabPartLabel => 'Part';
+
+  @override
+  String get vocabSelectLesson => 'Select lessons';
+
+  @override
+  String get vocabSelectPart => 'Select parts';
+
+  @override
+  String get vocabSelectAll => 'Select all';
+
+  @override
+  String get vocabDone => 'Done';
+
+  @override
+  String vocabNSelected(Object n) {
+    return '$n selected';
+  }
+
+  @override
+  String get vocabPageSize => 'Per page';
+
+  @override
+  String get vocabFlashcards => 'Flash Cards';
+
+  @override
+  String get vocabStartTraining => 'Start Training';
+
+  @override
+  String get vocabFlashcardsTitle => 'Flash Cards';
+
+  @override
+  String get vocabTapToReveal => 'Tap to reveal';
+
+  @override
+  String vocabPageStatus(Object current, Object total) {
+    return 'Page $current/$total';
+  }
+
+  @override
+  String get vocabLessonOptionPrefix => 'Lesson';
+
+  @override
+  String get vocabPartOptionPrefix => 'Part';
+
+  @override
+  String get vocabOtherLabel => 'Other';
+
+  @override
+  String get vocabChooseFilters => 'Choose filters to see words.';
+
+  @override
+  String get vocabChooseBook => 'Choose a book.';
+
+  @override
+  String get vocabChooseLessonAndPart => 'Choose a lesson and part.';
+
+  @override
+  String get vocabChooseHskLessonPart =>
+      'Choose an HSK level, lesson and part.';
+
+  @override
+  String get vocabChooseHskOnly => 'Choose an HSK level.';
+
+  @override
+  String get vocabChooseAPart => 'Choose a part.';
+
+  @override
+  String get vocabNoVocabFound => 'No vocabulary found.';
+
+  @override
+  String get vocabLoadingVocabulary => 'Loading vocabulary…';
+
+  @override
+  String get vocabFailedLoadVocabulary => 'Failed to load vocabulary.';
+
+  @override
+  String get vocabSearching => 'Searching…';
+
+  @override
+  String get vocabSearchFailed => 'Search failed.';
+
+  @override
+  String get vocabLoadingLessons => 'Loading lessons…';
+
+  @override
+  String get vocabFailedLoadLessons => 'Failed to load lessons.';
+
+  @override
+  String get vocabNoLessonsFound => 'No lessons found.';
+
+  @override
+  String get vocabNoSavedBooks => 'You haven\'t saved words in any book yet.';
+
+  @override
+  String vocabNoResultsFor(Object query) {
+    return 'No results for \"$query\".';
+  }
+
+  @override
+  String get trainPickerTitle => 'Choose skills to train';
+
+  @override
+  String get trainPickerSubtitle => 'Every skill is on by default.';
+
+  @override
+  String get trainPickerSkillTyping => 'Typing';
+
+  @override
+  String get trainPickerSkillReading => 'Reading';
+
+  @override
+  String get trainPickerSelectOne => 'Select at least one skill.';
+
+  @override
+  String get trainPickerStart => 'Start';
+
+  @override
   String get pinyinTitle => 'Pinyin';
 
   @override

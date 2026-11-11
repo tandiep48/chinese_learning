@@ -1226,6 +1226,306 @@ abstract class AppLocalizations {
   /// **'No lessons found.'**
   String get practiceNoLessons;
 
+  /// No description provided for @vocabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocabulary'**
+  String get vocabTitle;
+
+  /// No description provided for @vocabSearchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search words, pinyin, meaning…'**
+  String get vocabSearchPlaceholder;
+
+  /// No description provided for @vocabModeFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get vocabModeFree;
+
+  /// No description provided for @vocabModeStandard.
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get vocabModeStandard;
+
+  /// No description provided for @vocabModeBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get vocabModeBook;
+
+  /// No description provided for @vocabModeUnsure.
+  ///
+  /// In en, this message translates to:
+  /// **'Unsure'**
+  String get vocabModeUnsure;
+
+  /// No description provided for @vocabModeUnlearn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not learned'**
+  String get vocabModeUnlearn;
+
+  /// No description provided for @vocabModeRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get vocabModeRecent;
+
+  /// No description provided for @vocabHskLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'HSK level'**
+  String get vocabHskLabel;
+
+  /// No description provided for @vocabSelectHsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Select HSK level'**
+  String get vocabSelectHsk;
+
+  /// No description provided for @vocabBookLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get vocabBookLabel;
+
+  /// No description provided for @vocabSelectBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a book'**
+  String get vocabSelectBook;
+
+  /// No description provided for @vocabLessonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get vocabLessonLabel;
+
+  /// No description provided for @vocabPartLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Part'**
+  String get vocabPartLabel;
+
+  /// No description provided for @vocabSelectLesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Select lessons'**
+  String get vocabSelectLesson;
+
+  /// No description provided for @vocabSelectPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Select parts'**
+  String get vocabSelectPart;
+
+  /// No description provided for @vocabSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get vocabSelectAll;
+
+  /// No description provided for @vocabDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get vocabDone;
+
+  /// No description provided for @vocabNSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} selected'**
+  String vocabNSelected(Object n);
+
+  /// No description provided for @vocabPageSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Per page'**
+  String get vocabPageSize;
+
+  /// No description provided for @vocabFlashcards.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash Cards'**
+  String get vocabFlashcards;
+
+  /// No description provided for @vocabStartTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Training'**
+  String get vocabStartTraining;
+
+  /// No description provided for @vocabFlashcardsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash Cards'**
+  String get vocabFlashcardsTitle;
+
+  /// No description provided for @vocabTapToReveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to reveal'**
+  String get vocabTapToReveal;
+
+  /// No description provided for @vocabPageStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {current}/{total}'**
+  String vocabPageStatus(Object current, Object total);
+
+  /// No description provided for @vocabLessonOptionPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get vocabLessonOptionPrefix;
+
+  /// No description provided for @vocabPartOptionPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Part'**
+  String get vocabPartOptionPrefix;
+
+  /// No description provided for @vocabOtherLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get vocabOtherLabel;
+
+  /// No description provided for @vocabChooseFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose filters to see words.'**
+  String get vocabChooseFilters;
+
+  /// No description provided for @vocabChooseBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a book.'**
+  String get vocabChooseBook;
+
+  /// No description provided for @vocabChooseLessonAndPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a lesson and part.'**
+  String get vocabChooseLessonAndPart;
+
+  /// No description provided for @vocabChooseHskLessonPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an HSK level, lesson and part.'**
+  String get vocabChooseHskLessonPart;
+
+  /// No description provided for @vocabChooseHskOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an HSK level.'**
+  String get vocabChooseHskOnly;
+
+  /// No description provided for @vocabChooseAPart.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a part.'**
+  String get vocabChooseAPart;
+
+  /// No description provided for @vocabNoVocabFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No vocabulary found.'**
+  String get vocabNoVocabFound;
+
+  /// No description provided for @vocabLoadingVocabulary.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading vocabulary…'**
+  String get vocabLoadingVocabulary;
+
+  /// No description provided for @vocabFailedLoadVocabulary.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load vocabulary.'**
+  String get vocabFailedLoadVocabulary;
+
+  /// No description provided for @vocabSearching.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching…'**
+  String get vocabSearching;
+
+  /// No description provided for @vocabSearchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Search failed.'**
+  String get vocabSearchFailed;
+
+  /// No description provided for @vocabLoadingLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading lessons…'**
+  String get vocabLoadingLessons;
+
+  /// No description provided for @vocabFailedLoadLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load lessons.'**
+  String get vocabFailedLoadLessons;
+
+  /// No description provided for @vocabNoLessonsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No lessons found.'**
+  String get vocabNoLessonsFound;
+
+  /// No description provided for @vocabNoSavedBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t saved words in any book yet.'**
+  String get vocabNoSavedBooks;
+
+  /// No description provided for @vocabNoResultsFor.
+  ///
+  /// In en, this message translates to:
+  /// **'No results for \"{query}\".'**
+  String vocabNoResultsFor(Object query);
+
+  /// No description provided for @trainPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose skills to train'**
+  String get trainPickerTitle;
+
+  /// No description provided for @trainPickerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every skill is on by default.'**
+  String get trainPickerSubtitle;
+
+  /// No description provided for @trainPickerSkillTyping.
+  ///
+  /// In en, this message translates to:
+  /// **'Typing'**
+  String get trainPickerSkillTyping;
+
+  /// No description provided for @trainPickerSkillReading.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading'**
+  String get trainPickerSkillReading;
+
+  /// No description provided for @trainPickerSelectOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one skill.'**
+  String get trainPickerSelectOne;
+
+  /// No description provided for @trainPickerStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get trainPickerStart;
+
   /// No description provided for @pinyinTitle.
   ///
   /// In en, this message translates to:

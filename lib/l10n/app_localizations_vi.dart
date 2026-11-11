@@ -629,6 +629,162 @@ class AppLocalizationsVi extends AppLocalizations {
   String get practiceNoLessons => 'Không tìm thấy bài học.';
 
   @override
+  String get vocabTitle => 'Từ vựng';
+
+  @override
+  String get vocabSearchPlaceholder => 'Tìm từ, pinyin, nghĩa…';
+
+  @override
+  String get vocabModeFree => 'Tự do';
+
+  @override
+  String get vocabModeStandard => 'Tiêu chuẩn';
+
+  @override
+  String get vocabModeBook => 'Sách';
+
+  @override
+  String get vocabModeUnsure => 'Chưa chắc';
+
+  @override
+  String get vocabModeUnlearn => 'Chưa học';
+
+  @override
+  String get vocabModeRecent => 'Gần đây';
+
+  @override
+  String get vocabHskLabel => 'Cấp HSK';
+
+  @override
+  String get vocabSelectHsk => 'Chọn cấp HSK';
+
+  @override
+  String get vocabBookLabel => 'Sách';
+
+  @override
+  String get vocabSelectBook => 'Chọn một cuốn sách';
+
+  @override
+  String get vocabLessonLabel => 'Bài';
+
+  @override
+  String get vocabPartLabel => 'Phần';
+
+  @override
+  String get vocabSelectLesson => 'Chọn bài học';
+
+  @override
+  String get vocabSelectPart => 'Chọn phần';
+
+  @override
+  String get vocabSelectAll => 'Chọn tất cả';
+
+  @override
+  String get vocabDone => 'Xong';
+
+  @override
+  String vocabNSelected(Object n) {
+    return 'Đã chọn $n';
+  }
+
+  @override
+  String get vocabPageSize => 'Mỗi trang';
+
+  @override
+  String get vocabFlashcards => 'Thẻ ghi nhớ';
+
+  @override
+  String get vocabStartTraining => 'Bắt đầu luyện';
+
+  @override
+  String get vocabFlashcardsTitle => 'Thẻ ghi nhớ';
+
+  @override
+  String get vocabTapToReveal => 'Chạm để xem';
+
+  @override
+  String vocabPageStatus(Object current, Object total) {
+    return 'Trang $current/$total';
+  }
+
+  @override
+  String get vocabLessonOptionPrefix => 'Bài';
+
+  @override
+  String get vocabPartOptionPrefix => 'Phần';
+
+  @override
+  String get vocabOtherLabel => 'Khác';
+
+  @override
+  String get vocabChooseFilters => 'Chọn bộ lọc để xem từ.';
+
+  @override
+  String get vocabChooseBook => 'Chọn một cuốn sách.';
+
+  @override
+  String get vocabChooseLessonAndPart => 'Chọn một bài và phần.';
+
+  @override
+  String get vocabChooseHskLessonPart => 'Chọn cấp HSK, bài và phần.';
+
+  @override
+  String get vocabChooseHskOnly => 'Chọn cấp HSK.';
+
+  @override
+  String get vocabChooseAPart => 'Chọn một phần.';
+
+  @override
+  String get vocabNoVocabFound => 'Không tìm thấy từ vựng.';
+
+  @override
+  String get vocabLoadingVocabulary => 'Đang tải từ vựng…';
+
+  @override
+  String get vocabFailedLoadVocabulary => 'Không tải được từ vựng.';
+
+  @override
+  String get vocabSearching => 'Đang tìm…';
+
+  @override
+  String get vocabSearchFailed => 'Tìm kiếm thất bại.';
+
+  @override
+  String get vocabLoadingLessons => 'Đang tải bài học…';
+
+  @override
+  String get vocabFailedLoadLessons => 'Không tải được bài học.';
+
+  @override
+  String get vocabNoLessonsFound => 'Không tìm thấy bài học.';
+
+  @override
+  String get vocabNoSavedBooks => 'Bạn chưa lưu từ nào trong sách nào.';
+
+  @override
+  String vocabNoResultsFor(Object query) {
+    return 'Không có kết quả cho \"$query\".';
+  }
+
+  @override
+  String get trainPickerTitle => 'Chọn kỹ năng để luyện';
+
+  @override
+  String get trainPickerSubtitle => 'Mọi kỹ năng được bật mặc định.';
+
+  @override
+  String get trainPickerSkillTyping => 'Gõ chữ';
+
+  @override
+  String get trainPickerSkillReading => 'Đọc';
+
+  @override
+  String get trainPickerSelectOne => 'Chọn ít nhất một kỹ năng.';
+
+  @override
+  String get trainPickerStart => 'Bắt đầu';
+
+  @override
   String get pinyinTitle => 'Pinyin';
 
   @override
