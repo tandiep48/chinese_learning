@@ -1128,11 +1128,11 @@ Last and largest. Two parts:
     (lesson) — answering straight over the socket.
   - Route `/competition`; drawer entry enabled (was the deferred "coming soon").
   - i18n: ~60 `competition*` keys EN+VI. `flutter analyze lib` clean.
-  - **Divergences (noted):** vocab rooms build typing+reading only (the solo vocab
-    trainer has no audio/listen yet), so the room's `activity_type` filter is not
-    applied to vocab; listening lesson tasks are filtered out (audio-less, matching
-    the solo lesson trainer); vocab answers report `response_time_ms: 0` (the solo
-    vocab widgets don't track response time — the backend defaults it to 0).
+  - **Divergences (noted):** the room's `activity_type` filter is not applied to
+    vocab rooms (they build all three skills); vocab answers report
+    `response_time_ms: 0` (the solo vocab widgets don't track response time — the
+    backend defaults it to 0). (The earlier "no listening" divergence is gone — see
+    Round 4.)
   - **Native/human setup:** `socket_io_client` 3.x speaks Socket.IO v4 (compatible
     with Flask-SocketIO); Android INTERNET permission was added in P10; iOS local
     (`http://`) dev needs an ATS exception in `Info.plist` if testing against a
@@ -1164,3 +1164,53 @@ package, `fl_chart`, `socket_io_client`.
 - Competition: `components/page/learner/competition/*`;
   `Learning/web_app/service/competition_socket.py`, `routes/competition/competition_routes.py`.
 - Stroke data: `Learning/web_app/routes/chinese_stroke_info/chinese_stroke_info_routes.py`.
+
+# Round 4 — closing the last learner gaps (post-round-3 parity sweep)
+
+A gap review against every `app/learner/*` page found only two missing learner
+surfaces (manage/admin excluded), plus one stubbed skill. All shipped.
+
+### Practice tab / picker · S · **Shipped**
+
+The Library tab bar was HSK | Books | Exam; the web also has **Practice**
+(`PracticeSelectPage` with `category="practice"`). Added `practice_levels_view.dart`
+(HSK 1–6 grid, Library "Practice" tab) + `practice_lessons_screen.dart` (route
+`/practice/:level` — one segment, distinct from the two-segment runner) launching the
+existing runner with `category=practice`. Mirrors the Exam picker 1:1.
+
+### Vocabulary section · L · **Shipped**
+
+The web `VocabSelectPage` (nav "Vocabulary", previously a disabled drawer stub).
+New `features/vocab/`: a 6-mode word browser (free / standard / book / unsure /
+unlearn / recent) with debounced search, the HSK/Book → Lesson → Part filter cascade,
+a paginated table (`VocabPage`/`VocabRow` reused) with audio + a stroke-order sheet
+(reuses the P1 `StrokeOrderView`), and two study launches: **Flash Cards** (a flip-card
+deck of the current page's words) and **Start Training** (the `TrainTypePicker` →
+`VocabTrainerPage`). `VocabTrainerPage`/`buildActivities` were extended to accept a
+pre-resolved word list + a chosen-skills filter. Route `/vocab`; drawer entry enabled.
+Endpoints: `/api/vocab/table/query`, `/api/vocab/search/query`,
+`/api/user/learned-vocab/query`, `/api/vocab/saved-books`,
+`/api/competition/book-passages`.
+
+### Listening skill · S · **Shipped** (lifts the old "Slice R0" audio deferral)
+
+Listening was dropped from both trainers in the original slices only because audio
+playback wasn't wired yet. P1/P2 since added `AppAudioPlayer` + the GCS audio URLs, so
+the blocker was stale. Implemented in three places:
+
+- **Vocab trainer `listen` match** — `buildActivities` now builds all three web skills
+  (typing → listen → reading); the `listen` match groups avoid same-pinyin homophones
+  (`buildGroupsAvoidingKey` + `pinyinKey`, ported 1:1). `MatchActivity` became a
+  `ConsumerStatefulWidget`: the left column shows a speaker button that plays
+  `vocabAudioUrl(audio_key)` instead of the character, and records the `listen` db type.
+- **Lesson trainer `listening` task** — `ChoiceTask` became a `ConsumerStatefulWidget`:
+  a `listening` task autoplays the line audio
+  (`lessonAudioUrl(lessonAudioFolder(...), audio_key)`) with a replay button and reveals
+  the sentence after answering. `LessonTrainerPage` no longer filters listening out.
+- **Competition** — vocab rooms now include the `listen` match; lesson rooms no longer
+  filter listening. The Vocab section's `TrainTypePicker` offers all three skills.
+
+i18n added: `trainPickerSkillListening`, `vocabInstructionListen`,
+`lessonInstructionListen`, `lessonPlayAudio` (EN+VI). `flutter analyze lib` clean.
+
+**Status: full learner parity with the web app, excluding the manage/admin page.**
