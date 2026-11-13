@@ -117,32 +117,4 @@ class ProfileStyles {
     fontSize: 12,
     color: BrandColors.mutedText,
   );
-
-  // ── Learned-vocab list ────────────────────────────────────────────────────
-  static const TextStyle vocabHanzi = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
-    color: BrandColors.darkText,
-  );
-  static const TextStyle vocabPinyin = TextStyle(
-    fontSize: 14,
-    color: BrandColors.navTeal,
-  );
-  static const TextStyle vocabMeaning = TextStyle(
-    fontSize: 14,
-    color: BrandColors.studyMuted,
-  );
-  static final BoxDecoration vocabLevelBadge = BoxDecoration(
-    color: BrandColors.studyTealLight,
-    borderRadius: BorderRadius.circular(999),
-  );
-  static const EdgeInsets vocabLevelPadding = EdgeInsets.symmetric(
-    horizontal: 8,
-    vertical: 2,
-  );
-  static const TextStyle vocabLevelText = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w700,
-    color: BrandColors.navTeal,
-  );
 }

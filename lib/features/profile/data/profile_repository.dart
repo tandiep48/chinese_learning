@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_client.dart';
 import '../../../core/api/validators.dart';
-import '../../../shared/data/vocab_row.dart';
 import '../../auth/data/models/auth_user.dart';
 import 'models/activity_day.dart';
 import 'models/global_stats.dart';
@@ -108,14 +107,5 @@ class ProfileRepository {
   Future<ReviewDetail> getPracticeHistoryDetail(int sessionId) async {
     final data = await _api.getRaw('/api/practice/history/$sessionId');
     return ReviewDetail.fromJson(asMap(data, what: 'history detail'));
-  }
-
-  /// `POST /api/user/learned-vocab/query { page, page_size }` (recent-first).
-  Future<VocabPage> getLearnedVocab(int page, int pageSize) async {
-    final data = await _api.postRaw(
-      '/api/user/learned-vocab/query',
-      body: {'page': page, 'page_size': pageSize},
-    );
-    return VocabPage.fromJson(asMap(data, what: 'learned-vocab'));
   }
 }

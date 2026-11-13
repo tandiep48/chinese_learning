@@ -40,7 +40,7 @@ class MiniBarChart extends StatelessWidget {
         ? 1
         : values.reduce((a, b) => a > b ? a : b).clamp(1, 1 << 31);
     return SizedBox(
-      height: ProfileStyles.chartHeight + 40,
+      height: ProfileStyles.chartHeight + 64,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

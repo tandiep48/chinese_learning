@@ -13,7 +13,6 @@ import '../../../core/media/gcs.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_view.dart';
-import '../../../shared/data/vocab_row.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../data/profile_repository.dart';
 import '../providers/profile_providers.dart';
@@ -31,17 +30,9 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  static const int _pageSize = 20;
-  final List<VocabRow> _vocab = [];
-  int _page = 0;
-  bool _loading = false;
-  bool _hasMore = true;
-  bool _vocabError = false;
-
   @override
   void initState() {
     super.initState();
-    _loadMore();
     _refreshSummary();
   }
 
@@ -54,32 +45,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           .getProfileSummary();
       if (mounted) ref.read(authNotifierProvider.notifier).setUser(user);
     } catch (_) {}
-  }
-
-  Future<void> _loadMore() async {
-    if (_loading || !_hasMore) return;
-    setState(() {
-      _loading = true;
-      _vocabError = false;
-    });
-    try {
-      final page = await ref
-          .read(profileRepositoryProvider)
-          .getLearnedVocab(_page + 1, _pageSize);
-      if (!mounted) return;
-      setState(() {
-        _vocab.addAll(page.rows);
-        _page = page.page;
-        _hasMore = page.hasMore;
-        _loading = false;
-      });
-    } catch (_) {
-      if (!mounted) return;
-      setState(() {
-        _loading = false;
-        _vocabError = true;
-      });
-    }
   }
 
   @override
@@ -95,7 +60,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           _header(user?.username, user?.email, user?.avatarUrl, user?.level),
           ProfileStyles.gap24,
           _section(l10n.dashboardLearningStatistics, [_statistics(l10n)]),
-          _section(l10n.profileLearnedWords, _vocabList(l10n)),
           _section(l10n.reviewTitle, const [ReviewPanel()]),
           _section(l10n.profileChangePassword, const [PasswordForm()]),
         ],
@@ -232,87 +196,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       stats: stats,
       wordsDays: wordsAsync.asData?.value ?? const [],
       timeDays: timeAsync.asData?.value ?? const [],
-    );
-  }
-
-  List<Widget> _vocabList(AppLocalizations l10n) {
-    if (_vocab.isEmpty && _loading) {
-      return const [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 24),
-          child: LoadingView(),
-        ),
-      ];
-    }
-    if (_vocab.isEmpty && _vocabError) {
-      return [
-        EmptyState(
-          icon: Icons.cloud_off,
-          title: l10n.studyError,
-          action: FilledButton.tonal(
-            onPressed: _loadMore,
-            child: Text(l10n.commonRetry),
-          ),
-        ),
-      ];
-    }
-    if (_vocab.isEmpty) {
-      return [
-        EmptyState(icon: Icons.menu_book_outlined, title: l10n.vocabNoWords),
-      ];
-    }
-    final isVi = Localizations.localeOf(context).languageCode == 'vi';
-    return [
-      for (final row in _vocab) ...[
-        _vocabRow(row, isVi),
-        const SizedBox(height: 8),
-      ],
-      if (_hasMore)
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Center(
-            child: _loading
-                ? const CircularProgressIndicator()
-                : OutlinedButton(
-                    onPressed: _loadMore,
-                    child: Text(l10n.commonLoadMore),
-                  ),
-          ),
-        ),
-    ];
-  }
-
-  Widget _vocabRow(VocabRow row, bool isVi) {
-    final meaning = isVi
-        ? (row.meaningVn.isNotEmpty ? row.meaningVn : row.meaningEn)
-        : (row.meaningEn.isNotEmpty ? row.meaningEn : row.meaningVn);
-    return Container(
-      decoration: ProfileStyles.cardDecoration,
-      padding: ProfileStyles.cardPadding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(row.cn, style: ProfileStyles.vocabHanzi),
-              if (row.pinyin.isNotEmpty)
-                Text(row.pinyin, style: ProfileStyles.vocabPinyin),
-            ],
-          ),
-          const SizedBox(width: 12),
-          Expanded(child: Text(meaning, style: ProfileStyles.vocabMeaning)),
-          if (row.level.isNotEmpty) ...[
-            const SizedBox(width: 8),
-            Container(
-              decoration: ProfileStyles.vocabLevelBadge,
-              padding: ProfileStyles.vocabLevelPadding,
-              child: Text(row.level, style: ProfileStyles.vocabLevelText),
-            ),
-          ],
-        ],
-      ),
     );
   }
 }
