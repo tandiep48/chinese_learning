@@ -377,6 +377,8 @@ class PracticeStyles {
     border: Border.all(color: BrandColors.mintBorder),
     borderRadius: BorderRadius.circular(16),
   );
+  /// Fixed row height so the card never overflows on narrow phones.
+  static const double levelCardHeight = 270;
   static const EdgeInsets levelCardPadding = EdgeInsets.symmetric(
     horizontal: 20,
     vertical: 28,

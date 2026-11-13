@@ -39,22 +39,22 @@ class PracticeLevelGrid extends StatelessWidget {
       children: [
         Text(subtitle, style: PracticeStyles.pageSubtitle),
         PracticeStyles.gap16,
-        GridView.count(
-          crossAxisCount: columns,
+        GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 18,
-          crossAxisSpacing: 18,
-          childAspectRatio: columns == 1 ? 2.4 : 1.25,
-          children: [
-            for (var n = 1; n <= 6; n++)
-              _LevelCard(
-                level: n,
-                label: '$label $n',
-                sub: l10n.examListeningReading,
-                onTap: () => context.push('$routeBase/$n'),
-              ),
-          ],
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            mainAxisSpacing: 18,
+            crossAxisSpacing: 18,
+            mainAxisExtent: PracticeStyles.levelCardHeight,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, i) => _LevelCard(
+            level: i + 1,
+            label: '$label ${i + 1}',
+            sub: l10n.examListeningReading,
+            onTap: () => context.push('$routeBase/${i + 1}'),
+          ),
         ),
       ],
     );
