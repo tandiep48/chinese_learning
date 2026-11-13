@@ -57,8 +57,9 @@ class BookPartsScreen extends ConsumerWidget {
               children: [
                 PickerBackLink(
                   label: l10n.pickerBackToLessons,
-                  onTap: () =>
-                      context.go('/books/${Uri.encodeComponent(code)}'),
+                  onTap: () => context.canPop()
+                      ? context.pop()
+                      : context.go('/books/${Uri.encodeComponent(code)}'),
                 ),
                 LessonsStyles.pickerToolbarGap,
                 PickerHeader(

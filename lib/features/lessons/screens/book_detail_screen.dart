@@ -51,7 +51,8 @@ class BookDetailScreen extends ConsumerWidget {
               children: [
                 PickerBackLink(
                   label: l10n.booksBackToBooks,
-                  onTap: () => context.go('/books'),
+                  onTap: () =>
+                      context.canPop() ? context.pop() : context.go('/library'),
                 ),
                 LessonsStyles.pickerToolbarGap,
                 PickerHeader(
