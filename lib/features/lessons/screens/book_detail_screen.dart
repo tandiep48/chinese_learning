@@ -1,20 +1,24 @@
-/// Lessons module — one book's lessons and their parts.
+/// Lessons module — step 2 of the Books flow: one book's lessons.
 ///
-/// Consolidates the web's lesson-list and part-list screens
-/// (`app/learner/books/[code]/...`) into one: each lesson is an expandable
-/// tile whose parts deep-link into lesson study (`GET /api/lesson/book/:code`).
+/// Ported from `app/learner/books/[code]/page.tsx`: a back link, the book banner
+/// (cover + title + lesson count) and a `.lesson-card` per lesson with its part
+/// count / `done/total`. A lesson opens its part list (`/books/:code/:lesson`,
+/// [BookPartsScreen]). Data: `GET /api/lesson/book/:code`.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/media/gcs.dart';
+import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_view.dart';
 import '../data/models/learner_book.dart';
 import '../providers/lesson_providers.dart';
 import '../styles/lessons_styles.dart';
+import '../widgets/picker_header.dart';
 
 class BookDetailScreen extends ConsumerWidget {
   const BookDetailScreen({super.key, required this.code});
@@ -27,9 +31,8 @@ class BookDetailScreen extends ConsumerWidget {
     final book = ref.watch(learnerBookProvider(code));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(book.asData?.value.bookName ?? code),
-      ),
+      backgroundColor: BrandColors.card,
+      appBar: AppBar(title: Text(book.asData?.value.bookName ?? code)),
       body: SafeArea(
         child: book.when(
           loading: () => const LoadingView(),
@@ -42,13 +45,38 @@ class BookDetailScreen extends ConsumerWidget {
             ),
           ),
           data: (detail) {
-            if (detail.lessons.isEmpty) {
-              return EmptyState(icon: Icons.menu_book_outlined, title: l10n.booksEmpty);
-            }
+            final title = detail.bookName ?? code;
             return ListView(
-              padding: LessonsStyles.listPadding,
+              padding: LessonsStyles.hskListPadding,
               children: [
-                for (final lesson in detail.lessons) _LessonTile(lesson: lesson),
+                PickerBackLink(
+                  label: l10n.booksBackToBooks,
+                  onTap: () =>
+                      context.canPop() ? context.pop() : context.go('/library'),
+                ),
+                LessonsStyles.pickerToolbarGap,
+                PickerHeader(
+                  color: Colors.transparent,
+                  imageUrl: bookCoverUrl(code),
+                  hideImageOnError: true,
+                  title: title,
+                  subtitle: l10n.booksLessonsCount(detail.lessons.length),
+                ),
+                LessonsStyles.pickerHeaderBottomGap,
+                if (detail.lessons.isEmpty)
+                  Padding(
+                    padding: LessonsStyles.hskEmptyPadding,
+                    child: Text(
+                      l10n.booksEmpty,
+                      style: LessonsStyles.hskEmptyTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                else
+                  for (var i = 0; i < detail.lessons.length; i++) ...[
+                    if (i > 0) LessonsStyles.lessonListGap,
+                    _LessonCard(code: code, lesson: detail.lessons[i]),
+                  ],
               ],
             );
           },
@@ -58,36 +86,57 @@ class BookDetailScreen extends ConsumerWidget {
   }
 }
 
-class _LessonTile extends StatelessWidget {
-  const _LessonTile({required this.lesson});
+class _LessonCard extends StatelessWidget {
+  const _LessonCard({required this.code, required this.lesson});
 
+  final String code;
   final LearnerBookLesson lesson;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final heading = (lesson.title != null && lesson.title!.isNotEmpty)
-        ? lesson.title!
-        : l10n.lessonLabel(lesson.lesson);
+    final hasTitle = lesson.title != null && lesson.title!.isNotEmpty;
+    final label = l10n.lessonLabel(lesson.lesson);
 
-    return Card(
+    final countText = lesson.doneCount > 0
+        ? '${l10n.booksPartsCount(lesson.partCount)} · ${lesson.doneCount}/${lesson.partCount}'
+        : l10n.booksPartsCount(lesson.partCount);
+
+    return Container(
+      decoration: LessonsStyles.lessonCardDecoration,
       clipBehavior: Clip.antiAlias,
-      child: ExpansionTile(
-        title: Text(heading, style: theme.textTheme.titleLarge),
-        subtitle: Text(l10n.booksPartsCount(lesson.partCount)),
-        children: [
-          for (final part in lesson.parts)
-            ListTile(
-              leading: Icon(
-                part.completed ? Icons.check_circle : Icons.play_circle_outline,
-                color: part.completed ? theme.colorScheme.primary : null,
-              ),
-              title: Text(l10n.partLabel(part.part)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push('/lesson/${part.passageId}'),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push(
+            '/books/${Uri.encodeComponent(code)}/${Uri.encodeComponent(lesson.lesson)}',
+          ),
+          child: Padding(
+            padding: LessonsStyles.lessonCardPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  hasTitle ? lesson.title! : label,
+                  style: LessonsStyles.lessonCardTitleStyle,
+                ),
+                if (hasTitle) ...[
+                  LessonsStyles.lessonSubGap,
+                  Text(label, style: LessonsStyles.lessonCardSubStyle),
+                ],
+                LessonsStyles.lessonCountGap,
+                Container(
+                  padding: LessonsStyles.lessonCountBadgePadding,
+                  decoration: LessonsStyles.lessonCountBadgeDecoration,
+                  child: Text(
+                    countText,
+                    style: LessonsStyles.lessonCountBadgeStyle,
+                  ),
+                ),
+              ],
             ),
-        ],
+          ),
+        ),
       ),
     );
   }

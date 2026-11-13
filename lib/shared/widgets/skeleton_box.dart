@@ -4,6 +4,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../styles/shared_styles.dart';
+
 class SkeletonBox extends StatelessWidget {
   const SkeletonBox({super.key, this.width, this.height = 16, this.radius = 8});
 
@@ -13,14 +15,10 @@ class SkeletonBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(radius),
-      ),
+      decoration: SharedStyles.skeletonDecoration(radius),
     );
   }
 }

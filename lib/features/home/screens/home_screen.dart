@@ -1,138 +1,179 @@
-/// Home module — the learner home (minimal first pass).
+/// Home module — the learner dashboard (tabbed shell).
 ///
-/// Scoped down from the web dashboard: a greeting, a "continue where you left
-/// off" card (`GET /api/user/dashboard-current-lesson`) that deep-links into
-/// lesson study, and an entry point to the Books list. Stats charts and
-/// recommendations are deferred per the port plan.
+/// Ported from the web `HomeShell.tsx` + `HomeTabs.tsx`: a pill-style tab bar
+/// (Review · Lesson · Recommend, Review first and selected by default) above the
+/// active panel. The Lesson tab runs the learner's current lesson in place. While
+/// a graded trainer runs, switching tabs asks for confirmation (the web's home
+/// guard). This screen is a shell route — the surrounding Scaffold, teal app bar
+/// and navigation drawer come from `AppShell`, so it renders body content only.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../shared/widgets/empty_state.dart';
-import '../../../shared/widgets/loading_view.dart';
+import '../../../shared/widgets/session_guard.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../data/models/current_lesson.dart';
-import '../providers/home_provider.dart';
 import '../styles/home_styles.dart';
+import '../widgets/lesson_tab.dart';
+import '../widgets/recommend_tab.dart';
+import '../widgets/review_tab.dart';
 
-class HomeScreen extends ConsumerWidget {
+/// Web `HOME_TABS` order; Review is the default.
+const int _reviewTab = 0;
+const int _lessonTab = 1;
+const int _recommendTab = 2;
+
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final username = ref.watch(authNotifierProvider).asData?.value.user?.username;
-    final currentLesson = ref.watch(currentLessonProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appTitle),
-        actions: [
-          IconButton(
-            tooltip: l10n.logoutTooltip,
-            icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => ref.refresh(currentLessonProvider.future),
-          child: ListView(
-            padding: HomeStyles.pagePadding,
-            children: [
-              Text(
-                username != null ? l10n.homeGreeting(username) : l10n.homeGreetingGeneric,
-                style: theme.textTheme.headlineMedium,
-              ),
-              HomeStyles.sectionGap,
-              currentLesson.when(
-                loading: () => const LoadingView(),
-                error: (_, _) => EmptyState(
-                  icon: Icons.cloud_off,
-                  title: l10n.homeError,
-                  action: FilledButton.tonal(
-                    onPressed: () => ref.invalidate(currentLessonProvider),
-                    child: Text(l10n.commonRetry),
-                  ),
-                ),
-                data: (data) => data.hasRecent && data.lesson != null
-                    ? _ContinueCard(lesson: data.lesson!)
-                    : EmptyState(
-                        icon: Icons.menu_book_outlined,
-                        title: l10n.homeNoRecentTitle,
-                        message: l10n.homeNoRecentMessage,
-                      ),
-              ),
-              HomeStyles.sectionGap,
-              _BooksEntry(label: l10n.homeBrowseBooks),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-/// Resume-lesson card: tapping it deep-links into lesson study.
-class _ContinueCard extends StatelessWidget {
-  const _ContinueCard({required this.lesson});
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabs = TabController(
+    length: 3,
+    initialIndex: _reviewTab,
+    vsync: this,
+  );
 
-  final CurrentLessonInfo lesson;
+  @override
+  void dispose() {
+    _tabs.dispose();
+    super.dispose();
+  }
+
+  /// Switching tabs while a trainer runs asks first (the web's home guard).
+  Future<void> _select(int target) async {
+    if (target == _tabs.index) return;
+    if (ref.read(activityRunningProvider)) {
+      final leave = await confirmLeaveSession(context, forTabSwitch: true);
+      if (!leave || !mounted) return;
+      ref.read(activityRunningProvider.notifier).set(false);
+    }
+    _tabs.animateTo(target);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    return Card(
-      child: InkWell(
-        onTap: () => context.push('/lesson/${lesson.passageId}'),
-        child: Padding(
-          padding: HomeStyles.cardPadding,
-          child: Row(
-            children: [
-              Icon(Icons.play_circle_fill, color: theme.colorScheme.primary, size: 40),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    final username = ref
+        .watch(authNotifierProvider)
+        .asData
+        ?.value
+        .user
+        ?.username;
+    final running = ref.watch(activityRunningProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: HomeStyles.greetingPadding,
+          child: Text(
+            username != null
+                ? l10n.homeGreeting(username)
+                : l10n.homeGreetingGeneric,
+            style: HomeStyles.greetingStyle,
+          ),
+        ),
+        Padding(
+          padding: HomeStyles.tabsOuterPadding,
+          child: AnimatedBuilder(
+            animation: _tabs.animation!,
+            builder: (context, _) {
+              final selected = _tabs.animation!.value.round();
+              return Container(
+                decoration: HomeStyles.tabsDecoration,
+                padding: HomeStyles.tabsPadding,
+                child: Row(
                   children: [
-                    Text(l10n.homeContinueTitle, style: theme.textTheme.titleLarge),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.homeContinueSubtitle(lesson.hskLevel, lesson.lesson, lesson.part),
-                      style: theme.textTheme.bodyMedium,
+                    _DashboardTab(
+                      icon: Icons.history,
+                      label: l10n.homeTabReview,
+                      selected: selected == _reviewTab,
+                      onTap: () => _select(_reviewTab),
+                    ),
+                    HomeStyles.tabsGap,
+                    _DashboardTab(
+                      icon: Icons.menu_book_outlined,
+                      label: l10n.homeTabLesson,
+                      selected: selected == _lessonTab,
+                      onTap: () => _select(_lessonTab),
+                    ),
+                    HomeStyles.tabsGap,
+                    _DashboardTab(
+                      icon: Icons.explore_outlined,
+                      label: l10n.homeTabRecommend,
+                      selected: selected == _recommendTab,
+                      onTap: () => _select(_recommendTab),
                     ),
                   ],
                 ),
-              ),
-              const Icon(Icons.chevron_right),
-            ],
+              );
+            },
           ),
         ),
-      ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabs,
+            // No swiping away from a running trainer.
+            physics: running ? const NeverScrollableScrollPhysics() : null,
+            children: const [ReviewTab(), LessonTab(), RecommendTab()],
+          ),
+        ),
+      ],
     );
   }
 }
 
-/// Entry point to the Books list.
-class _BooksEntry extends StatelessWidget {
-  const _BooksEntry({required this.label});
+/// `.learner-home-tab`: icon + label pill sharing the bar's width equally; the
+/// selected one is sage-filled with white text. (The web hides the due-count
+/// badge on phones, so it is not drawn.)
+class _DashboardTab extends StatelessWidget {
+  const _DashboardTab({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
+  final IconData icon;
   final String label;
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.library_books_outlined),
-        title: Text(label),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () => context.push('/books'),
+    final color = selected ? Colors.white : HomeStyles.tabTextColor;
+    return Expanded(
+      child: Material(
+        color: selected ? HomeStyles.tabSelectedBg : Colors.transparent,
+        borderRadius: HomeStyles.tabRadius,
+        child: InkWell(
+          borderRadius: HomeStyles.tabRadius,
+          onTap: onTap,
+          child: Padding(
+            padding: HomeStyles.tabPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: HomeStyles.tabIconSize, color: color),
+                HomeStyles.tabIconGap,
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: HomeStyles.tabLabelStyle.copyWith(color: color),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

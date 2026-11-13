@@ -43,4 +43,24 @@ class AuthUser {
       uiLanguage: optString(json, 'ui_language'),
     );
   }
+
+  /// Returns a copy with the given display preferences overridden (used when a
+  /// settings change is saved, so the in-memory user stays in sync).
+  AuthUser copyWith({
+    String? hanziFont,
+    String? hanziScript,
+    String? uiLanguage,
+  }) {
+    return AuthUser(
+      id: id,
+      username: username,
+      email: email,
+      level: level,
+      avatarPath: avatarPath,
+      avatarUrl: avatarUrl,
+      hanziFont: hanziFont ?? this.hanziFont,
+      hanziScript: hanziScript ?? this.hanziScript,
+      uiLanguage: uiLanguage ?? this.uiLanguage,
+    );
+  }
 }
