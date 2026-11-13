@@ -83,7 +83,7 @@ class _CompetitionPageState extends ConsumerState<CompetitionPage> {
     final controller = _controller;
 
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       appBar: AppBar(
         title: Text(l10n.competitionTitle),
         backgroundColor: BrandColors.background,

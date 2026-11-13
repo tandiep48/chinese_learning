@@ -34,7 +34,7 @@ class AppShell extends StatelessWidget {
     };
 
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       appBar: AppBar(title: Text(title)),
       drawer: const NavDrawer(),
       body: SafeArea(top: false, child: child),

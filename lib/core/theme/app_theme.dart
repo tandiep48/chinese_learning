@@ -113,7 +113,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      scaffoldBackgroundColor: BrandColors.background,
+      scaffoldBackgroundColor: BrandColors.card,
       fontFamily: 'Roboto',
       textTheme: _textTheme,
       appBarTheme: const AppBarTheme(

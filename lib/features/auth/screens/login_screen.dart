@@ -69,7 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

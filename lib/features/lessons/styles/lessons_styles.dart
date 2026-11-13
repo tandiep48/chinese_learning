@@ -153,7 +153,7 @@ class LessonsStyles {
 
   // ── Library tabs (`learning-tabs.css`: underline tabs, sage active) ───────
   static const BoxDecoration libraryTabBarDecoration = BoxDecoration(
-    color: BrandColors.background,
+    color: BrandColors.card,
     border: Border(
       bottom: BorderSide(color: BrandColors.bookCardBorder, width: 2),
     ),

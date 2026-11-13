@@ -93,7 +93,7 @@ class _VocabSelectScreenState extends ConsumerState<VocabSelectScreen> {
     final l10n = AppLocalizations.of(context);
     final c = _controller!;
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       appBar: AppBar(
         backgroundColor: BrandColors.background,
         title: Text(l10n.vocabTitle),

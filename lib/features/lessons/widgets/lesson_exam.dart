@@ -167,7 +167,7 @@ class _LessonWideTrainerScreenState
     }
 
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       appBar: AppBar(
         backgroundColor: BrandColors.background,
         title: Text(

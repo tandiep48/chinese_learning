@@ -44,7 +44,7 @@ class _VocabFlashcardScreenState extends ConsumerState<VocabFlashcardScreen> {
     final isVi = Localizations.localeOf(context).languageCode == 'vi';
 
     return Scaffold(
-      backgroundColor: BrandColors.background,
+      backgroundColor: BrandColors.card,
       appBar: AppBar(
         backgroundColor: BrandColors.background,
         title: Text(l10n.vocabFlashcardsTitle),
