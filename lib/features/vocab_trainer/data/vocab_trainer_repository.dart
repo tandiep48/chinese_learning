@@ -38,14 +38,14 @@ class VocabRecord {
   final String meaningEn;
 
   Map<String, dynamic> toJson() => {
-        'type': type,
-        'word': word,
-        'round_num': roundNum,
-        'user_answer': userAnswer,
-        'is_correct': isCorrect,
-        'response_time_ms': 0,
-        'game_info': {'pinyin': pinyin, 'meaning_en': meaningEn},
-      };
+    'type': type,
+    'word': word,
+    'round_num': roundNum,
+    'user_answer': userAnswer,
+    'is_correct': isCorrect,
+    'response_time_ms': 0,
+    'game_info': {'pinyin': pinyin, 'meaning_en': meaningEn},
+  };
 }
 
 class VocabTrainerRepository {
@@ -54,11 +54,23 @@ class VocabTrainerRepository {
   final ApiClient _api;
 
   /// Resolve the part's trainer words; returns [] on any failure.
-  Future<List<TrainerWord>> resolveWords(String passageId) async {
+  Future<List<TrainerWord>> resolveWords(String passageId) =>
+      resolveWordsFor([passageId]);
+
+  /// Resolve the de-duplicated union of several parts' words (master trainer).
+  Future<List<TrainerWord>> resolveWordsFor(List<String> passageIds) async {
     try {
-      final data =
-          await _api.postRaw('/api/vocab/words', body: {'passage_id': passageId});
-      final rows = modelList(asMap(data, what: 'words'), 'words', TrainerWord.fromJson);
+      final data = await _api.postRaw(
+        '/api/vocab/words',
+        body: passageIds.length == 1
+            ? {'passage_id': passageIds.first}
+            : {'passage_ids': passageIds},
+      );
+      final rows = modelList(
+        asMap(data, what: 'words'),
+        'words',
+        TrainerWord.fromJson,
+      );
       return rows.where((w) => w.word.isNotEmpty).toList();
     } catch (_) {
       return const [];
@@ -69,10 +81,13 @@ class VocabTrainerRepository {
   Future<void> submitBatch(int sessionId, List<VocabRecord> records) async {
     if (records.isEmpty) return;
     try {
-      await _api.postRaw('/api/vocab/submit-batch', body: {
-        'session_id': sessionId,
-        'records': [for (final r in records) r.toJson()],
-      });
+      await _api.postRaw(
+        '/api/vocab/submit-batch',
+        body: {
+          'session_id': sessionId,
+          'records': [for (final r in records) r.toJson()],
+        },
+      );
     } catch (_) {
       // Best-effort progress logging.
     }

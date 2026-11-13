@@ -44,25 +44,35 @@ class VocabTrainerRecap extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(Icons.check_circle,
-                    size: VocabTrainerStyles.recapIconSize,
-                    color: BrandColors.success),
+                const Icon(
+                  Icons.check_circle,
+                  size: VocabTrainerStyles.recapIconSize,
+                  color: BrandColors.success,
+                ),
                 VocabTrainerStyles.recapGap,
-                Text(l10n.vocabCompleteTitle,
-                    textAlign: TextAlign.center,
-                    style: VocabTrainerStyles.recapHeading),
+                Text(
+                  l10n.vocabCompleteTitle,
+                  textAlign: TextAlign.center,
+                  style: VocabTrainerStyles.recapHeading,
+                ),
                 VocabTrainerStyles.recapSmallGap,
-                Text(l10n.trainerScore(correct, total),
-                    textAlign: TextAlign.center,
-                    style: VocabTrainerStyles.recapScore),
+                Text(
+                  l10n.trainerScore(correct, total),
+                  textAlign: TextAlign.center,
+                  style: VocabTrainerStyles.recapScore,
+                ),
                 VocabTrainerStyles.recapGap,
                 if (missed.isEmpty)
-                  Text(l10n.lessonPerfect,
-                      textAlign: TextAlign.center,
-                      style: VocabTrainerStyles.recapMeaning)
+                  Text(
+                    l10n.lessonPerfect,
+                    textAlign: TextAlign.center,
+                    style: VocabTrainerStyles.recapMeaning,
+                  )
                 else ...[
-                  Text(l10n.lessonRecapTitle,
-                      style: VocabTrainerStyles.recapSectionTitle),
+                  Text(
+                    l10n.lessonRecapTitle,
+                    style: VocabTrainerStyles.recapSectionTitle,
+                  ),
                   VocabTrainerStyles.recapGap,
                   for (var i = 0; i < missed.length; i++) ...[
                     if (i > 0) VocabTrainerStyles.recapRowGap,
@@ -85,6 +95,7 @@ class VocabTrainerRecap extends StatelessWidget {
           onExit: onExit,
           primaryLabel: l10n.milestoneContinue,
           onPrimary: onDone,
+          confirmQuit: false,
         ),
       ],
     );
@@ -107,8 +118,10 @@ class _MissedRow extends StatelessWidget {
         children: [
           Text(word.word, style: VocabTrainerStyles.recapWord),
           VocabTrainerStyles.recapSmallGap,
-          Text('${word.pinyin} · ${word.meaning(isVi)}',
-              style: VocabTrainerStyles.recapMeaning),
+          Text(
+            '${word.pinyin} · ${word.meaning(isVi)}',
+            style: VocabTrainerStyles.recapMeaning,
+          ),
         ],
       ),
     );

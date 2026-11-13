@@ -16,8 +16,10 @@ class Env {
   const Env._();
 
   /// Explicit override wins (physical device on a LAN, staging, etc.).
-  static const String _override =
-      String.fromEnvironment('API_BASE_URL', defaultValue: '');
+  static const String _override = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: '',
+  );
 
   static const int _port = 5000;
 

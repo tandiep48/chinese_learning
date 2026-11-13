@@ -16,6 +16,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/empty_state.dart';
+import '../../../shared/widgets/trainer_dialogs.dart';
 import '../../../shared/widgets/loading_view.dart';
 import '../data/lesson_trainer_repository.dart';
 import '../data/missed_task.dart';
@@ -31,12 +32,25 @@ enum _Screen { loading, blocked, training, complete }
 class LessonTrainerPage extends ConsumerStatefulWidget {
   const LessonTrainerPage({
     super.key,
-    required this.passageId,
+    this.passageId,
+    this.passageIds,
+    this.types,
     required this.onExit,
     required this.onFinished,
-  });
+  }) : assert(
+         passageId != null || (passageIds != null && passageIds.length > 0),
+         'Provide a passageId, or passageIds for master mode.',
+       );
 
-  final String passageId;
+  /// The single part to drill (milestone step 6).
+  final String? passageId;
+
+  /// Several parts drilled in one "master" session (end-of-lesson trainer).
+  final List<String>? passageIds;
+
+  /// The skills picked in the train-type picker (`listening` / `meaning` /
+  /// `typing` / `reorder`); null drills every task.
+  final List<String>? types;
   final VoidCallback onExit;
   final VoidCallback onFinished;
 
@@ -60,13 +74,22 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
     _start();
   }
 
+  List<String> get _ids => widget.passageIds ?? [widget.passageId!];
+  bool get _master => widget.passageIds != null;
+
   LessonTrainerRepository get _repo =>
       ref.read(lessonTrainerRepositoryProvider);
 
   Future<void> _start() async {
     try {
-      final session = await _repo.startSession(widget.passageId);
-      final tasks = session.tasks;
+      final session = await _repo.startSession(_ids, master: _master);
+      final allowed = widget.types;
+      final tasks = (allowed == null || allowed.isEmpty)
+          ? session.tasks
+          : [
+              for (final t in session.tasks)
+                if (allowed.contains(t.type)) t,
+            ];
       if (!mounted) return;
       if (tasks.isEmpty) {
         setState(() {
@@ -120,11 +143,18 @@ class _LessonTrainerPageState extends ConsumerState<LessonTrainerPage> {
 
   Future<void> _finish() async {
     _correct = (_total - _missed.length).clamp(0, _total);
-    await _repo.completePart(
-      passageId: widget.passageId,
-      total: _total,
-      correct: _correct,
-    );
+    // Master mode records the round against every part it covered.
+    await Future.wait([
+      for (final id in _ids)
+        _repo.completePart(
+          passageId: id,
+          total: _total,
+          correct: _correct,
+          master: _master,
+        ),
+    ]);
+    if (!mounted) return;
+    await showTrainerSuccessPopup(context, total: _total, correct: _correct);
     if (!mounted) return;
     setState(() => _screen = _Screen.complete);
   }

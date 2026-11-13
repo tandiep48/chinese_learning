@@ -25,27 +25,40 @@ class ProfileStyles {
   static const EdgeInsets cardPadding = EdgeInsets.all(16);
 
   // ── Header ────────────────────────────────────────────────────────────────
-  static const double avatarSize = 64;
+  static const double avatarSize = 112;
   static const BoxDecoration avatarDecoration = BoxDecoration(
     color: BrandColors.navTeal,
     shape: BoxShape.circle,
   );
   static const TextStyle avatarInitial = TextStyle(
-    fontSize: 28,
+    fontSize: 43,
     fontWeight: FontWeight.w800,
     color: Colors.white,
   );
   static const TextStyle usernameStyle = TextStyle(
-    fontSize: 22,
+    fontSize: 25.6,
     fontWeight: FontWeight.w800,
-    color: BrandColors.darkText,
+    color: BrandColors.studyText,
   );
+  static const TextStyle emailStyle = TextStyle(
+    fontSize: 16,
+    color: BrandColors.studyMuted,
+  );
+  static const double badgeHeight = 150;
+
+  /// `.profile-section`: sage @4% card, `1px` sage @8% border, `8px` radius, `20px` padding.
+  static final BoxDecoration sectionDecoration = BoxDecoration(
+    color: const Color(0x0A576856),
+    border: Border.all(color: const Color(0x14576856)),
+    borderRadius: BorderRadius.circular(8),
+  );
+  static const EdgeInsets sectionPadding = EdgeInsets.all(20);
 
   // ── Section heading ─────────────────────────────────────────────────────
   static const TextStyle sectionHeading = TextStyle(
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: BrandColors.darkText,
+    color: BrandColors.studyText,
   );
 
   // ── Headline figures ──────────────────────────────────────────────────────

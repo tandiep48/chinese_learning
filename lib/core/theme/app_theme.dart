@@ -17,27 +17,47 @@ class BrandColors {
   const BrandColors._();
 
   // Core learner palette (sage/mint) — tokens.css & learner-theme.css
-  static const Color primary = Color(0xFF576856); // --brand-primary / --learner-primary
+  static const Color primary = Color(
+    0xFF576856,
+  ); // --brand-primary / --learner-primary
   static const Color primaryHover = Color(0xFF455544); // --brand-primary-hover
-  static const Color background = Color(0xFFCBE2D4); // --brand-bg / --learner-bg (mint)
-  static const Color card = Color(0xFFFFFFFF); // --brand-card-bg / --learner-card
+  static const Color background = Color(
+    0xFFCBE2D4,
+  ); // --brand-bg / --learner-bg (mint)
+  static const Color card = Color(
+    0xFFFFFFFF,
+  ); // --brand-card-bg / --learner-card
   static const Color secondarySurface = Color(0xFFF0F4F1); // --brand-secondary
-  static const Color secondaryHover = Color(0xFFE0E8E1); // --brand-secondary-hover
+  static const Color secondaryHover = Color(
+    0xFFE0E8E1,
+  ); // --brand-secondary-hover
   static const Color bodyText = Color(0xFF576856); // --brand-text-main
   static const Color mutedText = Color(0xFF738A72); // --brand-text-muted
-  static const Color learnerBorder = Color(0x1F576856); // rgba(87, 104, 86, 0.12)
-  static const Color sageSubtleBg = Color(0x14576856); // rgba(87, 104, 86, 0.08)
+  static const Color learnerBorder = Color(
+    0x1F576856,
+  ); // rgba(87, 104, 86, 0.12)
+  static const Color sageSubtleBg = Color(
+    0x14576856,
+  ); // rgba(87, 104, 86, 0.08)
 
   // Teal nav / study / dashboard variant — learner-theme.css & lesson-study.css
-  static const Color navTeal = Color(0xFF007A61); // --learner-nav / --ls-primary
+  static const Color navTeal = Color(
+    0xFF007A61,
+  ); // --learner-nav / --ls-primary
   static const Color navTealHover = Color(0xFF00634F); // --ls-primary-hover
   static const Color studyTealLight = Color(0xFFE0EFE9); // --ls-primary-light
   static const Color dashboardBg = Color(0xFFEEF6DF); // --brand-dashboard-bg
-  static const Color dashboardBorder = Color(0xFFD7E3C6); // --brand-dashboard-border
-  static const Color mintBorder = Color(0xFFAFCFBD); // recent-lesson-panel border
+  static const Color dashboardBorder = Color(
+    0xFFD7E3C6,
+  ); // --brand-dashboard-border
+  static const Color mintBorder = Color(
+    0xFFAFCFBD,
+  ); // recent-lesson-panel border
 
   // Neutral / surface borders & text from picker / study CSS
-  static const Color darkText = Color(0xFF111111); // picker / dashboard heading text
+  static const Color darkText = Color(
+    0xFF111111,
+  ); // picker / dashboard heading text
   static const Color subtitleText = Color(0xFF333333);
   static const Color studyText = Color(0xFF111827); // --ls-text
   static const Color studyMuted = Color(0xFF4B5563); // --ls-muted
@@ -75,19 +95,20 @@ class AppTheme {
   );
 
   static ThemeData get light {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: BrandColors.primary,
-      brightness: Brightness.light,
-    ).copyWith(
-      primary: BrandColors.primary,
-      secondary: BrandColors.navTeal,
-      surface: BrandColors.card,
-      surfaceContainerLowest: BrandColors.card,
-      surfaceContainer: BrandColors.secondarySurface,
-      onSurface: BrandColors.bodyText,
-      onSurfaceVariant: BrandColors.mutedText,
-      error: BrandColors.danger,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: BrandColors.primary,
+          brightness: Brightness.light,
+        ).copyWith(
+          primary: BrandColors.primary,
+          secondary: BrandColors.navTeal,
+          surface: BrandColors.card,
+          surfaceContainerLowest: BrandColors.card,
+          surfaceContainer: BrandColors.secondarySurface,
+          onSurface: BrandColors.bodyText,
+          onSurfaceVariant: BrandColors.mutedText,
+          error: BrandColors.danger,
+        );
 
     return ThemeData(
       useMaterial3: true,

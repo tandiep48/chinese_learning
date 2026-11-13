@@ -14,7 +14,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../core/api/api_client.dart';
 
 final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
-  return SettingsRepository(ref.read(apiClientProvider), const FlutterSecureStorage());
+  return SettingsRepository(
+    ref.read(apiClientProvider),
+    const FlutterSecureStorage(),
+  );
 });
 
 class SettingsRepository {

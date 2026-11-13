@@ -51,25 +51,35 @@ class LessonTrainerRecap extends StatelessWidget {
                   color: BrandColors.success,
                 ),
                 LessonTrainerStyles.recapGap,
-                Text(l10n.lessonCompleteTitle,
-                    textAlign: TextAlign.center,
-                    style: LessonTrainerStyles.recapHeading),
+                Text(
+                  l10n.lessonCompleteTitle,
+                  textAlign: TextAlign.center,
+                  style: LessonTrainerStyles.recapHeading,
+                ),
                 LessonTrainerStyles.recapSmallGap,
-                Text(l10n.lessonCompleteBody,
-                    textAlign: TextAlign.center,
-                    style: LessonTrainerStyles.recapBody),
+                Text(
+                  l10n.lessonCompleteBody,
+                  textAlign: TextAlign.center,
+                  style: LessonTrainerStyles.recapBody,
+                ),
                 LessonTrainerStyles.recapSmallGap,
-                Text(l10n.trainerScore(correct, total),
-                    textAlign: TextAlign.center,
-                    style: LessonTrainerStyles.recapScore),
+                Text(
+                  l10n.trainerScore(correct, total),
+                  textAlign: TextAlign.center,
+                  style: LessonTrainerStyles.recapScore,
+                ),
                 LessonTrainerStyles.recapGap,
                 if (missed.isEmpty)
-                  Text(l10n.lessonPerfect,
-                      textAlign: TextAlign.center,
-                      style: LessonTrainerStyles.recapBody)
+                  Text(
+                    l10n.lessonPerfect,
+                    textAlign: TextAlign.center,
+                    style: LessonTrainerStyles.recapBody,
+                  )
                 else ...[
-                  Text(l10n.lessonRecapTitle,
-                      style: LessonTrainerStyles.recapSectionTitle),
+                  Text(
+                    l10n.lessonRecapTitle,
+                    style: LessonTrainerStyles.recapSectionTitle,
+                  ),
                   LessonTrainerStyles.recapGap,
                   for (var i = 0; i < missed.length; i++) ...[
                     if (i > 0) LessonTrainerStyles.recapRowGap,
@@ -92,6 +102,7 @@ class LessonTrainerRecap extends StatelessWidget {
           onExit: onExit,
           primaryLabel: l10n.milestoneContinue,
           onPrimary: onDone,
+          confirmQuit: false,
         ),
       ],
     );
@@ -118,10 +129,14 @@ class _MissedRow extends StatelessWidget {
         children: [
           Text(question, style: LessonTrainerStyles.recapQuestion),
           LessonTrainerStyles.recapSmallGap,
-          Text('${l10n.lessonTableYourAnswer}: ${missed.userAnswer}',
-              style: LessonTrainerStyles.recapYourAnswer),
-          Text('${l10n.lessonTableCorrectAnswer}: ${missed.task.correctAnswer}',
-              style: LessonTrainerStyles.recapCorrectAnswer),
+          Text(
+            '${l10n.lessonTableYourAnswer}: ${missed.userAnswer}',
+            style: LessonTrainerStyles.recapYourAnswer,
+          ),
+          Text(
+            '${l10n.lessonTableCorrectAnswer}: ${missed.task.correctAnswer}',
+            style: LessonTrainerStyles.recapCorrectAnswer,
+          ),
         ],
       ),
     );

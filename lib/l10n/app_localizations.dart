@@ -950,10 +950,10 @@ abstract class AppLocalizations {
   /// **'Nothing to review right now.'**
   String get reviewEmptyReview;
 
-  /// No description provided for @reviewLoading.
+  /// Profile review: loading.
   ///
   /// In en, this message translates to:
-  /// **'Loading your words...'**
+  /// **'Loading your history…'**
   String get reviewLoading;
 
   /// No description provided for @reviewLoadFailed.
@@ -1562,18 +1562,6 @@ abstract class AppLocalizations {
   /// **'HSK 1 - Lesson 1'**
   String get pinyinLessonHeading;
 
-  /// No description provided for @pinyinGuideEntry.
-  ///
-  /// In en, this message translates to:
-  /// **'Pinyin Guide'**
-  String get pinyinGuideEntry;
-
-  /// No description provided for @numbersEntry.
-  ///
-  /// In en, this message translates to:
-  /// **'Numbers'**
-  String get numbersEntry;
-
   /// No description provided for @pinyinBasic.
   ///
   /// In en, this message translates to:
@@ -1832,11 +1820,53 @@ abstract class AppLocalizations {
   /// **'Vocabulary Complete!'**
   String get vocabCompleteTitle;
 
-  /// Hint on a flash card's front face.
+  /// Flash card typing field hint.
   ///
   /// In en, this message translates to:
-  /// **'Tap to reveal'**
-  String get flashTapToFlip;
+  /// **'Type character here...'**
+  String get flashTypingPlaceholder;
+
+  /// Lesson card typing field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the sentence here...'**
+  String get lessonCardTypingPlaceholder;
+
+  /// Card learner control: previous card.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get cardPrev;
+
+  /// Card learner control: next card.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get cardNext;
+
+  /// Card learner control: play audio and reveal.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio + reveal'**
+  String get cardAudioReveal;
+
+  /// Card learner control: toggle pinyin and meaning.
+  ///
+  /// In en, this message translates to:
+  /// **'Show/hide'**
+  String get cardReveal;
+
+  /// Card learner control: shuffle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get cardShuffle;
+
+  /// Card learner control: stroke order.
+  ///
+  /// In en, this message translates to:
+  /// **'Stroke order'**
+  String get cardStroke;
 
   /// Learn Together (competition) feature title.
   ///
@@ -2251,6 +2281,642 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not create room.'**
   String get competitionCouldNotCreateRoom;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Levels'**
+  String get pickerBackToLevels;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Lessons'**
+  String get pickerBackToLessons;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Part'**
+  String get pickerSelectPart;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get pickerNumberPart;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get pickerWordsLabel;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson'**
+  String get pickerLessonProgressLabel;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Grammar'**
+  String get pickerGrammar;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation'**
+  String get pickerTranslation;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinyin Guide'**
+  String get pickerPinyinGuide;
+
+  /// Lesson picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading parts...'**
+  String get pickerLoadingParts;
+
+  /// Milestone nav bar button.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get milestonePrevious;
+
+  /// Milestone nav bar button.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get milestoneNext;
+
+  /// Word popup: save the word to the book's list.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to list'**
+  String get wordAddToList;
+
+  /// Word popup: the word is already saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get wordAdded;
+
+  /// Trainer quit-confirm dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Quit Session?'**
+  String get trainerQuitTitle;
+
+  /// Trainer quit-confirm dialog body.
+  ///
+  /// In en, this message translates to:
+  /// **'Your current progress won\'t be saved.\nAre you sure you want to quit?'**
+  String get trainerQuitBody;
+
+  /// Trainer quit-confirm dialog cancel button.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get trainerCancel;
+
+  /// Trainer quit-confirm dialog confirm button.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Quit'**
+  String get trainerYesQuit;
+
+  /// Round-end popup title for a perfect round.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Score! 🎉'**
+  String get successPerfectTitle;
+
+  /// Round-end popup title.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Complete!'**
+  String get successCompleteTitle;
+
+  /// Round-end popup stat label.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get successStatTasks;
+
+  /// Round-end popup stat label.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get successStatCorrect;
+
+  /// Round-end popup stat label.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get successStatAccuracy;
+
+  /// Lesson flow: Translation's Next, rolls to the next lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Next lesson'**
+  String get flowNextLesson;
+
+  /// Lesson flow: shown instead of Next lesson on a level's last lesson.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson complete'**
+  String get flowLessonComplete;
+
+  /// Lesson flow: next-lesson confirm title.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the next lesson?'**
+  String get flowNextLessonTitle;
+
+  /// Lesson flow: next-lesson confirm body.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve finished this lesson. Move on to the first part of the next lesson?'**
+  String get flowNextLessonBody;
+
+  /// Lesson flow: decline the next-lesson confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get flowNotYet;
+
+  /// Mid-session guard dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Session in progress'**
+  String get guardTitle;
+
+  /// Mid-session guard body when switching dashboard tabs.
+  ///
+  /// In en, this message translates to:
+  /// **'You have an activity running. Switching tabs will end it — your answers so far are saved.'**
+  String get guardBodyTab;
+
+  /// Mid-session guard body when using the navigation.
+  ///
+  /// In en, this message translates to:
+  /// **'You have an activity running. Leaving this page will end it — your answers so far are saved.'**
+  String get guardBodyNav;
+
+  /// Mid-session guard: keep the session.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay here'**
+  String get guardStay;
+
+  /// Mid-session guard: confirm switching tabs.
+  ///
+  /// In en, this message translates to:
+  /// **'End and switch'**
+  String get guardLeaveTab;
+
+  /// Mid-session guard: confirm leaving the page.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave anyway'**
+  String get guardLeaveNav;
+
+  /// End-of-lesson Master Vocab confirm title.
+  ///
+  /// In en, this message translates to:
+  /// **'Review all the lesson\'s vocabulary?'**
+  String get masterVocabConfirmTitle;
+
+  /// End-of-lesson Master Vocab confirm body.
+  ///
+  /// In en, this message translates to:
+  /// **'Practise every word from this lesson in one session before moving on.'**
+  String get masterVocabConfirmBody;
+
+  /// End-of-lesson Master Lesson confirm title.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the whole lesson?'**
+  String get masterLessonConfirmTitle;
+
+  /// End-of-lesson Master Lesson confirm body.
+  ///
+  /// In en, this message translates to:
+  /// **'Practise all of this lesson\'s sentences in one session before moving on.'**
+  String get masterLessonConfirmBody;
+
+  /// Master vocab trainer heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Vocab Trainer'**
+  String get masterVocabTitle;
+
+  /// Master lesson trainer heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Lesson Trainer'**
+  String get masterLessonTitle;
+
+  /// Master trainer confirm: begin.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get masterStart;
+
+  /// Master trainer confirm / nav: skip this trainer.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get masterSkip;
+
+  /// Lesson trainer skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Meaning'**
+  String get trainPickerSkillMeaning;
+
+  /// Lesson trainer skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder'**
+  String get trainPickerSkillReorder;
+
+  /// Part picker: whole-lesson exam entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam'**
+  String get pickerExam;
+
+  /// Exam engine chooser subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what to practise'**
+  String get examChooserSubtitle;
+
+  /// Exam chooser option.
+  ///
+  /// In en, this message translates to:
+  /// **'Vocab Trainer'**
+  String get pickerVocabTrainer;
+
+  /// Exam chooser option.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Trainer'**
+  String get pickerLessonTrainer;
+
+  /// Profile: review panel heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Review'**
+  String get reviewTitle;
+
+  /// Profile review: empty title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to review yet'**
+  String get reviewEmptyTitle;
+
+  /// Profile review: empty hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a practice or exam session and it will show up here.'**
+  String get reviewEmptySub;
+
+  /// Profile review: load error.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load your history.'**
+  String get reviewFailedLoad;
+
+  /// Profile review: question count of a session.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question} other{{count} questions}}'**
+  String reviewQuestions(int count);
+
+  /// Profile review: back to the list.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to sessions'**
+  String get reviewBackToList;
+
+  /// Profile review: correct badge / filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get reviewCorrectBadge;
+
+  /// Profile review: incorrect badge / filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect'**
+  String get reviewIncorrectBadge;
+
+  /// Profile review: result filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get reviewFilterResult;
+
+  /// Profile review: all results.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get reviewResultAll;
+
+  /// Profile review: all skills.
+  ///
+  /// In en, this message translates to:
+  /// **'All skills'**
+  String get reviewSkillAll;
+
+  /// Profile review: the learner's answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get reviewYourAnswer;
+
+  /// Profile review: the right answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer'**
+  String get reviewCorrectAnswer;
+
+  /// Profile review: unanswered.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer'**
+  String get reviewNoAnswer;
+
+  /// Profile review: question number.
+  ///
+  /// In en, this message translates to:
+  /// **'Question {n}'**
+  String reviewQuestionLabel(int n);
+
+  /// Profile review: question removed.
+  ///
+  /// In en, this message translates to:
+  /// **'This question is no longer in the question bank.'**
+  String get reviewDetailMissing;
+
+  /// Profile review: sort label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get reviewSort;
+
+  /// Profile review: newest first.
+  ///
+  /// In en, this message translates to:
+  /// **'Most recent'**
+  String get reviewSortRecent;
+
+  /// Profile review: oldest first.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest first'**
+  String get reviewSortOldest;
+
+  /// Profile review: past the last page.
+  ///
+  /// In en, this message translates to:
+  /// **'No more sessions to show.'**
+  String get reviewNoMore;
+
+  /// Profile review: page number.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page}'**
+  String reviewPageIndicator(int page);
+
+  /// Profile review: level filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get reviewLevel;
+
+  /// Profile review: all levels.
+  ///
+  /// In en, this message translates to:
+  /// **'All Levels'**
+  String get reviewAllLevels;
+
+  /// Profile review: category filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get reviewCategory;
+
+  /// Profile review: all categories.
+  ///
+  /// In en, this message translates to:
+  /// **'All Categories'**
+  String get reviewAllCategories;
+
+  /// Profile review: skill filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Skill'**
+  String get reviewSkill;
+
+  /// Profile review: reading skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading'**
+  String get reviewReading;
+
+  /// Profile review: listening skill.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get reviewListening;
+
+  /// Profile: change-password heading / button.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get profileChangePassword;
+
+  /// Profile: new password field.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get profileNewPassword;
+
+  /// Profile: confirm password field.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-type New Password'**
+  String get profileConfirmPassword;
+
+  /// Profile: passwords differ.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get profilePasswordMismatch;
+
+  /// Profile: empty new password.
+  ///
+  /// In en, this message translates to:
+  /// **'New password is required.'**
+  String get profilePasswordRequired;
+
+  /// Profile: password request in flight.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating password...'**
+  String get profilePasswordUpdating;
+
+  /// Profile: password update failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update password.'**
+  String get profilePasswordFailed;
+
+  /// Profile: password updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated.'**
+  String get profilePasswordUpdated;
+
+  /// Profile: avatar dialog title / button.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Avatar'**
+  String get profileUploadAvatar;
+
+  /// Profile: open the photo picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get profileChooseImage;
+
+  /// Profile: upload pressed with no image.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an avatar file first.'**
+  String get profileChooseAvatarFirst;
+
+  /// Profile: avatar upload in flight.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading...'**
+  String get profileUploading;
+
+  /// Profile: avatar upload failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed.'**
+  String get profileUploadFailed;
+
+  /// Profile: avatar uploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar updated.'**
+  String get profileAvatarUpdated;
+
+  /// Lesson sidebar: parts section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Lesson Parts'**
+  String get sidebarLessonParts;
+
+  /// Lesson sidebar: back to the part picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Part Selection'**
+  String get sidebarPartSelection;
+
+  /// Lesson sidebar: open button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Sidebar'**
+  String get sidebarOpen;
+
+  /// Lesson sidebar: empty parts.
+  ///
+  /// In en, this message translates to:
+  /// **'No parts found.'**
+  String get sidebarNoParts;
+
+  /// Lesson sidebar: parts error.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load parts.'**
+  String get sidebarFailedParts;
+
+  /// Reader: stops the Auto Play sequence.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get studyStopAutoPlay;
+
+  /// Recommend filter: all skills.
+  ///
+  /// In en, this message translates to:
+  /// **'All Skills'**
+  String get recommendAllSkills;
+
+  /// Recommend filter label.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get recommendStatus;
+
+  /// Recommend filter: all statuses.
+  ///
+  /// In en, this message translates to:
+  /// **'All Statuses'**
+  String get recommendAllStatuses;
+
+  /// Recommend multi-select bar count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item selected} other{{count} items selected}}'**
+  String recommendItemsSelected(int count);
+
+  /// Recommend multi-select bar action.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Selected'**
+  String get recommendStartSelected;
+
+  /// Recommend new-user call to action.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Vocabulary Trainer'**
+  String get recommendNewUserCta;
+
+  /// Word summary: play every word's audio.
+  ///
+  /// In en, this message translates to:
+  /// **'Play All'**
+  String get wordSummaryPlayAll;
+
+  /// Word summary: shuffle the card order.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuffle'**
+  String get wordSummaryShuffle;
+
+  /// Word summary: pinyin column toggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinyin'**
+  String get wordSummaryPinyin;
+
+  /// Word summary: meaning column toggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Meaning'**
+  String get wordSummaryMeaning;
 }
 
 class _AppLocalizationsDelegate

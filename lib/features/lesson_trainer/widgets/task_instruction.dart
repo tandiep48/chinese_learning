@@ -18,14 +18,18 @@ class TaskInstruction extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon,
-            size: LessonTrainerStyles.instructionIconSize,
-            color: BrandColors.primary),
+        Icon(
+          icon,
+          size: LessonTrainerStyles.instructionIconSize,
+          color: BrandColors.primary,
+        ),
         LessonTrainerStyles.instructionIconGap,
         Flexible(
-          child: Text(text,
-              textAlign: TextAlign.center,
-              style: LessonTrainerStyles.instructionStyle),
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: LessonTrainerStyles.instructionStyle,
+          ),
         ),
       ],
     );

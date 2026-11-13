@@ -94,6 +94,14 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
     state = const AsyncData(AuthState.signedOut);
   }
 
+  /// Replace the signed-in user (e.g. after the profile summary refreshed the
+  /// avatar / HSK level). No-op when signed out.
+  void setUser(AuthUser user) {
+    final current = state.asData?.value;
+    if (current == null || current.user == null) return;
+    state = AsyncData(AuthState(status: current.status, user: user));
+  }
+
   /// Patch the signed-in user's display preferences in place (after a settings
   /// save). No-op when signed out or while the launch check is still loading.
   void updateUser({

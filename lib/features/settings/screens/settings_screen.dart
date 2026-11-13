@@ -37,9 +37,8 @@ class SettingsScreen extends ConsumerWidget {
         await action();
       } catch (_) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.settingsSaveError)),
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(l10n.settingsSaveError)));
         }
       }
     }
@@ -57,19 +56,29 @@ class SettingsScreen extends ConsumerWidget {
             _Field(
               label: l10n.settingsLanguage,
               child: DropdownButtonFormField<String>(
-                initialValue: supportedLanguageCodes.contains(locale.languageCode)
+                initialValue:
+                    supportedLanguageCodes.contains(locale.languageCode)
                     ? locale.languageCode
                     : defaultLocale.languageCode,
                 decoration: SettingsStyles.fieldDecoration(),
                 style: SettingsStyles.valueStyle,
                 items: [
-                  DropdownMenuItem(value: 'vi', child: Text(l10n.settingsLangVi)),
-                  DropdownMenuItem(value: 'en', child: Text(l10n.settingsLangEn)),
+                  DropdownMenuItem(
+                    value: 'vi',
+                    child: Text(l10n.settingsLangVi),
+                  ),
+                  DropdownMenuItem(
+                    value: 'en',
+                    child: Text(l10n.settingsLangEn),
+                  ),
                 ],
                 onChanged: (code) {
                   if (code != null) {
-                    save(() =>
-                        ref.read(localeControllerProvider.notifier).setLanguage(code));
+                    save(
+                      () => ref
+                          .read(localeControllerProvider.notifier)
+                          .setLanguage(code),
+                    );
                   }
                 },
               ),

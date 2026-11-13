@@ -21,24 +21,24 @@ class CompetitionStyles {
   static const SizedBox wgap8 = SizedBox(width: 8);
   static const SizedBox wgap12 = SizedBox(width: 12);
 
-  /// A white content panel (`.competition-panel`).
+  /// `.competition-panel`: mint (`#cbe2d4`), `1px #afcfbd`, `8px` radius, `22px` padding.
   static final BoxDecoration panel = BoxDecoration(
-    color: BrandColors.card,
-    borderRadius: BorderRadius.circular(16),
-    border: Border.all(color: BrandColors.learnerBorder),
+    color: BrandColors.background,
+    borderRadius: BorderRadius.circular(8),
+    border: Border.all(color: BrandColors.mintBorder),
     boxShadow: const [
-      BoxShadow(color: Color(0x0F000000), blurRadius: 24, offset: Offset(0, 6)),
+      BoxShadow(color: Color(0x0A000000), blurRadius: 24, offset: Offset(0, 8)),
     ],
   );
-  static const EdgeInsets panelPadding = EdgeInsets.all(20);
+  static const EdgeInsets panelPadding = EdgeInsets.all(22);
 
   static const TextStyle h1 = TextStyle(
-    fontSize: 24,
+    fontSize: 28.8,
     fontWeight: FontWeight.w800,
     color: BrandColors.bodyText,
   );
   static const TextStyle h2 = TextStyle(
-    fontSize: 18,
+    fontSize: 19.2,
     fontWeight: FontWeight.w700,
     color: BrandColors.bodyText,
   );
@@ -60,25 +60,23 @@ class CompetitionStyles {
     color: BrandColors.mutedText,
   );
 
-  /// The room-code bar (`.competition-room-bar`).
+  /// `.competition-room-bar`: mint, `1px #afcfbd`, `8px` radius, `16px` padding.
   static final BoxDecoration roomBar = BoxDecoration(
-    color: BrandColors.studyTealLight,
-    borderRadius: BorderRadius.circular(12),
+    color: BrandColors.background,
+    border: Border.all(color: BrandColors.mintBorder),
+    borderRadius: BorderRadius.circular(8),
   );
-  static const EdgeInsets roomBarPadding = EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 12,
-  );
+  static const EdgeInsets roomBarPadding = EdgeInsets.all(16);
   static const TextStyle roomCode = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w800,
-    color: BrandColors.navTeal,
+    color: BrandColors.bodyText,
     letterSpacing: 1.5,
   );
 
   /// The live-score pill in the section bar (`.score-pill`).
   static final BoxDecoration scorePill = BoxDecoration(
-    color: BrandColors.navTeal,
+    color: BrandColors.primary,
     borderRadius: BorderRadius.circular(999),
   );
   static const EdgeInsets scorePillPadding = EdgeInsets.symmetric(
@@ -91,10 +89,12 @@ class CompetitionStyles {
     color: BrandColors.card,
   );
 
-  /// One ranking/scoreboard row (`.ranking-row`).
+  /// `.ranking-row` / `.member-row` / `.chat-message`: white, `1px #afcfbd`,
+  /// `8px` radius, `10×12` padding.
   static final BoxDecoration rankingRow = BoxDecoration(
-    color: BrandColors.secondarySurface,
-    borderRadius: BorderRadius.circular(10),
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.mintBorder),
+    borderRadius: BorderRadius.circular(8),
   );
   static const EdgeInsets rankingRowPadding = EdgeInsets.symmetric(
     horizontal: 12,
@@ -103,7 +103,7 @@ class CompetitionStyles {
   static const TextStyle rankBadge = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w800,
-    color: BrandColors.navTeal,
+    color: BrandColors.primary,
   );
   static const TextStyle rankName = TextStyle(
     fontSize: 15,
@@ -123,16 +123,15 @@ class CompetitionStyles {
     color: BrandColors.bodyText,
   );
   static const TextStyle memberRole = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
-    color: BrandColors.navTeal,
+    fontSize: 13.6,
+    color: BrandColors.mutedText,
   );
 
   /// A chat message (`.chat-message`).
   static const TextStyle chatAuthor = TextStyle(
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: BrandColors.navTeal,
+    color: BrandColors.bodyText,
   );
   static const TextStyle chatText = TextStyle(
     fontSize: 14,
@@ -141,30 +140,43 @@ class CompetitionStyles {
 
   /// Inline error line (`.competition-error`).
   static const TextStyle errorText = TextStyle(
-    fontSize: 13,
-    color: BrandColors.dangerText,
+    fontSize: 14,
+    color: Color(0xFFA12626),
+  );
+  static final BoxDecoration errorBox = BoxDecoration(
+    color: const Color(0xFFFFF1F1),
+    border: Border.all(color: const Color(0xFFE9BCBC)),
+    borderRadius: BorderRadius.circular(6),
+  );
+  static const EdgeInsets errorPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 10,
   );
 
-  /// An open-room browse card (`.open-room-card`).
+  /// An open-room browse card (`.member-row` look: white, mint border).
   static final BoxDecoration openRoomCard = BoxDecoration(
-    color: BrandColors.secondarySurface,
-    borderRadius: BorderRadius.circular(12),
-    border: Border.all(color: BrandColors.learnerBorder),
+    color: BrandColors.card,
+    borderRadius: BorderRadius.circular(8),
+    border: Border.all(color: BrandColors.mintBorder),
   );
   static const EdgeInsets openRoomPadding = EdgeInsets.all(12);
 
-  /// Primary / secondary buttons reused across the screens.
+  /// `.btn.primary`: sage (`#576856`) fill, white label, `8px` radius.
   static final ButtonStyle primaryButton = FilledButton.styleFrom(
-    backgroundColor: BrandColors.navTeal,
+    backgroundColor: BrandColors.primary,
     foregroundColor: BrandColors.card,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+    minimumSize: const Size(0, 52),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
   );
-  static final ButtonStyle secondaryButton = OutlinedButton.styleFrom(
-    foregroundColor: BrandColors.navTeal,
-    side: const BorderSide(color: BrandColors.navTeal),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+
+  /// `.btn`: pale sage (`#f0f4f1`) fill, sage label.
+  static final ButtonStyle secondaryButton = FilledButton.styleFrom(
+    backgroundColor: BrandColors.secondarySurface,
+    foregroundColor: BrandColors.bodyText,
+    minimumSize: const Size(0, 52),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
   );
 
   static InputDecoration inputDecoration(String? hint) => InputDecoration(
@@ -172,14 +184,14 @@ class CompetitionStyles {
     filled: true,
     fillColor: BrandColors.card,
     isDense: true,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    contentPadding: const EdgeInsets.all(12),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: BrandColors.neutralBorder),
+      borderSide: const BorderSide(color: Color(0x2E576856)),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: BrandColors.navTeal, width: 1.5),
+      borderSide: const BorderSide(color: BrandColors.primary, width: 1.5),
     ),
   );
 

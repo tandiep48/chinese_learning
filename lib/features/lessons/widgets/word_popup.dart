@@ -14,6 +14,7 @@ import '../../../core/audio/audio_player.dart';
 import '../../../core/media/gcs.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../data/lesson_repository.dart';
 import '../data/models/lesson_vocab_row.dart';
 import '../styles/lessons_styles.dart';
 import 'stroke_order_view.dart';
@@ -22,6 +23,7 @@ Future<void> showWordPopup(
   BuildContext context, {
   required String word,
   LessonVocabRow? entry,
+  String? savePassageId,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -31,15 +33,20 @@ Future<void> showWordPopup(
     constraints: const BoxConstraints(
       maxWidth: LessonsStyles.wordPopupMaxWidth,
     ),
-    builder: (context) => _WordPopupSheet(word: word, entry: entry),
+    builder: (context) =>
+        _WordPopupSheet(word: word, entry: entry, savePassageId: savePassageId),
   );
 }
 
 class _WordPopupSheet extends ConsumerStatefulWidget {
-  const _WordPopupSheet({required this.word, this.entry});
+  const _WordPopupSheet({required this.word, this.entry, this.savePassageId});
 
   final String word;
   final LessonVocabRow? entry;
+
+  /// Book-lesson passage whose personal list backs "Add to list"; null (HSK
+  /// passages) hides the button, as on the web.
+  final String? savePassageId;
 
   @override
   ConsumerState<_WordPopupSheet> createState() => _WordPopupSheetState();
@@ -47,6 +54,39 @@ class _WordPopupSheet extends ConsumerStatefulWidget {
 
 class _WordPopupSheetState extends ConsumerState<_WordPopupSheet> {
   bool _strokeOpen = false;
+  bool _saved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final id = widget.savePassageId;
+    if (id == null) return;
+    ref
+        .read(lessonRepositoryProvider)
+        .getSavedWords(id)
+        .then((words) {
+          if (mounted) setState(() => _saved = words.contains(widget.word));
+        })
+        .catchError((_) {});
+  }
+
+  /// Optimistic toggle; reverts when the request fails.
+  Future<void> _toggleSaved() async {
+    final id = widget.savePassageId;
+    if (id == null) return;
+    final repo = ref.read(lessonRepositoryProvider);
+    final wasSaved = _saved;
+    setState(() => _saved = !wasSaved);
+    try {
+      if (wasSaved) {
+        await repo.removeSavedWord(id, widget.word);
+      } else {
+        await repo.addSavedWord(id, widget.word);
+      }
+    } catch (_) {
+      if (mounted) setState(() => _saved = wasSaved);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,6 +178,24 @@ class _WordPopupSheetState extends ConsumerState<_WordPopupSheet> {
                           label: Text(l10n.wordStroke),
                         ),
                       ),
+                      if (widget.savePassageId != null) ...[
+                        LessonsStyles.wordPopupActionsBetweenGap,
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            style: _saved
+                                ? LessonsStyles.wordPopupButtonActiveStyle
+                                : LessonsStyles.wordPopupButtonStyle,
+                            onPressed: _toggleSaved,
+                            icon: Icon(
+                              _saved ? Icons.check : Icons.add,
+                              size: LessonsStyles.toolbarIconSize,
+                            ),
+                            label: Text(
+                              _saved ? l10n.wordAdded : l10n.wordAddToList,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                   if (_strokeOpen) StrokeOrderView(word: word),

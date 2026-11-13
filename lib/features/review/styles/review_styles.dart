@@ -52,37 +52,52 @@ class ReviewStyles {
     textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
   );
 
-  // ── Reveal toggle ─────────────────────────────────────────────────────────
+  // ── Study controls (`.vcl-study-btn`) ──────────────────────────────────────
+  /// Pill buttons: teal-filled while the column is shown, outlined and muted when
+  /// toggled off.
   static ButtonStyle revealStyle(bool active) => OutlinedButton.styleFrom(
-    backgroundColor: active ? BrandColors.studyTealLight : BrandColors.card,
-    foregroundColor: BrandColors.navTeal,
+    backgroundColor: active ? BrandColors.navTeal : Colors.transparent,
+    foregroundColor: active ? Colors.white : const Color(0xFF2B2B2B),
     side: BorderSide(
-      color: active ? BrandColors.navTeal : BrandColors.neutralBorder,
+      color: active ? BrandColors.navTeal : BrandColors.partItemBorder,
     ),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-    textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    minimumSize: const Size(0, 40),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+    textStyle: const TextStyle(fontSize: 14.4, fontWeight: FontWeight.w600),
   );
 
-  // ── Word card ─────────────────────────────────────────────────────────────
+  // ── Word card (`.vcl-card`) ───────────────────────────────────────────────
+  /// White, `1px #d9ded9`, `12px` radius, `12×14` padding.
   static final BoxDecoration cardDecoration = BoxDecoration(
     color: BrandColors.card,
-    border: Border.all(color: BrandColors.neutralBorder),
+    border: Border.all(color: BrandColors.partItemBorder),
     borderRadius: BorderRadius.circular(12),
   );
-  static const EdgeInsets cardPadding = EdgeInsets.all(14);
-  static const TextStyle hanzi = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.w700,
-    color: BrandColors.darkText,
+  static const EdgeInsets cardPadding = EdgeInsets.symmetric(
+    horizontal: 14,
+    vertical: 12,
   );
+
+  /// `.vcl-card-hanzi`: `1.9rem`, line-height `1.1`.
+  static const TextStyle hanzi = TextStyle(
+    fontSize: 30.4,
+    height: 1.1,
+    color: Color(0xFF111111),
+  );
+
+  /// `.vcl-card-pinyin`: teal, `0.95rem`, `600`.
   static const TextStyle pinyin = TextStyle(
-    fontSize: 14,
+    fontSize: 15.2,
+    fontWeight: FontWeight.w600,
     color: BrandColors.navTeal,
   );
+
+  /// `.vcl-card-meaning`: `0.95rem`, `1.35` line-height, two-line preview.
   static const TextStyle meaning = TextStyle(
-    fontSize: 14,
-    color: BrandColors.studyMuted,
+    fontSize: 15.2,
+    height: 1.35,
+    color: Color(0xFF2B2B2B),
   );
   static final BoxDecoration levelBadge = BoxDecoration(
     color: BrandColors.secondarySurface,

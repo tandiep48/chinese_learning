@@ -19,7 +19,8 @@ String normalizeAnswer(String? value) {
   return value.replaceAll(_punctuation, '').replaceAll(_spaces, '');
 }
 
-bool answersMatch(String a, String b) => normalizeAnswer(a) == normalizeAnswer(b);
+bool answersMatch(String a, String b) =>
+    normalizeAnswer(a) == normalizeAnswer(b);
 
 /// Token-by-token order check: same length and each token normalizes equal.
 bool reorderMatches(List<String> userTokens, List<String> correctTokens) {

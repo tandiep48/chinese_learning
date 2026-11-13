@@ -54,7 +54,9 @@ class _ReorderTaskState extends State<ReorderTask> {
     final presented = widget.task.shuffledTokens.isNotEmpty
         ? widget.task.shuffledTokens
         : widget.task.tokens;
-    _source = [for (var i = 0; i < presented.length; i++) _Chip(i, presented[i])];
+    _source = [
+      for (var i = 0; i < presented.length; i++) _Chip(i, presented[i]),
+    ];
   }
 
   void _commit(String answer, bool correct) {
@@ -63,8 +65,12 @@ class _ReorderTaskState extends State<ReorderTask> {
       _answered = true;
       _correct = correct;
     });
-    widget.onResolved(answer, correct, false,
-        DateTime.now().millisecondsSinceEpoch - _start);
+    widget.onResolved(
+      answer,
+      correct,
+      false,
+      DateTime.now().millisecondsSinceEpoch - _start,
+    );
   }
 
   void _autoCheck() {
@@ -115,12 +121,15 @@ class _ReorderTaskState extends State<ReorderTask> {
                     text: l10n.lessonInstructionReorder,
                   ),
                   LessonTrainerStyles.instructionGap,
-                  Text(l10n.lessonYourSentence,
-                      style: LessonTrainerStyles.reorderLabelStyle),
+                  Text(
+                    l10n.lessonYourSentence,
+                    style: LessonTrainerStyles.reorderLabelStyle,
+                  ),
                   LessonTrainerStyles.reorderRowGap,
                   Container(
                     constraints: const BoxConstraints(
-                        minHeight: LessonTrainerStyles.reorderTargetMinHeight),
+                      minHeight: LessonTrainerStyles.reorderTargetMinHeight,
+                    ),
                     decoration: LessonTrainerStyles.reorderTargetDecoration,
                     padding: LessonTrainerStyles.reorderTargetPadding,
                     child: _ChipWrap(
@@ -129,8 +138,10 @@ class _ReorderTaskState extends State<ReorderTask> {
                     ),
                   ),
                   LessonTrainerStyles.reorderSectionGap,
-                  Text(l10n.lessonAvailableWords,
-                      style: LessonTrainerStyles.reorderLabelStyle),
+                  Text(
+                    l10n.lessonAvailableWords,
+                    style: LessonTrainerStyles.reorderLabelStyle,
+                  ),
                   LessonTrainerStyles.reorderRowGap,
                   _ChipWrap(
                     chips: _source,
@@ -182,7 +193,10 @@ class _ChipWrap extends StatelessWidget {
               child: Container(
                 decoration: LessonTrainerStyles.chipDecoration,
                 padding: LessonTrainerStyles.chipPadding,
-                child: Text(chip.token, style: LessonTrainerStyles.chipTextStyle),
+                child: Text(
+                  chip.token,
+                  style: LessonTrainerStyles.chipTextStyle,
+                ),
               ),
             ),
           ),

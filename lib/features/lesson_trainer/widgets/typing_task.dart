@@ -55,8 +55,12 @@ class _TypingTaskState extends State<TypingTask> {
       _answered = true;
       _correct = correct;
     });
-    widget.onResolved(answer, correct, false,
-        DateTime.now().millisecondsSinceEpoch - _start);
+    widget.onResolved(
+      answer,
+      correct,
+      false,
+      DateTime.now().millisecondsSinceEpoch - _start,
+    );
   }
 
   void _onChanged(String value) {
@@ -98,8 +102,9 @@ class _TypingTaskState extends State<TypingTask> {
                   ),
                   LessonTrainerStyles.instructionGap,
                   Container(
-                    decoration:
-                        LessonTrainerStyles.promptCardDecoration(error: showError),
+                    decoration: LessonTrainerStyles.promptCardDecoration(
+                      error: showError,
+                    ),
                     padding: LessonTrainerStyles.promptCardPadding,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -153,9 +158,7 @@ class _TypingTaskState extends State<TypingTask> {
           exitLabel: l10n.milestoneQuit,
           onExit: widget.onExit,
           primaryLabel: _answered ? l10n.trainerNext : l10n.trainerCheck,
-          onPrimary: _answered
-              ? widget.onAdvance
-              : (canCheck ? _check : null),
+          onPrimary: _answered ? widget.onAdvance : (canCheck ? _check : null),
         ),
       ],
     );

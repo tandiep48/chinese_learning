@@ -55,3 +55,10 @@ const String _gcsBucketUrl = String.fromEnvironment(
 
 /// Cover image for an HSK level (`hskImageUrl` in `lib/gcs.ts`).
 String hskImageUrl(int level) => '$_gcsBucketUrl/hsk_images/hsk$level.png';
+
+/// Per-lesson cover, e.g. HSK1 lesson 2 → `.../lesson_images/H1/H1-lesson 2.png`
+/// (`lessonImageUrl` in `lib/gcs.ts`).
+String lessonImageUrl(String hskKey, String lesson) {
+  final h = hskKey.toUpperCase().replaceFirst('HSK', 'H');
+  return '$_gcsBucketUrl/lesson_images/$h/$h-lesson $lesson.png';
+}

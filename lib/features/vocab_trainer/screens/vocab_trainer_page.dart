@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/trainer_dialogs.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_view.dart';
 import '../data/trainer_word.dart';
@@ -127,9 +128,11 @@ class _VocabTrainerPageState extends ConsumerState<VocabTrainerPage> {
     _repo.submitBatch(_sessionId, batch);
   }
 
-  void _advance() {
+  Future<void> _advance() async {
     _flush();
     if (_index + 1 >= _activities.length) {
+      await showTrainerSuccessPopup(context, total: _total, correct: _correct);
+      if (!mounted) return;
       setState(() => _screen = _Screen.complete);
     } else {
       setState(() => _index++);

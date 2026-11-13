@@ -29,7 +29,9 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final title = (book.name != null && book.name!.isNotEmpty) ? book.name! : book.bookCode;
+    final title = (book.name != null && book.name!.isNotEmpty)
+        ? book.name!
+        : book.bookCode;
     final partsText = book.doneCount > 0
         ? '${l10n.booksPartsCount(book.partCount)} · ${book.doneCount}/${book.partCount}'
         : l10n.booksPartsCount(book.partCount);
@@ -58,10 +60,7 @@ class BookCard extends StatelessWidget {
                         style: LessonsStyles.bookCardCountStyle,
                       ),
                       LessonsStyles.bookCardBodyGap,
-                      Text(
-                        partsText,
-                        style: LessonsStyles.bookCardCountStyle,
-                      ),
+                      Text(partsText, style: LessonsStyles.bookCardCountStyle),
                     ],
                   ),
                 ),

@@ -36,8 +36,68 @@ class LessonStudyView extends ConsumerStatefulWidget {
 }
 
 class _LessonStudyViewState extends ConsumerState<LessonStudyView> {
-  bool _showPinyin = true;
-  bool _showMeaning = true;
+  // The web opens with pinyin and meaning hidden.
+  bool _showPinyin = false;
+  bool _showMeaning = false;
+
+  /// Index of the line whose audio is sounding (Auto Play or a single play).
+  int? _activeLine;
+  bool _sequenceActive = false;
+  int _playToken = 0;
+  final Map<int, GlobalKey> _lineKeys = {};
+
+  @override
+  void dispose() {
+    _playToken++;
+    ref.read(audioPlayerProvider).stop();
+    super.dispose();
+  }
+
+  void _setActive(int? index) {
+    setState(() => _activeLine = index);
+    final ctx = index == null ? null : _lineKeys[index]?.currentContext;
+    if (ctx != null) {
+      Scrollable.ensureVisible(
+        ctx,
+        alignment: 0.5,
+        duration: const Duration(milliseconds: 300),
+      );
+    }
+  }
+
+  /// Plays one line and highlights it, cancelling any running sequence.
+  Future<void> _playSingle(int index, String url) async {
+    final token = ++_playToken;
+    setState(() => _sequenceActive = false);
+    _setActive(index);
+    await ref.read(audioPlayerProvider).playUrl(url);
+    if (mounted && token == _playToken) _setActive(null);
+  }
+
+  /// Auto Play: every line in order, highlighting each; a second press stops.
+  Future<void> _toggleSequence(List<(int, String)> playable) async {
+    final player = ref.read(audioPlayerProvider);
+    if (_sequenceActive) {
+      _playToken++;
+      await player.stop();
+      if (mounted) {
+        setState(() => _sequenceActive = false);
+        _setActive(null);
+      }
+      return;
+    }
+    final token = ++_playToken;
+    setState(() => _sequenceActive = true);
+    for (final (i, url) in playable) {
+      if (!mounted || token != _playToken) return;
+      _setActive(i);
+      await player.playUrl(url);
+    }
+    if (mounted && token == _playToken) {
+      setState(() => _sequenceActive = false);
+      _setActive(null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +127,15 @@ class _LessonStudyViewState extends ConsumerState<LessonStudyView> {
         if (detail.lines.isEmpty) {
           return EmptyState(icon: Icons.notes_outlined, title: l10n.studyEmpty);
         }
-        final player = ref.read(audioPlayerProvider);
         final folder = lessonAudioFolder(
           hskLevel: detail.hskLevel,
           bookCode: detail.bookCode,
         );
-        final autoPlayUrls = [
-          for (final line in detail.lines)
-            if (line.audioKey != null && line.audioKey!.isNotEmpty)
-              lessonAudioUrl(folder, line.audioKey!),
+        final playable = <(int, String)>[
+          for (var i = 0; i < detail.lines.length; i++)
+            if (detail.lines[i].audioKey != null &&
+                detail.lines[i].audioKey!.isNotEmpty)
+              (i, lessonAudioUrl(folder, detail.lines[i].audioKey!)),
         ];
         return ListView.separated(
           padding: LessonsStyles.studyPagePadding,
@@ -88,7 +148,8 @@ class _LessonStudyViewState extends ConsumerState<LessonStudyView> {
               return _LessonSummaryToolbar(
                 showPinyin: _showPinyin,
                 showMeaning: _showMeaning,
-                onAutoPlay: () => player.playAll(autoPlayUrls),
+                sequenceActive: _sequenceActive,
+                onAutoPlay: () => _toggleSequence(playable),
                 onTogglePinyin: () =>
                     setState(() => _showPinyin = !_showPinyin),
                 onToggleMeaning: () =>
@@ -98,12 +159,18 @@ class _LessonStudyViewState extends ConsumerState<LessonStudyView> {
             final line = detail.lines[i - 1];
             final audioKey = line.audioKey;
             return _PassageLineView(
+              key: _lineKeys.putIfAbsent(i - 1, GlobalKey.new),
+              highlighted: _activeLine == i - 1,
               line: line,
               showPinyin: _showPinyin,
               showMeaning: _showMeaning,
               vocabByWord: vocabByWord,
+              savePassageId:
+                  (detail.bookCode != null && detail.bookCode!.isNotEmpty)
+                  ? widget.passageId
+                  : null,
               onAudio: (audioKey != null && audioKey.isNotEmpty)
-                  ? () => player.playUrl(lessonAudioUrl(folder, audioKey))
+                  ? () => _playSingle(i - 1, lessonAudioUrl(folder, audioKey))
                   : null,
             );
           },
@@ -119,6 +186,7 @@ class _LessonSummaryToolbar extends StatelessWidget {
   const _LessonSummaryToolbar({
     required this.showPinyin,
     required this.showMeaning,
+    required this.sequenceActive,
     required this.onAutoPlay,
     required this.onTogglePinyin,
     required this.onToggleMeaning,
@@ -126,6 +194,7 @@ class _LessonSummaryToolbar extends StatelessWidget {
 
   final bool showPinyin;
   final bool showMeaning;
+  final bool sequenceActive;
   final VoidCallback onAutoPlay;
   final VoidCallback onTogglePinyin;
   final VoidCallback onToggleMeaning;
@@ -147,14 +216,16 @@ class _LessonSummaryToolbar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.play_arrow,
+                    Icon(
+                      sequenceActive ? Icons.stop : Icons.play_arrow,
                       size: LessonsStyles.toolbarIconSize,
                     ),
                     LessonsStyles.toolbarButtonIconGap,
                     Flexible(
                       child: Text(
-                        l10n.studyAutoPlay,
+                        sequenceActive
+                            ? l10n.studyStopAutoPlay
+                            : l10n.studyAutoPlay,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -230,17 +301,22 @@ class _LessonSummaryToolbar extends StatelessWidget {
 
 class _PassageLineView extends StatelessWidget {
   const _PassageLineView({
+    super.key,
+    required this.highlighted,
     required this.line,
     required this.showPinyin,
     required this.showMeaning,
     required this.vocabByWord,
+    required this.savePassageId,
     required this.onAudio,
   });
 
+  final bool highlighted;
   final LessonPassageLine line;
   final bool showPinyin;
   final bool showMeaning;
   final Map<String, LessonVocabRow> vocabByWord;
+  final String? savePassageId;
   final VoidCallback? onAudio;
 
   String? _resolveMeaning(BuildContext context) {
@@ -261,7 +337,9 @@ class _PassageLineView extends StatelessWidget {
 
     return Container(
       padding: LessonsStyles.previewLinePadding,
-      decoration: LessonsStyles.previewLineDecoration,
+      decoration: highlighted
+          ? LessonsStyles.previewLineHighlightDecoration
+          : LessonsStyles.previewLineDecoration,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -295,7 +373,11 @@ class _PassageLineView extends StatelessWidget {
                   Text(line.speaker!, style: LessonsStyles.speakerStyle),
                   LessonsStyles.lineInnerGap,
                 ],
-                _HanziLine(line: line, vocabByWord: vocabByWord),
+                _HanziLine(
+                  line: line,
+                  vocabByWord: vocabByWord,
+                  savePassageId: savePassageId,
+                ),
                 if (showPinyin &&
                     line.pinyin != null &&
                     line.pinyin!.isNotEmpty) ...[
@@ -318,10 +400,15 @@ class _PassageLineView extends StatelessWidget {
 /// The hanzi row: clickable underlined word tokens; punctuation renders inline
 /// without underline. Falls back to raw content when the line has no tokens.
 class _HanziLine extends StatelessWidget {
-  const _HanziLine({required this.line, required this.vocabByWord});
+  const _HanziLine({
+    required this.line,
+    required this.vocabByWord,
+    required this.savePassageId,
+  });
 
   final LessonPassageLine line;
   final Map<String, LessonVocabRow> vocabByWord;
+  final String? savePassageId;
 
   @override
   Widget build(BuildContext context) {
@@ -343,6 +430,7 @@ class _HanziLine extends StatelessWidget {
                 context,
                 word: token,
                 entry: vocabByWord[token],
+                savePassageId: savePassageId,
               ),
               child: Text(token, style: LessonsStyles.hanziClickableStyle),
             ),

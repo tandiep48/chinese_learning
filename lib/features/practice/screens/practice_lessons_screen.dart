@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_view.dart';
@@ -88,16 +87,11 @@ class PracticeLessonsScreen extends ConsumerWidget {
         child: Container(
           decoration: PracticeStyles.lessonCardDecoration,
           padding: PracticeStyles.lessonCardPadding,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${l10n.practiceLessonPrefix} $lesson',
-                  style: PracticeStyles.lessonLabel,
-                ),
-              ),
-              const Icon(Icons.chevron_right, color: BrandColors.mutedText),
-            ],
+          child: Center(
+            child: Text(
+              '${l10n.practiceLessonPrefix} $lesson',
+              style: PracticeStyles.lessonLabel,
+            ),
           ),
         ),
       ),

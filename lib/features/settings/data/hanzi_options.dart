@@ -22,4 +22,6 @@ String normalizeHanziFont(String? font) =>
     font != null && hanziFonts.contains(font) ? font : defaultHanziFont;
 
 String normalizeHanziScript(String? script) =>
-    script != null && hanziScripts.contains(script) ? script : defaultHanziScript;
+    script != null && hanziScripts.contains(script)
+    ? script
+    : defaultHanziScript;

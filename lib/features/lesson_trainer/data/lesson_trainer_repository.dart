@@ -5,7 +5,7 @@
 ///   • `POST /api/lesson/start` { passage_id, mode:"part" } → [LessonSessionResponse]
 ///   • `POST /api/lesson/submit` — logs one answer (best-effort, never throws)
 ///   • `POST /api/lesson/part-complete` — saves the round score (best-effort)
-/// Only single-part ("part") mode is used here; master mode is deferred.
+/// "part" mode drives one passage; "master" mode drills several at once.
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +14,9 @@ import '../../../core/api/api_client.dart';
 import '../../../core/api/validators.dart';
 import 'models/lesson_task.dart';
 
-final lessonTrainerRepositoryProvider = Provider<LessonTrainerRepository>((ref) {
+final lessonTrainerRepositoryProvider = Provider<LessonTrainerRepository>((
+  ref,
+) {
   return LessonTrainerRepository(ref.read(apiClientProvider));
 });
 
@@ -23,10 +25,16 @@ class LessonTrainerRepository {
 
   final ApiClient _api;
 
-  Future<LessonSessionResponse> startSession(String passageId) async {
+  /// One part ("part" mode) or several at once ("master" mode, `passage_ids`).
+  Future<LessonSessionResponse> startSession(
+    List<String> passageIds, {
+    bool master = false,
+  }) async {
     final data = await _api.postRaw(
       '/api/lesson/start',
-      body: {'passage_id': passageId, 'mode': 'part'},
+      body: master
+          ? {'passage_ids': passageIds, 'mode': 'master'}
+          : {'passage_id': passageIds.first, 'mode': 'part'},
     );
     return LessonSessionResponse.fromJson(asMap(data, what: 'session'));
   }
@@ -46,17 +54,20 @@ class LessonTrainerRepository {
       if (task.shuffledTokens.isNotEmpty) 'tokens': task.shuffledTokens,
     };
     try {
-      await _api.postRaw('/api/lesson/submit', body: {
-        'session_id': sessionId,
-        'passage_id': task.passageId,
-        'line_id': task.lineId,
-        'type': task.type,
-        'user_answer': userAnswer,
-        'correct_answer': task.correctAnswer,
-        'is_correct': isCorrect,
-        'response_time_ms': responseMs,
-        'game_info': gameInfo,
-      });
+      await _api.postRaw(
+        '/api/lesson/submit',
+        body: {
+          'session_id': sessionId,
+          'passage_id': task.passageId,
+          'line_id': task.lineId,
+          'type': task.type,
+          'user_answer': userAnswer,
+          'correct_answer': task.correctAnswer,
+          'is_correct': isCorrect,
+          'response_time_ms': responseMs,
+          'game_info': gameInfo,
+        },
+      );
     } catch (_) {
       // Best-effort logging: a failed submit never blocks the round.
     }
@@ -68,14 +79,18 @@ class LessonTrainerRepository {
     required String passageId,
     required int total,
     required int correct,
+    bool master = false,
   }) async {
     try {
-      await _api.postRaw('/api/lesson/part-complete', body: {
-        'passage_id': passageId,
-        'total': total,
-        'correct': correct,
-        'mode': 'part',
-      });
+      await _api.postRaw(
+        '/api/lesson/part-complete',
+        body: {
+          'passage_id': passageId,
+          'total': total,
+          'correct': correct,
+          'mode': master ? 'master' : 'part',
+        },
+      );
     } catch (_) {
       // Best-effort.
     }

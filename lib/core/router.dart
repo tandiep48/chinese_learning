@@ -6,7 +6,7 @@
 /// authenticated users are bounced off `/login` back home.
 ///
 /// Routes: `/login`, `/` (home), `/library` (HSK | Books hub), `/books`,
-/// `/books/:code`, `/hsk/:level`, `/lesson/:passageId`, `/settings`. The guard
+/// `/books/:code`, `/books/:code/:lesson`, `/hsk/:level`, `/hsk/:level/:lesson`, `/lesson/:passageId`, `/settings`. The guard
 /// reads [authStatusProvider] and re-runs
 /// whenever it changes (via a [refreshListenable]); while the launch-time auth
 /// check is pending the status is `unknown` and no redirect happens.
@@ -27,9 +27,11 @@ import '../features/auth/screens/register_screen.dart';
 import '../features/competition/screens/competition_page.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/lessons/screens/book_detail_screen.dart';
+import '../features/lessons/screens/book_parts_screen.dart';
 import '../features/lessons/screens/books_screen.dart';
 import '../features/lessons/screens/grammar_screen.dart';
 import '../features/lessons/screens/hsk_lessons_screen.dart';
+import '../features/lessons/screens/hsk_parts_screen.dart';
 import '../features/lessons/screens/library_screen.dart';
 import '../features/lessons/screens/pinyin_guide_screen.dart';
 import '../features/lessons/screens/translation_screen.dart';
@@ -90,6 +92,13 @@ final routerProvider = Provider<GoRouter>((ref) {
             HskLessonsScreen(levelKey: state.pathParameters['level']!),
       ),
       GoRoute(
+        path: '/hsk/:level/:lesson',
+        builder: (context, state) => HskPartsScreen(
+          levelKey: state.pathParameters['level']!,
+          lesson: state.pathParameters['lesson']!,
+        ),
+      ),
+      GoRoute(
         path: '/settings',
         builder: (context, state) => const SettingsScreen(),
       ),
@@ -101,6 +110,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/books/:code',
         builder: (context, state) =>
             BookDetailScreen(code: state.pathParameters['code']!),
+      ),
+      GoRoute(
+        path: '/books/:code/:lesson',
+        builder: (context, state) => BookPartsScreen(
+          code: state.pathParameters['code']!,
+          lesson: state.pathParameters['lesson']!,
+        ),
       ),
       GoRoute(
         path: '/lesson/:passageId',

@@ -1213,4 +1213,4 @@ the blocker was stale. Implemented in three places:
 i18n added: `trainPickerSkillListening`, `vocabInstructionListen`,
 `lessonInstructionListen`, `lessonPlayAudio` (EN+VI). `flutter analyze lib` clean.
 
-**Status: full learner parity with the web app, excluding the manage/admin page.**
+**Status (corrected 2026-11-13): feature-complete on the happy path, but NOT at parity with the web.** A source-level audit found layout and logic gaps (lesson-flow continuation, lesson-wide Exam/master trainers, profile review/avatar/password, quit/success dialogs, sidebar, Books 3-step flow, and unverified visual fidelity). They are tracked, prioritised, in [`fidelity-audit.md`](fidelity-audit.md), which supersedes the parity claim.

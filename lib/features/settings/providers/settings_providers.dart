@@ -21,8 +21,9 @@ const Locale defaultLocale = Locale('vi');
 Locale localeForCode(String code) =>
     supportedLanguageCodes.contains(code) ? Locale(code) : defaultLocale;
 
-final localeControllerProvider =
-    NotifierProvider<LocaleController, Locale>(LocaleController.new);
+final localeControllerProvider = NotifierProvider<LocaleController, Locale>(
+  LocaleController.new,
+);
 
 class LocaleController extends Notifier<Locale> {
   /// True once the language was set explicitly on this device (locally cached or
@@ -43,7 +44,9 @@ class LocaleController extends Notifier<Locale> {
   }
 
   Future<void> _restoreLocal() async {
-    final saved = await ref.read(settingsRepositoryProvider).readStoredLanguage();
+    final saved = await ref
+        .read(settingsRepositoryProvider)
+        .readStoredLanguage();
     if (saved != null && saved.isNotEmpty) {
       _deviceOverride = true;
       state = localeForCode(saved);

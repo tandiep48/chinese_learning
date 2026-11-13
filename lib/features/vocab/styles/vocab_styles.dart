@@ -23,32 +23,32 @@ class VocabStyles {
     color: BrandColors.bodyText,
   );
 
-  /// A word row card (`.vocab-card` / table row).
+  /// `.vcl-card`: white, `1px #d9ded9`, `12px` radius, `12×14` padding.
   static final BoxDecoration rowCard = BoxDecoration(
     color: BrandColors.card,
     borderRadius: BorderRadius.circular(12),
-    border: Border.all(color: BrandColors.learnerBorder),
+    border: Border.all(color: BrandColors.partItemBorder),
   );
-  static const EdgeInsets rowPadding = EdgeInsets.all(14);
+  static const EdgeInsets rowPadding = EdgeInsets.symmetric(
+    horizontal: 14,
+    vertical: 12,
+  );
 
+  /// `.vcl-card-hanzi`: `1.9rem`, line-height `1.1`.
   static const TextStyle hanzi = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.w700,
-    color: BrandColors.bodyText,
+    fontSize: 30.4,
+    height: 1.1,
+    color: Color(0xFF111111),
   );
   static const TextStyle pinyin = TextStyle(
-    fontSize: 14,
+    fontSize: 15.2,
     color: BrandColors.navTeal,
     fontWeight: FontWeight.w600,
   );
   static const TextStyle meaning = TextStyle(
-    fontSize: 14,
-    color: BrandColors.bodyText,
-  );
-  static const TextStyle levelBadge = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w700,
-    color: BrandColors.mutedText,
+    fontSize: 15.2,
+    height: 1.35,
+    color: Color(0xFF2B2B2B),
   );
 
   /// Mode chip (selected / unselected).

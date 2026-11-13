@@ -35,9 +35,9 @@ class SharedStyles {
 
   // ── Skeleton box (`.learner-home-skeleton-bar`) ───────────────────────────
   static BoxDecoration skeletonDecoration(double radius) => BoxDecoration(
-        color: BrandColors.sageSubtleBg,
-        borderRadius: BorderRadius.circular(radius),
-      );
+    color: BrandColors.sageSubtleBg,
+    borderRadius: BorderRadius.circular(radius),
+  );
 
   // ── Shared learner card (`.learner-home-aside` / `.learner-home-note`) ───
   static final BoxDecoration learnerCardDecoration = BoxDecoration(
@@ -46,4 +46,3 @@ class SharedStyles {
     borderRadius: BorderRadius.circular(16),
   );
 }
-

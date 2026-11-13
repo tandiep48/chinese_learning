@@ -1,10 +1,11 @@
 /// Milestone module — the six-segment step bar.
 ///
-/// Ported from `yi-chinese-manage/components/page/learner/milestone/MilestoneBar.tsx`:
-/// a connected track of numbered badges with a step caption. Gating is soft —
-/// every segment is tappable (jump to any step); the connector leading into a
-/// step fills once the previous step is complete. Uses the approved mockup's
-/// sage/teal badge styling (see [MilestoneStyles]).
+/// Ported from `yi-chinese-manage/components/page/learner/milestone/MilestoneBar.tsx`
+/// + `milestone.css`: numbered circles joined by connectors, with a step caption.
+/// Pending steps are white with a sage outline, done steps are filled sage, the
+/// current step is teal and slightly larger. Gating is soft — every segment is
+/// tappable; the connector leading into a step fills once the previous step is
+/// complete.
 library;
 
 import 'package:flutter/material.dart';
@@ -37,10 +38,17 @@ class MilestoneBar extends StatelessWidget {
         rowChildren.add(
           Expanded(
             child: Container(
+              constraints: const BoxConstraints(
+                minWidth: MilestoneStyles.connectorMinWidth,
+              ),
+              margin: MilestoneStyles.connectorMargin,
               height: MilestoneStyles.connectorThickness,
-              color: isCompleted(n - 1)
-                  ? MilestoneStyles.badgeIdle
-                  : MilestoneStyles.connectorColor,
+              decoration: BoxDecoration(
+                color: isCompleted(n - 1)
+                    ? MilestoneStyles.connectorDone
+                    : MilestoneStyles.connectorIdle,
+                borderRadius: BorderRadius.circular(999),
+              ),
             ),
           ),
         );
@@ -87,30 +95,41 @@ class _Segment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final badge = Container(
+    final filled = current || done;
+    final color = current
+        ? MilestoneStyles.badgeCurrent
+        : (done ? MilestoneStyles.badgeDone : MilestoneStyles.badgeFillIdle);
+    final border = filled ? color : MilestoneStyles.badgeBorderIdle;
+
+    final badge = AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
       width: MilestoneStyles.badgeSize,
       height: MilestoneStyles.badgeSize,
       decoration: BoxDecoration(
-        color: current ? MilestoneStyles.badgeActive : MilestoneStyles.badgeIdle,
+        color: color,
         shape: BoxShape.circle,
-        border: current
-            ? Border.all(
-                color: MilestoneStyles.focusRingColor,
-                width: MilestoneStyles.focusRingWidth,
-              )
-            : null,
+        border: Border.all(
+          color: border,
+          width: MilestoneStyles.badgeBorderWidth,
+        ),
       ),
       alignment: Alignment.center,
-      child: done && !current
-          ? const Icon(Icons.check,
-              size: MilestoneStyles.badgeIconSize, color: Colors.white)
-          : Text('$number', style: MilestoneStyles.badgeLabel),
+      child: Text(
+        '$number',
+        style: MilestoneStyles.badgeLabel.copyWith(
+          color: filled ? Colors.white : MilestoneStyles.badgeNumberIdle,
+        ),
+      ),
     );
 
     return InkResponse(
       onTap: onTap,
       radius: MilestoneStyles.badgeSize,
-      child: badge,
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 150),
+        scale: current ? MilestoneStyles.badgeCurrentScale : 1,
+        child: badge,
+      ),
     );
   }
 }

@@ -53,23 +53,23 @@ class VocabTrainerStyles {
   );
 
   static InputDecoration inputDecoration() => InputDecoration(
-        filled: true,
-        fillColor: BrandColors.card,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: BrandColors.navTeal, width: 2),
-        ),
-      );
+    filled: true,
+    fillColor: BrandColors.card,
+    isDense: true,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.navTeal, width: 2),
+    ),
+  );
 
   static const TextStyle resultOkStyle = TextStyle(
     fontSize: 14,
@@ -127,7 +127,12 @@ class VocabTrainerStyles {
   );
 
   // ── Sticky bottom bar ─────────────────────────────────────────────────────
-  static const EdgeInsets bottomBarPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
+  static const EdgeInsets bottomBarPadding = EdgeInsets.fromLTRB(
+    16,
+    10,
+    16,
+    10,
+  );
   static const SizedBox bottomBarGap = SizedBox(width: 12);
   static const BoxDecoration bottomBarDecoration = BoxDecoration(
     color: BrandColors.card,

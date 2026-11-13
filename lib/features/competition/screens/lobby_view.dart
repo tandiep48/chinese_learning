@@ -166,7 +166,12 @@ class _CompetitionLobbyViewState extends State<CompetitionLobbyView> {
             ),
           if (c.error.isNotEmpty) ...[
             CompetitionStyles.gap8,
-            Text(c.error, style: CompetitionStyles.errorText),
+            Container(
+              width: double.infinity,
+              decoration: CompetitionStyles.errorBox,
+              padding: CompetitionStyles.errorPadding,
+              child: Text(c.error, style: CompetitionStyles.errorText),
+            ),
           ],
           if (canManage) ...[
             CompetitionStyles.gap12,

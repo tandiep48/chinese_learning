@@ -48,10 +48,7 @@ class EmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ],
-          if (action != null) ...[
-            SharedStyles.emptyActionGap,
-            action!,
-          ],
+          if (action != null) ...[SharedStyles.emptyActionGap, action!],
         ],
       ),
     );

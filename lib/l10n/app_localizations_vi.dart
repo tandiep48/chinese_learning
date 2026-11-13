@@ -477,7 +477,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reviewEmptyReview => 'Hiện không có từ nào cần ôn.';
 
   @override
-  String get reviewLoading => 'Đang tải từ vựng của bạn...';
+  String get reviewLoading => 'Đang tải lịch sử của bạn…';
 
   @override
   String get reviewLoadFailed => 'Không thể tải từ vựng. Vui lòng thử lại.';
@@ -803,12 +803,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pinyinLessonHeading => 'HSK 1 - Bài 1';
 
   @override
-  String get pinyinGuideEntry => 'Hướng Dẫn Pinyin';
-
-  @override
-  String get numbersEntry => 'Số Đếm';
-
-  @override
   String get pinyinBasic => 'Cơ Bản';
 
   @override
@@ -950,7 +944,28 @@ class AppLocalizationsVi extends AppLocalizations {
   String get vocabCompleteTitle => 'Hoàn Thành Từ Vựng!';
 
   @override
-  String get flashTapToFlip => 'Chạm để xem nghĩa';
+  String get flashTypingPlaceholder => 'Nhập chữ vào đây...';
+
+  @override
+  String get lessonCardTypingPlaceholder => 'Nhập câu vào đây...';
+
+  @override
+  String get cardPrev => 'Trước';
+
+  @override
+  String get cardNext => 'Tiếp';
+
+  @override
+  String get cardAudioReveal => 'Phát âm + hiện';
+
+  @override
+  String get cardReveal => 'Hiện/ẩn';
+
+  @override
+  String get cardShuffle => 'Xáo trộn';
+
+  @override
+  String get cardStroke => 'Thứ tự nét';
 
   @override
   String get competitionTitle => 'Học Cùng Nhau';
@@ -1183,4 +1198,338 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get competitionCouldNotCreateRoom => 'Không thể tạo phòng.';
+
+  @override
+  String get pickerBackToLevels => 'Về Danh Sách Cấp Độ';
+
+  @override
+  String get pickerBackToLessons => 'Về Danh Sách Bài Học';
+
+  @override
+  String get pickerSelectPart => 'Chọn Phần';
+
+  @override
+  String get pickerNumberPart => 'Số Đếm';
+
+  @override
+  String get pickerWordsLabel => 'Từ Vựng';
+
+  @override
+  String get pickerLessonProgressLabel => 'Bài Học';
+
+  @override
+  String get pickerGrammar => 'Ngữ Pháp';
+
+  @override
+  String get pickerTranslation => 'Dịch';
+
+  @override
+  String get pickerPinyinGuide => 'Hướng Dẫn Phiên Âm';
+
+  @override
+  String get pickerLoadingParts => 'Đang tải phần học...';
+
+  @override
+  String get milestonePrevious => 'Trước';
+
+  @override
+  String get milestoneNext => 'Tiếp';
+
+  @override
+  String get wordAddToList => 'Thêm vào danh sách';
+
+  @override
+  String get wordAdded => 'Đã thêm';
+
+  @override
+  String get trainerQuitTitle => 'Thoát Phiên Học?';
+
+  @override
+  String get trainerQuitBody =>
+      'Tiến độ hiện tại sẽ không được lưu.\nBạn có chắc muốn thoát không?';
+
+  @override
+  String get trainerCancel => 'Hủy';
+
+  @override
+  String get trainerYesQuit => 'Đồng Ý, Thoát';
+
+  @override
+  String get successPerfectTitle => 'Điểm Tuyệt Đối! 🎉';
+
+  @override
+  String get successCompleteTitle => 'Hoàn Thành Phiên!';
+
+  @override
+  String get successStatTasks => 'Câu';
+
+  @override
+  String get successStatCorrect => 'Đúng';
+
+  @override
+  String get successStatAccuracy => 'Độ Chính Xác';
+
+  @override
+  String get flowNextLesson => 'Bài tiếp theo';
+
+  @override
+  String get flowLessonComplete => 'Hoàn thành bài học';
+
+  @override
+  String get flowNextLessonTitle => 'Chuyển sang bài tiếp theo?';
+
+  @override
+  String get flowNextLessonBody =>
+      'Bạn đã hoàn thành bài học này. Chuyển sang phần đầu tiên của bài tiếp theo?';
+
+  @override
+  String get flowNotYet => 'Chưa';
+
+  @override
+  String get guardTitle => 'Đang trong phiên học';
+
+  @override
+  String get guardBodyTab =>
+      'Bạn đang có một hoạt động đang chạy. Chuyển tab sẽ kết thúc hoạt động đó — các câu trả lời đã làm vẫn được lưu.';
+
+  @override
+  String get guardBodyNav =>
+      'Bạn đang có một hoạt động đang chạy. Rời khỏi trang này sẽ kết thúc hoạt động đó — các câu trả lời đã làm vẫn được lưu.';
+
+  @override
+  String get guardStay => 'Ở lại';
+
+  @override
+  String get guardLeaveTab => 'Kết thúc và chuyển';
+
+  @override
+  String get guardLeaveNav => 'Vẫn rời đi';
+
+  @override
+  String get masterVocabConfirmTitle => 'Ôn lại toàn bộ từ vựng của bài?';
+
+  @override
+  String get masterVocabConfirmBody =>
+      'Luyện tất cả từ vựng của bài học trong một lượt trước khi tiếp tục.';
+
+  @override
+  String get masterLessonConfirmTitle => 'Ôn lại toàn bộ bài học?';
+
+  @override
+  String get masterLessonConfirmBody =>
+      'Luyện tất cả các câu của bài học trong một lượt trước khi tiếp tục.';
+
+  @override
+  String get masterVocabTitle => 'Luyện từ vựng tổng hợp';
+
+  @override
+  String get masterLessonTitle => 'Luyện bài tổng hợp';
+
+  @override
+  String get masterStart => 'Bắt đầu';
+
+  @override
+  String get masterSkip => 'Bỏ qua';
+
+  @override
+  String get trainPickerSkillMeaning => 'Nghĩa';
+
+  @override
+  String get trainPickerSkillReorder => 'Sắp Xếp';
+
+  @override
+  String get pickerExam => 'Kiểm Tra';
+
+  @override
+  String get examChooserSubtitle => 'Chọn phần luyện tập';
+
+  @override
+  String get pickerVocabTrainer => 'Luyện Từ Vựng';
+
+  @override
+  String get pickerLessonTrainer => 'Luyện Bài Học';
+
+  @override
+  String get reviewTitle => 'Xem Lại Bài Làm';
+
+  @override
+  String get reviewEmptyTitle => 'Chưa có gì để xem lại';
+
+  @override
+  String get reviewEmptySub =>
+      'Hoàn thành một phiên luyện tập hoặc kiểm tra và nó sẽ hiện ở đây.';
+
+  @override
+  String get reviewFailedLoad => 'Không tải được lịch sử của bạn.';
+
+  @override
+  String reviewQuestions(int count) {
+    return '$count câu hỏi';
+  }
+
+  @override
+  String get reviewBackToList => 'Quay lại danh sách';
+
+  @override
+  String get reviewCorrectBadge => 'Đúng';
+
+  @override
+  String get reviewIncorrectBadge => 'Sai';
+
+  @override
+  String get reviewFilterResult => 'Kết quả';
+
+  @override
+  String get reviewResultAll => 'Tất cả';
+
+  @override
+  String get reviewSkillAll => 'Tất cả kỹ năng';
+
+  @override
+  String get reviewYourAnswer => 'Câu trả lời của bạn';
+
+  @override
+  String get reviewCorrectAnswer => 'Đáp án đúng';
+
+  @override
+  String get reviewNoAnswer => 'Không trả lời';
+
+  @override
+  String reviewQuestionLabel(int n) {
+    return 'Câu $n';
+  }
+
+  @override
+  String get reviewDetailMissing =>
+      'Câu hỏi này không còn trong ngân hàng câu hỏi.';
+
+  @override
+  String get reviewSort => 'Sắp xếp';
+
+  @override
+  String get reviewSortRecent => 'Mới nhất';
+
+  @override
+  String get reviewSortOldest => 'Cũ nhất';
+
+  @override
+  String get reviewNoMore => 'Không còn phiên nào để hiển thị.';
+
+  @override
+  String reviewPageIndicator(int page) {
+    return 'Trang $page';
+  }
+
+  @override
+  String get reviewLevel => 'Cấp Độ';
+
+  @override
+  String get reviewAllLevels => 'Tất Cả Cấp Độ';
+
+  @override
+  String get reviewCategory => 'Danh Mục';
+
+  @override
+  String get reviewAllCategories => 'Tất Cả Danh Mục';
+
+  @override
+  String get reviewSkill => 'Kỹ Năng';
+
+  @override
+  String get reviewReading => 'Đọc';
+
+  @override
+  String get reviewListening => 'Nghe';
+
+  @override
+  String get profileChangePassword => 'Đổi Mật Khẩu';
+
+  @override
+  String get profileNewPassword => 'Mật Khẩu Mới';
+
+  @override
+  String get profileConfirmPassword => 'Nhập Lại Mật Khẩu Mới';
+
+  @override
+  String get profilePasswordMismatch => 'Mật khẩu không khớp.';
+
+  @override
+  String get profilePasswordRequired => 'Cần nhập mật khẩu mới.';
+
+  @override
+  String get profilePasswordUpdating => 'Đang cập nhật mật khẩu...';
+
+  @override
+  String get profilePasswordFailed => 'Không thể cập nhật mật khẩu.';
+
+  @override
+  String get profilePasswordUpdated => 'Đã cập nhật mật khẩu.';
+
+  @override
+  String get profileUploadAvatar => 'Tải Ảnh Đại Diện';
+
+  @override
+  String get profileChooseImage => 'Chọn ảnh';
+
+  @override
+  String get profileChooseAvatarFirst => 'Vui lòng chọn ảnh đại diện trước.';
+
+  @override
+  String get profileUploading => 'Đang tải lên...';
+
+  @override
+  String get profileUploadFailed => 'Tải lên thất bại.';
+
+  @override
+  String get profileAvatarUpdated => 'Đã cập nhật ảnh đại diện.';
+
+  @override
+  String get sidebarLessonParts => 'Các Phần Bài Học';
+
+  @override
+  String get sidebarPartSelection => 'Chọn Phần';
+
+  @override
+  String get sidebarOpen => 'Mở Thanh Bên';
+
+  @override
+  String get sidebarNoParts => 'Không tìm thấy phần nào.';
+
+  @override
+  String get sidebarFailedParts => 'Không thể tải các phần.';
+
+  @override
+  String get studyStopAutoPlay => 'Dừng';
+
+  @override
+  String get recommendAllSkills => 'Tất Cả Kỹ Năng';
+
+  @override
+  String get recommendStatus => 'Trạng Thái';
+
+  @override
+  String get recommendAllStatuses => 'Tất Cả Trạng Thái';
+
+  @override
+  String recommendItemsSelected(int count) {
+    return 'Đã chọn $count mục';
+  }
+
+  @override
+  String get recommendStartSelected => 'Bắt Đầu Mục Đã Chọn';
+
+  @override
+  String get recommendNewUserCta => 'Đến Trình Luyện Từ Vựng';
+
+  @override
+  String get wordSummaryPlayAll => 'Phát Tất Cả';
+
+  @override
+  String get wordSummaryShuffle => 'Xáo Trộn';
+
+  @override
+  String get wordSummaryPinyin => 'Pinyin';
+
+  @override
+  String get wordSummaryMeaning => 'Nghĩa';
 }

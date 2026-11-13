@@ -14,21 +14,24 @@ Map<String, dynamic> asMap(dynamic value, {String what = 'value'}) {
   if (value is Map<String, dynamic>) return value;
   if (value is Map) return value.cast<String, dynamic>();
   throw ValidationException(
-      "Expected '$what' to be an object, got ${value.runtimeType}.");
+    "Expected '$what' to be an object, got ${value.runtimeType}.",
+  );
 }
 
 /// Assert [value] is a JSON array and return it.
 List<dynamic> asList(dynamic value, {String what = 'value'}) {
   if (value is List) return value;
   throw ValidationException(
-      "Expected '$what' to be a list, got ${value.runtimeType}.");
+    "Expected '$what' to be a list, got ${value.runtimeType}.",
+  );
 }
 
 String requireString(Map<String, dynamic> json, String key) {
   final v = json[key];
   if (v is String) return v;
   throw ValidationException(
-      "Field '$key' must be a string, got ${v.runtimeType}.");
+    "Field '$key' must be a string, got ${v.runtimeType}.",
+  );
 }
 
 int requireInt(Map<String, dynamic> json, String key) {
@@ -36,7 +39,8 @@ int requireInt(Map<String, dynamic> json, String key) {
   if (v is int) return v;
   if (v is num) return v.toInt();
   throw ValidationException(
-      "Field '$key' must be an int, got ${v.runtimeType}.");
+    "Field '$key' must be an int, got ${v.runtimeType}.",
+  );
 }
 
 String? optString(Map<String, dynamic> json, String key) {
@@ -44,7 +48,8 @@ String? optString(Map<String, dynamic> json, String key) {
   if (v == null) return null;
   if (v is String) return v;
   throw ValidationException(
-      "Field '$key' must be a string or null, got ${v.runtimeType}.");
+    "Field '$key' must be a string or null, got ${v.runtimeType}.",
+  );
 }
 
 int? optInt(Map<String, dynamic> json, String key) {
@@ -53,15 +58,21 @@ int? optInt(Map<String, dynamic> json, String key) {
   if (v is int) return v;
   if (v is num) return v.toInt();
   throw ValidationException(
-      "Field '$key' must be an int or null, got ${v.runtimeType}.");
+    "Field '$key' must be an int or null, got ${v.runtimeType}.",
+  );
 }
 
-bool optBool(Map<String, dynamic> json, String key, {bool defaultValue = false}) {
+bool optBool(
+  Map<String, dynamic> json,
+  String key, {
+  bool defaultValue = false,
+}) {
   final v = json[key];
   if (v == null) return defaultValue;
   if (v is bool) return v;
   throw ValidationException(
-      "Field '$key' must be a bool, got ${v.runtimeType}.");
+    "Field '$key' must be a bool, got ${v.runtimeType}.",
+  );
 }
 
 /// A field the backend serves as either a string or a number (e.g. a book's
@@ -71,7 +82,8 @@ String requireStringOrNum(Map<String, dynamic> json, String key) {
   if (v is String) return v;
   if (v is num) return v.toString();
   throw ValidationException(
-      "Field '$key' must be a string or number, got ${v.runtimeType}.");
+    "Field '$key' must be a string or number, got ${v.runtimeType}.",
+  );
 }
 
 /// A list of strings (default `[]` when absent/null); each element is checked.
@@ -82,7 +94,8 @@ List<String> stringList(Map<String, dynamic> json, String key) {
   return list.map((e) {
     if (e is String) return e;
     throw ValidationException(
-        "Field '$key' must contain only strings, got ${e.runtimeType}.");
+      "Field '$key' must contain only strings, got ${e.runtimeType}.",
+    );
   }).toList();
 }
 
@@ -95,5 +108,8 @@ List<T> modelList<T>(
 ) {
   final v = json[key];
   if (v == null) return const [];
-  return asList(v, what: key).map((e) => fromJson(asMap(e, what: key))).toList();
+  return asList(
+    v,
+    what: key,
+  ).map((e) => fromJson(asMap(e, what: key))).toList();
 }

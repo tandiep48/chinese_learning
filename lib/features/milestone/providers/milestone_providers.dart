@@ -10,7 +10,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/milestone.dart';
 import '../data/milestone_repository.dart';
 
-final milestoneProvider =
-    FutureProvider.autoDispose.family<Milestone, String>((ref, passageId) {
+final milestoneProvider = FutureProvider.autoDispose.family<Milestone, String>((
+  ref,
+  passageId,
+) {
   return ref.read(milestoneRepositoryProvider).getMilestone(passageId);
 });

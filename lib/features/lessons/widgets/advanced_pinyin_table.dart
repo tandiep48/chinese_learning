@@ -44,7 +44,7 @@ class AdvancedPinyinTable extends ConsumerWidget {
         children: [
           for (final table in matrix.tables) ...[
             _table(context, ref, matrix.initials, table),
-            LessonsStyles.grammarSectionGap,
+            LessonsStyles.gap16,
           ],
         ],
       ),

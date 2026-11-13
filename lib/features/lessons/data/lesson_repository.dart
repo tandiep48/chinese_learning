@@ -21,6 +21,7 @@ import 'models/lesson_grammar.dart';
 import 'models/lesson_passage.dart';
 import 'models/lesson_vocab_row.dart';
 import 'models/picker_passage.dart';
+import 'models/picker_progress.dart';
 import 'models/translation_row.dart';
 
 final lessonRepositoryProvider = Provider<LessonRepository>((ref) {
@@ -57,6 +58,56 @@ class LessonRepository {
       asMap(data, what: 'passages'),
       'passages',
       PickerPassage.fromJson,
+    );
+  }
+
+  /// Learn-progress per lesson and part; empty when the call fails (progress is
+  /// decorative, never blocks the picker).
+  Future<PickerProgressSummary> getPickerProgress(String hskLevel) async {
+    try {
+      final data = await _api.getRaw(
+        '/api/lesson/picker-progress',
+        query: {'hsk_level': hskLevel},
+      );
+      return PickerProgressSummary.fromJson(asMap(data, what: 'progress'));
+    } catch (_) {
+      return PickerProgressSummary.empty;
+    }
+  }
+
+  /// Records the part as the most recent lesson (the home "Continue" panel).
+  /// Best-effort — never blocks navigation.
+  Future<void> saveRecentLearning(String passageId) async {
+    try {
+      await _api.postRaw(
+        '/api/user/recent-learning',
+        body: {'passage_id': passageId},
+      );
+    } catch (_) {}
+  }
+
+  /// The words the learner saved from a book-lesson part (`GET /api/vocab/saved`).
+  Future<Set<String>> getSavedWords(String passageId) async {
+    final data = await _api.getRaw(
+      '/api/vocab/saved',
+      query: {'passage_id': passageId},
+    );
+    final words =
+        asMap(data, what: 'saved words')['words'] as List? ?? const [];
+    return {for (final w in words) w.toString()};
+  }
+
+  Future<void> addSavedWord(String passageId, String cn) async {
+    await _api.postRaw(
+      '/api/vocab/saved',
+      body: {'passage_id': passageId, 'cn': cn},
+    );
+  }
+
+  Future<void> removeSavedWord(String passageId, String cn) async {
+    await _api.deleteRaw(
+      '/api/vocab/saved',
+      body: {'passage_id': passageId, 'cn': cn},
     );
   }
 

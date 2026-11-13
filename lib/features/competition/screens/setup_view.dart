@@ -226,7 +226,12 @@ class _CompetitionSetupViewState extends State<CompetitionSetupView> {
           ),
         ),
         if (c.error.isNotEmpty) ...[
-          Text(c.error, style: CompetitionStyles.errorText),
+          Container(
+            width: double.infinity,
+            decoration: CompetitionStyles.errorBox,
+            padding: CompetitionStyles.errorPadding,
+            child: Text(c.error, style: CompetitionStyles.errorText),
+          ),
           CompetitionStyles.gap8,
         ],
         Row(

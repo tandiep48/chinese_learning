@@ -2,13 +2,14 @@
 ///
 /// Ported from `profile/ProfilePage.tsx` (the statistics half): a header, the
 /// learning-statistics block, and the mastered-words list. The practice-review
-/// panel (Slice P4) and the account forms (avatar/password) are deferred.
+/// panel and the change-password form follow. Tapping the avatar opens the upload dialog.
 /// Reached from the drawer header; route `/profile`.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/media/gcs.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/empty_state.dart';
 import '../../../shared/widgets/loading_view.dart';
@@ -17,7 +18,10 @@ import '../../auth/providers/auth_provider.dart';
 import '../data/profile_repository.dart';
 import '../providers/profile_providers.dart';
 import '../styles/profile_styles.dart';
+import '../widgets/avatar_dialog.dart';
 import '../widgets/learning_statistics.dart';
+import '../widgets/password_form.dart';
+import '../widgets/review_panel.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -38,6 +42,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void initState() {
     super.initState();
     _loadMore();
+    _refreshSummary();
+  }
+
+  /// Refreshes the avatar and the server-recomputed HSK level on view
+  /// (`GET /api/user/profile-summary`); best-effort.
+  Future<void> _refreshSummary() async {
+    try {
+      final user = await ref
+          .read(profileRepositoryProvider)
+          .getProfileSummary();
+      if (mounted) ref.read(authNotifierProvider.notifier).setUser(user);
+    } catch (_) {}
   }
 
   Future<void> _loadMore() async {
@@ -76,55 +92,112 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       body: ListView(
         padding: ProfileStyles.pagePadding,
         children: [
-          _header(user?.username, user?.avatarUrl),
+          _header(user?.username, user?.email, user?.avatarUrl, user?.level),
           ProfileStyles.gap24,
-          Text(
-            l10n.dashboardLearningStatistics,
-            style: ProfileStyles.sectionHeading,
-          ),
-          ProfileStyles.gap16,
-          _statistics(l10n),
-          ProfileStyles.gap24,
-          Text(l10n.profileLearnedWords, style: ProfileStyles.sectionHeading),
-          ProfileStyles.gap16,
-          ..._vocabList(l10n),
+          _section(l10n.dashboardLearningStatistics, [_statistics(l10n)]),
+          _section(l10n.profileLearnedWords, _vocabList(l10n)),
+          _section(l10n.reviewTitle, const [ReviewPanel()]),
+          _section(l10n.profileChangePassword, const [PasswordForm()]),
         ],
       ),
     );
   }
 
-  Widget _header(String? username, String? avatarUrl) {
+  /// `.profile-section`: a tinted card with a left-aligned heading.
+  Widget _section(String title, List<Widget> children) {
+    return Container(
+      margin: const EdgeInsets.only(top: 18),
+      padding: ProfileStyles.sectionPadding,
+      decoration: ProfileStyles.sectionDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(title, style: ProfileStyles.sectionHeading),
+          const SizedBox(height: 14),
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  /// `.profile-header` (phone): avatar with a camera hint, name, email, then the
+  /// HSK badge, centred in one column.
+  Widget _header(
+    String? username,
+    String? email,
+    String? avatarUrl,
+    int? level,
+  ) {
     final initial = (username != null && username.isNotEmpty)
         ? username[0].toUpperCase()
         : 'Y';
-    return Row(
+    final badge = badgeUrl(level);
+    return Column(
       children: [
-        Container(
-          width: ProfileStyles.avatarSize,
-          height: ProfileStyles.avatarSize,
-          decoration: ProfileStyles.avatarDecoration,
-          clipBehavior: Clip.antiAlias,
-          alignment: Alignment.center,
-          child: avatarUrl != null
-              ? Image.network(
-                  avatarUrl,
-                  fit: BoxFit.cover,
-                  width: ProfileStyles.avatarSize,
-                  height: ProfileStyles.avatarSize,
-                  errorBuilder: (_, _, _) =>
-                      Text(initial, style: ProfileStyles.avatarInitial),
-                )
-              : Text(initial, style: ProfileStyles.avatarInitial),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Text(
-            username ?? '',
-            style: ProfileStyles.usernameStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+        InkWell(
+          customBorder: const CircleBorder(),
+          onTap: () => showAvatarDialog(context),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                width: ProfileStyles.avatarSize,
+                height: ProfileStyles.avatarSize,
+                decoration: ProfileStyles.avatarDecoration,
+                clipBehavior: Clip.antiAlias,
+                alignment: Alignment.center,
+                child: avatarUrl != null
+                    ? Image.network(
+                        avatarUrl,
+                        fit: BoxFit.cover,
+                        width: ProfileStyles.avatarSize,
+                        height: ProfileStyles.avatarSize,
+                        errorBuilder: (_, _, _) =>
+                            Text(initial, style: ProfileStyles.avatarInitial),
+                      )
+                    : Text(initial, style: ProfileStyles.avatarInitial),
+              ),
+              // The web shows the camera on hover; phones have none, so a small
+              // badge keeps the tap target discoverable.
+              const Positioned(
+                right: 2,
+                bottom: 2,
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Colors.black54,
+                  child: Icon(
+                    Icons.photo_camera,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+        ProfileStyles.gap16,
+        Text(
+          username ?? '',
+          textAlign: TextAlign.center,
+          style: ProfileStyles.usernameStyle,
+        ),
+        if (email != null && email.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            email,
+            textAlign: TextAlign.center,
+            style: ProfileStyles.emailStyle,
+          ),
+        ],
+        if (badge != null) ...[
+          ProfileStyles.gap16,
+          Image.network(
+            badge,
+            height: ProfileStyles.badgeHeight,
+            fit: BoxFit.contain,
+            errorBuilder: (_, _, _) => const SizedBox.shrink(),
+          ),
+        ],
       ],
     );
   }

@@ -23,7 +23,8 @@ class ShellStyles {
   static const Color avatarBg = Color(0x40FFFFFF); // bg-white/25
 
   // ── Spacing / metrics ─────────────────────────────────────────────────────
-  static const double drawerWidth = 288; // w-72, between the web's w-64 and comfortable touch
+  static const double drawerWidth =
+      288; // w-72, between the web's w-64 and comfortable touch
   static const EdgeInsets listPadding = EdgeInsets.symmetric(
     horizontal: 8,
     vertical: 8,

@@ -38,7 +38,7 @@ class _PinyinGuideScreenState extends State<PinyinGuideScreen> {
               style: LessonsStyles.pinyinHeading,
             ),
           ),
-          LessonsStyles.grammarSectionGap,
+          LessonsStyles.gap16,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -55,7 +55,7 @@ class _PinyinGuideScreenState extends State<PinyinGuideScreen> {
               ),
             ],
           ),
-          LessonsStyles.grammarSectionGap,
+          LessonsStyles.gap16,
           if (_advanced)
             const AdvancedPinyinTable()
           else

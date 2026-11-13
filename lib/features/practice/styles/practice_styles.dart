@@ -27,22 +27,20 @@ class PracticeStyles {
     borderRadius: BorderRadius.circular(16),
   );
 
-  /// A question block, optionally tinted by its checked result.
+  /// `.p-question-block`: mint (`#cbe2d4`), `1px #afcfbd`, `14px` radius; the
+  /// checked result only recolours the border.
   static BoxDecoration questionBlockDecoration({bool? correct}) {
     final border = correct == null
-        ? BrandColors.neutralBorder
+        ? BrandColors.mintBorder
         : (correct ? BrandColors.success : BrandColors.danger);
-    final bg = correct == null
-        ? BrandColors.card
-        : (correct ? const Color(0x1410B981) : BrandColors.dangerSurface);
     return BoxDecoration(
-      color: bg,
+      color: BrandColors.background,
       border: Border.all(color: border),
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(14),
     );
   }
 
-  static const EdgeInsets blockPadding = EdgeInsets.all(14);
+  static const EdgeInsets blockPadding = EdgeInsets.all(18);
 
   // ── Text ──────────────────────────────────────────────────────────────────
   static const TextStyle paragraphStyle = TextStyle(
@@ -136,29 +134,30 @@ class PracticeStyles {
   );
   static const SizedBox optionGap = SizedBox(height: 10);
 
-  /// Option look by state. [correct]/[wrong] only apply once [checked].
+  /// `.mc-option`: white, `1.5px` sage @10% border, `10px` radius; selected is
+  /// `#bddbc9` / `#93bda7`; checked correct / wrong tint green / red.
   static BoxDecoration optionDecoration({
     required bool selected,
     required bool checked,
     required bool correct,
     required bool wrong,
   }) {
-    Color border = BrandColors.neutralBorder;
+    Color border = const Color(0x1A576856);
     Color bg = BrandColors.card;
     if (checked && correct) {
       border = BrandColors.success;
-      bg = const Color(0x1410B981);
+      bg = const Color(0x2610B981);
     } else if (checked && wrong) {
       border = BrandColors.danger;
-      bg = BrandColors.dangerSurface;
+      bg = const Color(0x21EF4444);
     } else if (selected) {
-      border = BrandColors.navTeal;
-      bg = BrandColors.studyTealLight;
+      border = const Color(0xFF93BDA7);
+      bg = const Color(0xFFBDDBC9);
     }
     return BoxDecoration(
       color: bg,
-      border: Border.all(color: border, width: selected || checked ? 2 : 1),
-      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: border, width: 1.5),
+      borderRadius: BorderRadius.circular(10),
     );
   }
 
@@ -174,28 +173,30 @@ class PracticeStyles {
   static const SizedBox optionKeyGap = SizedBox(width: 10);
 
   // ── True / False ─────────────────────────────────────────────────────────
+  /// `.tf-btn`: white, `2px` sage @12% border, `12px` radius, `700` `16px`.
   static ButtonStyle tfButtonStyle({
     required bool selected,
     required bool checked,
     required bool correct,
     required bool wrong,
   }) {
-    Color bg = BrandColors.secondarySurface;
-    Color fg = BrandColors.bodyText;
+    Color bg = BrandColors.card;
+    Color border = const Color(0x1F576856);
     if (checked && correct) {
-      bg = BrandColors.success;
-      fg = Colors.white;
+      bg = const Color(0x3310B981);
+      border = BrandColors.success;
     } else if (checked && wrong) {
-      bg = BrandColors.danger;
-      fg = Colors.white;
+      bg = const Color(0x33EF4444);
+      border = BrandColors.danger;
     } else if (selected) {
-      bg = BrandColors.navTeal;
-      fg = Colors.white;
+      bg = const Color(0xFFBDDBC9);
+      border = const Color(0xFF93BDA7);
     }
     return FilledButton.styleFrom(
       backgroundColor: bg,
-      foregroundColor: fg,
-      minimumSize: const Size(0, 48),
+      foregroundColor: const Color(0xFF111111),
+      minimumSize: const Size(0, 56),
+      side: BorderSide(color: border, width: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
     );
@@ -370,43 +371,61 @@ class PracticeStyles {
     color: BrandColors.mutedText,
   );
 
+  /// `.practice-card`: mint, `1px #afcfbd`, `16px` radius, `28/20` padding.
   static final BoxDecoration levelCardDecoration = BoxDecoration(
-    color: BrandColors.card,
-    border: Border.all(color: BrandColors.neutralBorder),
-    borderRadius: BorderRadius.circular(14),
+    color: BrandColors.background,
+    border: Border.all(color: BrandColors.mintBorder),
+    borderRadius: BorderRadius.circular(16),
   );
-  static const EdgeInsets levelCardPadding = EdgeInsets.all(16);
-  static const BoxDecoration levelIconDecoration = BoxDecoration(
-    color: BrandColors.navTeal,
-    shape: BoxShape.circle,
-  );
-  static const TextStyle levelIconText = TextStyle(
-    fontSize: 22,
-    fontWeight: FontWeight.w800,
-    color: Colors.white,
-  );
-  static const TextStyle levelLabel = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w800,
-    color: BrandColors.darkText,
-  );
-  static const TextStyle levelSub = TextStyle(
-    fontSize: 12,
-    color: BrandColors.mutedText,
+  static const EdgeInsets levelCardPadding = EdgeInsets.symmetric(
+    horizontal: 20,
+    vertical: 28,
   );
 
+  /// `.card-icon`: the level number at `2.5rem`.
+  static const TextStyle levelIconText = TextStyle(
+    fontSize: 40,
+    color: BrandColors.studyText,
+  );
+  static const TextStyle levelLabel = TextStyle(
+    fontSize: 17.6,
+    fontWeight: FontWeight.w700,
+    color: BrandColors.studyText,
+  );
+
+  /// `.hsk-badge`: sage pill, white `0.7rem` text.
+  static final BoxDecoration levelBadgeDecoration = BoxDecoration(
+    color: BrandColors.primary,
+    borderRadius: BorderRadius.circular(20),
+  );
+  static const EdgeInsets levelBadgePadding = EdgeInsets.symmetric(
+    horizontal: 8,
+    vertical: 3,
+  );
+  static const TextStyle levelBadgeText = TextStyle(
+    fontSize: 11.2,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0.5,
+    color: Colors.white,
+  );
+  static const TextStyle levelSub = TextStyle(
+    fontSize: 12.8,
+    color: BrandColors.studyMuted,
+  );
+
+  /// `.lesson-card`: mint, `1px #afcfbd`, `12px` radius, `24/16` padding.
   static final BoxDecoration lessonCardDecoration = BoxDecoration(
-    color: BrandColors.card,
-    border: Border.all(color: BrandColors.neutralBorder),
+    color: BrandColors.background,
+    border: Border.all(color: BrandColors.mintBorder),
     borderRadius: BorderRadius.circular(12),
   );
   static const EdgeInsets lessonCardPadding = EdgeInsets.symmetric(
     horizontal: 16,
-    vertical: 14,
+    vertical: 24,
   );
   static const TextStyle lessonLabel = TextStyle(
-    fontSize: 16,
+    fontSize: 17.6,
     fontWeight: FontWeight.w700,
-    color: BrandColors.darkText,
+    color: BrandColors.studyText,
   );
 }

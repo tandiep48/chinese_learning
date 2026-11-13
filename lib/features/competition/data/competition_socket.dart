@@ -8,11 +8,12 @@
 /// (see P11-backend). Created disconnected; the owning controller calls
 /// [connect] / [dispose].
 ///
-/// Transports are left at polling + websocket (not websocket-only): Flask-SocketIO
-/// runs in threading mode, where the websocket upgrade needs `simple-websocket`
-/// installed — leaving polling in the list keeps the connection working without it.
+/// Websocket-only: the Dart engine.io client opens the polling URL as a websocket
+/// ("was not upgraded to websocket"), so polling can't be used. Flask-SocketIO in
+/// threading mode needs `simple-websocket` for this (see requirements.txt).
 library;
 
+import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 typedef JsonHandler = void Function(Map<String, dynamic> data);
@@ -33,7 +34,7 @@ class CompetitionSocket {
     final socket = io.io(
       baseUrl,
       io.OptionBuilder()
-          .setTransports(['polling', 'websocket'])
+          .setTransports(['websocket'])
           .disableAutoConnect()
           .setAuth({'token': token})
           .setExtraHeaders({'Authorization': 'Bearer $token'})
@@ -42,7 +43,10 @@ class CompetitionSocket {
     _socket = socket;
 
     socket.onConnect((_) => onConnect());
-    socket.onConnectError((_) => onConnectError());
+    socket.onConnectError((error) {
+      debugPrint('[CompetitionSocket] connect_error @ $baseUrl: $error');
+      onConnectError();
+    });
 
     handlers.forEach((event, handler) {
       socket.on(event, (data) {

@@ -1,31 +1,63 @@
-/// Home module — the learner dashboard (tabbed shell, Slice N3).
+/// Home module — the learner dashboard (tabbed shell).
 ///
-/// Ported from the web `HomeShell.tsx` + `HomeTabs.tsx`: a greeting followed by
-/// a Lesson / Review / Recommend tab bar. The Lesson tab is the working one
-/// (current-lesson card + Library entry points); Review and Recommend are
-/// "coming soon" stubs until the SRS / practice slices (R4/R5). This screen is
-/// a shell route — the surrounding Scaffold, teal app bar and navigation drawer
-/// come from `AppShell`, so it renders body content only. The web's in-place
-/// activity guard and the lesson-study sidebar dock are deferred (port plan).
+/// Ported from the web `HomeShell.tsx` + `HomeTabs.tsx`: a pill-style tab bar
+/// (Review · Lesson · Recommend, Review first and selected by default) above the
+/// active panel. The Lesson tab runs the learner's current lesson in place. While
+/// a graded trainer runs, switching tabs asks for confirmation (the web's home
+/// guard). This screen is a shell route — the surrounding Scaffold, teal app bar
+/// and navigation drawer come from `AppShell`, so it renders body content only.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/session_guard.dart';
 import '../../auth/providers/auth_provider.dart';
-import '../../review/data/review_repository.dart';
 import '../styles/home_styles.dart';
 import '../widgets/lesson_tab.dart';
 import '../widgets/recommend_tab.dart';
 import '../widgets/review_tab.dart';
 
-class HomeScreen extends ConsumerWidget {
+/// Web `HOME_TABS` order; Review is the default.
+const int _reviewTab = 0;
+const int _lessonTab = 1;
+const int _recommendTab = 2;
+
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabs = TabController(
+    length: 3,
+    initialIndex: _reviewTab,
+    vsync: this,
+  );
+
+  @override
+  void dispose() {
+    _tabs.dispose();
+    super.dispose();
+  }
+
+  /// Switching tabs while a trainer runs asks first (the web's home guard).
+  Future<void> _select(int target) async {
+    if (target == _tabs.index) return;
+    if (ref.read(activityRunningProvider)) {
+      final leave = await confirmLeaveSession(context, forTabSwitch: true);
+      if (!leave || !mounted) return;
+      ref.read(activityRunningProvider.notifier).set(false);
+    }
+    _tabs.animateTo(target);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final username = ref
         .watch(authNotifierProvider)
@@ -33,89 +65,115 @@ class HomeScreen extends ConsumerWidget {
         ?.value
         .user
         ?.username;
-    final reviewCount = ref.watch(reviewCountProvider).asData?.value;
+    final running = ref.watch(activityRunningProvider);
 
-    return DefaultTabController(
-      length: 3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: HomeStyles.greetingPadding,
-            child: Text(
-              username != null
-                  ? l10n.homeGreeting(username)
-                  : l10n.homeGreetingGeneric,
-              style: HomeStyles.greetingStyle,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: HomeStyles.greetingPadding,
+          child: Text(
+            username != null
+                ? l10n.homeGreeting(username)
+                : l10n.homeGreetingGeneric,
+            style: HomeStyles.greetingStyle,
           ),
-          DecoratedBox(
-            decoration: HomeStyles.tabBarDecoration,
-            child: TabBar(
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              labelColor: BrandColors.primary,
-              unselectedLabelColor: BrandColors.mutedText,
-              indicatorColor: BrandColors.primary,
-              labelStyle: HomeStyles.tabLabelStyle,
-              unselectedLabelStyle: HomeStyles.tabLabelStyle,
-              tabs: [
-                _DashboardTab(
-                  icon: Icons.menu_book_outlined,
-                  label: l10n.homeTabLesson,
+        ),
+        Padding(
+          padding: HomeStyles.tabsOuterPadding,
+          child: AnimatedBuilder(
+            animation: _tabs.animation!,
+            builder: (context, _) {
+              final selected = _tabs.animation!.value.round();
+              return Container(
+                decoration: HomeStyles.tabsDecoration,
+                padding: HomeStyles.tabsPadding,
+                child: Row(
+                  children: [
+                    _DashboardTab(
+                      icon: Icons.history,
+                      label: l10n.homeTabReview,
+                      selected: selected == _reviewTab,
+                      onTap: () => _select(_reviewTab),
+                    ),
+                    HomeStyles.tabsGap,
+                    _DashboardTab(
+                      icon: Icons.menu_book_outlined,
+                      label: l10n.homeTabLesson,
+                      selected: selected == _lessonTab,
+                      onTap: () => _select(_lessonTab),
+                    ),
+                    HomeStyles.tabsGap,
+                    _DashboardTab(
+                      icon: Icons.explore_outlined,
+                      label: l10n.homeTabRecommend,
+                      selected: selected == _recommendTab,
+                      onTap: () => _select(_recommendTab),
+                    ),
+                  ],
                 ),
-                _DashboardTab(
-                  icon: Icons.history,
-                  label: l10n.homeTabReview,
-                  badge: reviewCount,
-                ),
-                _DashboardTab(
-                  icon: Icons.explore_outlined,
-                  label: l10n.homeTabRecommend,
-                ),
-              ],
-            ),
+              );
+            },
           ),
-          const Expanded(
-            child: TabBarView(
-              children: [LessonTab(), ReviewTab(), RecommendTab()],
-            ),
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabs,
+            // No swiping away from a running trainer.
+            physics: running ? const NeverScrollableScrollPhysics() : null,
+            children: const [ReviewTab(), LessonTab(), RecommendTab()],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-/// An inline icon + label tab (the web tabs show both side by side).
+/// `.learner-home-tab`: icon + label pill sharing the bar's width equally; the
+/// selected one is sage-filled with white text. (The web hides the due-count
+/// badge on phones, so it is not drawn.)
 class _DashboardTab extends StatelessWidget {
-  const _DashboardTab({required this.icon, required this.label, this.badge});
+  const _DashboardTab({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String label;
-
-  /// Words-due count shown as a pill (Review tab); hidden when null or zero.
-  final int? badge;
+  final bool selected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final count = badge;
-    return Tab(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: HomeStyles.tabIconSize),
-          HomeStyles.tabIconGap,
-          Text(label),
-          if (count != null && count > 0) ...[
-            HomeStyles.tabIconGap,
-            Container(
-              decoration: HomeStyles.tabBadgeDecoration,
-              padding: HomeStyles.tabBadgePadding,
-              child: Text('$count', style: HomeStyles.tabBadgeText),
+    final color = selected ? Colors.white : HomeStyles.tabTextColor;
+    return Expanded(
+      child: Material(
+        color: selected ? HomeStyles.tabSelectedBg : Colors.transparent,
+        borderRadius: HomeStyles.tabRadius,
+        child: InkWell(
+          borderRadius: HomeStyles.tabRadius,
+          onTap: onTap,
+          child: Padding(
+            padding: HomeStyles.tabPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: HomeStyles.tabIconSize, color: color),
+                HomeStyles.tabIconGap,
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: HomeStyles.tabLabelStyle.copyWith(color: color),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ],
+          ),
+        ),
       ),
     );
   }

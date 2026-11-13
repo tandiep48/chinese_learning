@@ -78,7 +78,7 @@ class _TranslationDrillState extends State<TranslationDrill> {
               style: LessonsStyles.translationCounter,
             ),
           ),
-          LessonsStyles.grammarRowGap,
+          LessonsStyles.gap8,
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
@@ -88,20 +88,29 @@ class _TranslationDrillState extends State<TranslationDrill> {
               valueColor: const AlwaysStoppedAnimation(BrandColors.navTeal),
             ),
           ),
-          LessonsStyles.grammarSectionGap,
+          LessonsStyles.gap16,
           Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(
+              minHeight: LessonsStyles.translationCardMinHeight,
+            ),
             decoration: LessonsStyles.translationCardDecoration,
-            padding: LessonsStyles.translationCardPadding,
+            padding: LessonsStyles.translationCardPadding(
+              MediaQuery.sizeOf(context).width,
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
                   _meaning(row, isVi),
+                  textAlign: TextAlign.center,
                   style: LessonsStyles.translationMeaning,
                 ),
-                LessonsStyles.grammarSectionGap,
+                LessonsStyles.gap16,
                 TextField(
                   controller: _controller,
+                  textAlign: TextAlign.center,
                   autocorrect: false,
                   enableSuggestions: false,
                   style: LessonsStyles.translationInputText,
@@ -112,13 +121,17 @@ class _TranslationDrillState extends State<TranslationDrill> {
                   onChanged: (_) => setState(() {}),
                 ),
                 if (_revealed) ...[
-                  LessonsStyles.grammarRowGap,
-                  Text(row.cn, style: LessonsStyles.translationAnswer),
+                  LessonsStyles.gap16,
+                  Text(
+                    row.cn,
+                    textAlign: TextAlign.center,
+                    style: LessonsStyles.translationAnswer,
+                  ),
                 ],
-                LessonsStyles.grammarRowGap,
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton(
+                LessonsStyles.gap16,
+                Center(
+                  child: FilledButton(
+                    style: LessonsStyles.translationRevealButton,
                     onPressed: () => setState(() => _revealed = !_revealed),
                     child: Text(
                       _revealed ? l10n.translationHide : l10n.translationReveal,
@@ -128,7 +141,7 @@ class _TranslationDrillState extends State<TranslationDrill> {
               ],
             ),
           ),
-          LessonsStyles.grammarSectionGap,
+          LessonsStyles.gap16,
           Row(
             children: [
               Expanded(

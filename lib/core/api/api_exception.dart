@@ -13,15 +13,14 @@ class ApiException implements Exception {
   final int? statusCode;
 
   @override
-  String toString() =>
-      'ApiException(${statusCode ?? '-'}): $message';
+  String toString() => 'ApiException(${statusCode ?? '-'}): $message';
 }
 
 /// HTTP 401 — no valid session/token. On either response path (envelope or
 /// raw) the client throws this so callers can route to the login screen.
 class UnauthenticatedException extends ApiException {
   const UnauthenticatedException([super.message = 'Not authenticated.'])
-      : super(statusCode: 401);
+    : super(statusCode: 401);
 }
 
 /// Transport failure (no response at all: timeout, DNS, host unreachable).

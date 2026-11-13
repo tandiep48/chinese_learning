@@ -16,36 +16,36 @@ class HomeStyles {
   static const EdgeInsets pagePadding = EdgeInsets.all(16);
   static const SizedBox sectionGap = SizedBox(height: 16);
 
-  // ── Dashboard tabs (`.learner-home-tabs`: underline tabs, sage active) ─────
+  // ── Dashboard tabs (`.learner-home-tabs` / `.learner-home-tab`) ────────────
   static const EdgeInsets greetingPadding = EdgeInsets.fromLTRB(16, 16, 16, 10);
 
-  static const BoxDecoration tabBarDecoration = BoxDecoration(
-    color: BrandColors.background,
-    border: Border(bottom: BorderSide(color: BrandColors.mintBorder, width: 2)),
-  );
+  /// Space around the pill bar (the web's `.learner-home` 16px padding).
+  static const EdgeInsets tabsOuterPadding = EdgeInsets.fromLTRB(16, 0, 16, 8);
 
+  /// Card-white bar, `1px` learner border, `16px` radius, `6px` padding, `6px` gap.
+  static final BoxDecoration tabsDecoration = BoxDecoration(
+    color: BrandColors.card,
+    border: Border.all(color: BrandColors.learnerBorder),
+    borderRadius: BorderRadius.circular(16),
+  );
+  static const EdgeInsets tabsPadding = EdgeInsets.all(6);
+  static const SizedBox tabsGap = SizedBox(width: 6);
+
+  /// Tab: `12px` radius, `10px 8px` padding, `0.85rem` / `500`; selected = sage fill.
+  static final BorderRadius tabRadius = BorderRadius.circular(12);
+  static const EdgeInsets tabPadding = EdgeInsets.symmetric(
+    horizontal: 8,
+    vertical: 10,
+  );
+  static const Color tabTextColor = BrandColors.mutedText;
+  static const Color tabSelectedBg = BrandColors.primary;
   static const TextStyle tabLabelStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
+    fontSize: 13.6,
+    fontWeight: FontWeight.w500,
   );
 
-  static const double tabIconSize = 18;
+  static const double tabIconSize = 16;
   static const SizedBox tabIconGap = SizedBox(width: 6);
-
-  /// Words-due count pill on the Review tab.
-  static const BoxDecoration tabBadgeDecoration = BoxDecoration(
-    color: BrandColors.navTeal,
-    borderRadius: BorderRadius.all(Radius.circular(999)),
-  );
-  static const EdgeInsets tabBadgePadding = EdgeInsets.symmetric(
-    horizontal: 6,
-    vertical: 1,
-  );
-  static const TextStyle tabBadgeText = TextStyle(
-    fontSize: 11,
-    fontWeight: FontWeight.w800,
-    color: Colors.white,
-  );
 
   /// Centered padding for the Review / Recommend "coming soon" stub panels.
   static const EdgeInsets stubPadding = EdgeInsets.symmetric(

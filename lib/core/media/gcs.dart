@@ -14,6 +14,16 @@ const String gcsBucketUrl = String.fromEnvironment(
   defaultValue: 'https://storage.googleapis.com/chinese-learning-audio-assets',
 );
 
+/// Book cover, `.../lesson_cover/<CODE>.png` (`bookCoverUrl` in `lib/gcs.ts`).
+String bookCoverUrl(String bookCode) =>
+    '$gcsBucketUrl/lesson_cover/${Uri.encodeComponent(bookCode.toUpperCase())}.png';
+
+/// HSK achievement badge, e.g. level 3 -> `.../badge/HSK3.png` (`badgeUrl` in
+/// `lib/gcs.ts`); null for a level outside 1..6.
+String? badgeUrl(int? level) => (level != null && level >= 1 && level <= 6)
+    ? '$gcsBucketUrl/badge/HSK$level.png'
+    : null;
+
 /// Vocabulary word audio, e.g. "xiuxi_1" → `.../vocab_audio/xiuxi_1.mp3`
 /// (`vocabAudioUrl` in `lib/audio.ts`).
 String vocabAudioUrl(String audioKey) =>

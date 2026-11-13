@@ -70,8 +70,9 @@ class _TypingActivityState extends State<TypingActivity> {
 
   void _onChanged() {
     if (_checked) return;
-    final allCorrect =
-        _words.asMap().entries.every((e) => _controllers[e.key].text.trim() == e.value.word);
+    final allCorrect = _words.asMap().entries.every(
+      (e) => _controllers[e.key].text.trim() == e.value.word,
+    );
     if (allCorrect) {
       _score();
     } else {
@@ -95,9 +96,11 @@ class _TypingActivityState extends State<TypingActivity> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(l10n.vocabInstructionTyping,
-                      textAlign: TextAlign.center,
-                      style: VocabTrainerStyles.instructionStyle),
+                  Text(
+                    l10n.vocabInstructionTyping,
+                    textAlign: TextAlign.center,
+                    style: VocabTrainerStyles.instructionStyle,
+                  ),
                   VocabTrainerStyles.instructionGap,
                   for (var i = 0; i < _words.length; i++) ...[
                     if (i > 0) VocabTrainerStyles.rowGap,
@@ -148,8 +151,11 @@ class _TypingRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(row.word,
-            textAlign: TextAlign.center, style: VocabTrainerStyles.promptStyle),
+        Text(
+          row.word,
+          textAlign: TextAlign.center,
+          style: VocabTrainerStyles.promptStyle,
+        ),
         VocabTrainerStyles.promptInputGap,
         TextField(
           controller: controller,

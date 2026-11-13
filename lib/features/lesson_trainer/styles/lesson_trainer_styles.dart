@@ -111,24 +111,24 @@ class LessonTrainerStyles {
   static const SizedBox feedbackGap = SizedBox(height: 12);
 
   static InputDecoration typingInputDecoration(String hint) => InputDecoration(
-        hintText: hint,
-        hintStyle: const TextStyle(color: BrandColors.mutedText, fontSize: 16),
-        filled: true,
-        fillColor: BrandColors.card,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: BrandColors.navTeal, width: 2),
-        ),
-      );
+    hintText: hint,
+    hintStyle: const TextStyle(color: BrandColors.mutedText, fontSize: 16),
+    filled: true,
+    fillColor: BrandColors.card,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: Color(0xFFE2DCD5)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(color: BrandColors.navTeal, width: 2),
+    ),
+  );
 
   static const TextStyle typingInputStyle = TextStyle(
     fontSize: 18,
@@ -179,7 +179,12 @@ class LessonTrainerStyles {
   static const double reorderTargetMinHeight = 56;
 
   // ── Sticky bottom control bar ─────────────────────────────────────────────
-  static const EdgeInsets bottomBarPadding = EdgeInsets.fromLTRB(16, 10, 16, 10);
+  static const EdgeInsets bottomBarPadding = EdgeInsets.fromLTRB(
+    16,
+    10,
+    16,
+    10,
+  );
   static const SizedBox bottomBarGap = SizedBox(width: 12);
   static const BoxDecoration bottomBarDecoration = BoxDecoration(
     color: BrandColors.card,

@@ -27,10 +27,8 @@ class BooksView extends ConsumerWidget {
     final books = ref.watch(learnerBooksProvider);
 
     return books.when(
-      loading: () => _BooksSkeleton(
-        title: l10n.booksTitle,
-        subtitle: l10n.booksSubtitle,
-      ),
+      loading: () =>
+          _BooksSkeleton(title: l10n.booksTitle, subtitle: l10n.booksSubtitle),
       error: (_, _) => EmptyState(
         icon: Icons.cloud_off,
         title: l10n.booksError,
@@ -111,8 +109,9 @@ class _BooksSkeleton extends StatelessWidget {
     return ListView.separated(
       padding: LessonsStyles.listPadding,
       itemCount: 7,
-      separatorBuilder: (_, index) =>
-          index == 0 ? LessonsStyles.pickerHeaderGap : LessonsStyles.booksGridGap,
+      separatorBuilder: (_, index) => index == 0
+          ? LessonsStyles.pickerHeaderGap
+          : LessonsStyles.booksGridGap,
       itemBuilder: (_, i) {
         if (i == 0) {
           return _PickerHeader(title: title, subtitle: subtitle);

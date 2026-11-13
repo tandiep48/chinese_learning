@@ -488,7 +488,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewEmptyReview => 'Nothing to review right now.';
 
   @override
-  String get reviewLoading => 'Loading your words...';
+  String get reviewLoading => 'Loading your history…';
 
   @override
   String get reviewLoadFailed => 'Could not load your words. Please try again.';
@@ -817,12 +817,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinyinLessonHeading => 'HSK 1 - Lesson 1';
 
   @override
-  String get pinyinGuideEntry => 'Pinyin Guide';
-
-  @override
-  String get numbersEntry => 'Numbers';
-
-  @override
   String get pinyinBasic => 'Basic';
 
   @override
@@ -967,7 +961,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vocabCompleteTitle => 'Vocabulary Complete!';
 
   @override
-  String get flashTapToFlip => 'Tap to reveal';
+  String get flashTypingPlaceholder => 'Type character here...';
+
+  @override
+  String get lessonCardTypingPlaceholder => 'Type the sentence here...';
+
+  @override
+  String get cardPrev => 'Previous';
+
+  @override
+  String get cardNext => 'Next';
+
+  @override
+  String get cardAudioReveal => 'Audio + reveal';
+
+  @override
+  String get cardReveal => 'Show/hide';
+
+  @override
+  String get cardShuffle => 'Shuffle';
+
+  @override
+  String get cardStroke => 'Stroke order';
 
   @override
   String get competitionTitle => 'Learn Together';
@@ -1200,4 +1215,350 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get competitionCouldNotCreateRoom => 'Could not create room.';
+
+  @override
+  String get pickerBackToLevels => 'Back to Levels';
+
+  @override
+  String get pickerBackToLessons => 'Back to Lessons';
+
+  @override
+  String get pickerSelectPart => 'Select Part';
+
+  @override
+  String get pickerNumberPart => 'Number';
+
+  @override
+  String get pickerWordsLabel => 'Words';
+
+  @override
+  String get pickerLessonProgressLabel => 'Lesson';
+
+  @override
+  String get pickerGrammar => 'Grammar';
+
+  @override
+  String get pickerTranslation => 'Translation';
+
+  @override
+  String get pickerPinyinGuide => 'Pinyin Guide';
+
+  @override
+  String get pickerLoadingParts => 'Loading parts...';
+
+  @override
+  String get milestonePrevious => 'Previous';
+
+  @override
+  String get milestoneNext => 'Next';
+
+  @override
+  String get wordAddToList => 'Add to list';
+
+  @override
+  String get wordAdded => 'Added';
+
+  @override
+  String get trainerQuitTitle => 'Quit Session?';
+
+  @override
+  String get trainerQuitBody =>
+      'Your current progress won\'t be saved.\nAre you sure you want to quit?';
+
+  @override
+  String get trainerCancel => 'Cancel';
+
+  @override
+  String get trainerYesQuit => 'Yes, Quit';
+
+  @override
+  String get successPerfectTitle => 'Perfect Score! 🎉';
+
+  @override
+  String get successCompleteTitle => 'Session Complete!';
+
+  @override
+  String get successStatTasks => 'Tasks';
+
+  @override
+  String get successStatCorrect => 'Correct';
+
+  @override
+  String get successStatAccuracy => 'Accuracy';
+
+  @override
+  String get flowNextLesson => 'Next lesson';
+
+  @override
+  String get flowLessonComplete => 'Lesson complete';
+
+  @override
+  String get flowNextLessonTitle => 'Go to the next lesson?';
+
+  @override
+  String get flowNextLessonBody =>
+      'You\'ve finished this lesson. Move on to the first part of the next lesson?';
+
+  @override
+  String get flowNotYet => 'Not yet';
+
+  @override
+  String get guardTitle => 'Session in progress';
+
+  @override
+  String get guardBodyTab =>
+      'You have an activity running. Switching tabs will end it — your answers so far are saved.';
+
+  @override
+  String get guardBodyNav =>
+      'You have an activity running. Leaving this page will end it — your answers so far are saved.';
+
+  @override
+  String get guardStay => 'Stay here';
+
+  @override
+  String get guardLeaveTab => 'End and switch';
+
+  @override
+  String get guardLeaveNav => 'Leave anyway';
+
+  @override
+  String get masterVocabConfirmTitle => 'Review all the lesson\'s vocabulary?';
+
+  @override
+  String get masterVocabConfirmBody =>
+      'Practise every word from this lesson in one session before moving on.';
+
+  @override
+  String get masterLessonConfirmTitle => 'Review the whole lesson?';
+
+  @override
+  String get masterLessonConfirmBody =>
+      'Practise all of this lesson\'s sentences in one session before moving on.';
+
+  @override
+  String get masterVocabTitle => 'Master Vocab Trainer';
+
+  @override
+  String get masterLessonTitle => 'Master Lesson Trainer';
+
+  @override
+  String get masterStart => 'Start';
+
+  @override
+  String get masterSkip => 'Skip';
+
+  @override
+  String get trainPickerSkillMeaning => 'Meaning';
+
+  @override
+  String get trainPickerSkillReorder => 'Reorder';
+
+  @override
+  String get pickerExam => 'Exam';
+
+  @override
+  String get examChooserSubtitle => 'Choose what to practise';
+
+  @override
+  String get pickerVocabTrainer => 'Vocab Trainer';
+
+  @override
+  String get pickerLessonTrainer => 'Lesson Trainer';
+
+  @override
+  String get reviewTitle => 'Practice Review';
+
+  @override
+  String get reviewEmptyTitle => 'Nothing to review yet';
+
+  @override
+  String get reviewEmptySub =>
+      'Finish a practice or exam session and it will show up here.';
+
+  @override
+  String get reviewFailedLoad => 'Failed to load your history.';
+
+  @override
+  String reviewQuestions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions',
+      one: '1 question',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reviewBackToList => 'Back to sessions';
+
+  @override
+  String get reviewCorrectBadge => 'Correct';
+
+  @override
+  String get reviewIncorrectBadge => 'Incorrect';
+
+  @override
+  String get reviewFilterResult => 'Result';
+
+  @override
+  String get reviewResultAll => 'All';
+
+  @override
+  String get reviewSkillAll => 'All skills';
+
+  @override
+  String get reviewYourAnswer => 'Your answer';
+
+  @override
+  String get reviewCorrectAnswer => 'Correct answer';
+
+  @override
+  String get reviewNoAnswer => 'No answer';
+
+  @override
+  String reviewQuestionLabel(int n) {
+    return 'Question $n';
+  }
+
+  @override
+  String get reviewDetailMissing =>
+      'This question is no longer in the question bank.';
+
+  @override
+  String get reviewSort => 'Sort';
+
+  @override
+  String get reviewSortRecent => 'Most recent';
+
+  @override
+  String get reviewSortOldest => 'Oldest first';
+
+  @override
+  String get reviewNoMore => 'No more sessions to show.';
+
+  @override
+  String reviewPageIndicator(int page) {
+    return 'Page $page';
+  }
+
+  @override
+  String get reviewLevel => 'Level';
+
+  @override
+  String get reviewAllLevels => 'All Levels';
+
+  @override
+  String get reviewCategory => 'Category';
+
+  @override
+  String get reviewAllCategories => 'All Categories';
+
+  @override
+  String get reviewSkill => 'Skill';
+
+  @override
+  String get reviewReading => 'Reading';
+
+  @override
+  String get reviewListening => 'Listening';
+
+  @override
+  String get profileChangePassword => 'Change Password';
+
+  @override
+  String get profileNewPassword => 'New Password';
+
+  @override
+  String get profileConfirmPassword => 'Re-type New Password';
+
+  @override
+  String get profilePasswordMismatch => 'Passwords do not match.';
+
+  @override
+  String get profilePasswordRequired => 'New password is required.';
+
+  @override
+  String get profilePasswordUpdating => 'Updating password...';
+
+  @override
+  String get profilePasswordFailed => 'Could not update password.';
+
+  @override
+  String get profilePasswordUpdated => 'Password updated.';
+
+  @override
+  String get profileUploadAvatar => 'Upload Avatar';
+
+  @override
+  String get profileChooseImage => 'Choose image';
+
+  @override
+  String get profileChooseAvatarFirst => 'Choose an avatar file first.';
+
+  @override
+  String get profileUploading => 'Uploading...';
+
+  @override
+  String get profileUploadFailed => 'Upload failed.';
+
+  @override
+  String get profileAvatarUpdated => 'Avatar updated.';
+
+  @override
+  String get sidebarLessonParts => 'Lesson Parts';
+
+  @override
+  String get sidebarPartSelection => 'Part Selection';
+
+  @override
+  String get sidebarOpen => 'Open Sidebar';
+
+  @override
+  String get sidebarNoParts => 'No parts found.';
+
+  @override
+  String get sidebarFailedParts => 'Failed to load parts.';
+
+  @override
+  String get studyStopAutoPlay => 'Stop';
+
+  @override
+  String get recommendAllSkills => 'All Skills';
+
+  @override
+  String get recommendStatus => 'Status';
+
+  @override
+  String get recommendAllStatuses => 'All Statuses';
+
+  @override
+  String recommendItemsSelected(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items selected',
+      one: '1 item selected',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recommendStartSelected => 'Start Selected';
+
+  @override
+  String get recommendNewUserCta => 'Go to Vocabulary Trainer';
+
+  @override
+  String get wordSummaryPlayAll => 'Play All';
+
+  @override
+  String get wordSummaryShuffle => 'Shuffle';
+
+  @override
+  String get wordSummaryPinyin => 'Pinyin';
+
+  @override
+  String get wordSummaryMeaning => 'Meaning';
 }

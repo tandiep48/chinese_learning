@@ -18,15 +18,27 @@ class _Skill {
   final String label;
 }
 
+/// Which trainer's skills to offer.
+enum TrainerEngine { vocab, lesson }
+
 Future<List<String>?> showTrainTypePicker(
   BuildContext context,
-  AppLocalizations l10n,
-) {
-  final skills = [
-    _Skill('typing', l10n.trainPickerSkillTyping),
-    _Skill('listen', l10n.trainPickerSkillListening),
-    _Skill('reading', l10n.trainPickerSkillReading),
-  ];
+  AppLocalizations l10n, {
+  TrainerEngine engine = TrainerEngine.vocab,
+}) {
+  // Ids are exactly what each trainer expects (activity types / task `type`).
+  final skills = engine == TrainerEngine.vocab
+      ? [
+          _Skill('typing', l10n.trainPickerSkillTyping),
+          _Skill('listen', l10n.trainPickerSkillListening),
+          _Skill('reading', l10n.trainPickerSkillReading),
+        ]
+      : [
+          _Skill('listening', l10n.trainPickerSkillListening),
+          _Skill('meaning', l10n.trainPickerSkillMeaning),
+          _Skill('typing', l10n.trainPickerSkillTyping),
+          _Skill('reorder', l10n.trainPickerSkillReorder),
+        ];
   final checked = {for (final s in skills) s.id: true};
   String? error;
 

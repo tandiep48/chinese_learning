@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/session_guard.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../styles/shell_styles.dart';
 
@@ -85,9 +86,19 @@ class NavDrawer extends ConsumerWidget {
         ..showSnackBar(SnackBar(content: Text(l10n.comingSoon)));
     }
 
-    void navTo(String route) {
-      Navigator.pop(context); // close the drawer first
-      if (isActive(route)) return;
+    Future<void> navTo(String route) async {
+      if (isActive(route)) {
+        Navigator.pop(context);
+        return;
+      }
+      // Ask before abandoning a running trainer (the drawer stays up meanwhile).
+      if (ref.read(activityRunningProvider)) {
+        final leave = await confirmLeaveSession(context, forTabSwitch: false);
+        if (!leave || !context.mounted) return;
+        ref.read(activityRunningProvider.notifier).set(false);
+      }
+      if (!context.mounted) return;
+      Navigator.pop(context); // close the drawer
       // Shell destinations switch in place (go); deeper destinations are pushed
       // so their own app bar provides a back button.
       if (shellRoutes.contains(route)) {
@@ -134,10 +145,7 @@ class NavDrawer extends ConsumerWidget {
                   icon: Icons.settings_outlined,
                   label: l10n.navSettings,
                   active: isActive('/settings'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    if (!isActive('/settings')) context.push('/settings');
-                  },
+                  onTap: () => navTo('/settings'),
                 ),
                 if (user != null)
                   _DrawerRow(

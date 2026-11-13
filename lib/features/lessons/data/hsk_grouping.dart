@@ -74,7 +74,10 @@ List<HskLesson> groupPassagesIntoLessons(List<PickerPassage> passages) {
         lesson: k,
         title: _lessonTitle(grouped[k]!),
         parts: [...grouped[k]!]
-          ..sort((a, b) => _partNumber(a.passageId).compareTo(_partNumber(b.passageId))),
+          ..sort(
+            (a, b) =>
+                _partNumber(a.passageId).compareTo(_partNumber(b.passageId)),
+          ),
       ),
   ];
 }

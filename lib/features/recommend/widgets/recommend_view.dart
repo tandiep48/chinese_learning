@@ -1,14 +1,15 @@
 /// Recommend module — the dashboard's Recommend tab body.
 ///
 /// Ported from `recommend/RecommendPage.tsx` (embedded): loads
-/// `/api/practice/recommend`, shows the recommendation cards, and launches a
-/// card as a practice session in the P2 runner (`multi` mode, one queued item).
-/// The web filter bar + multi-select batch + pagination are deferred; mobile
-/// starts a single group per tap.
+/// `/api/practice/recommend`, a filter bar (level / skill / category / status),
+/// the selectable recommendation cards, a numbered pager (10 per page) and the
+/// sticky "N items selected · Start Selected" bar, which queues the selected
+/// groups into one practice session in the P2 runner (`multi` mode).
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -16,6 +17,7 @@ import '../../practice/data/models/practice_question.dart';
 import '../../practice/data/practice_repository.dart';
 import '../../practice/screens/practice_runner_page.dart';
 import '../data/models/recommended_practice.dart';
+import '../data/recommend_logic.dart';
 import '../data/recommend_repository.dart';
 import '../styles/recommend_styles.dart';
 import 'recommend_card.dart';
@@ -32,6 +34,12 @@ class RecommendView extends ConsumerStatefulWidget {
 class _RecommendViewState extends ConsumerState<RecommendView> {
   _Status _status = _Status.loading;
   List<RecommendedPractice> _recs = const [];
+  String _level = 'all';
+  String _skill = 'all';
+  String _category = 'all';
+  String _statusFilter = 'all';
+  int _page = 1;
+  final Map<String, RecommendedPractice> _selected = {};
 
   @override
   void initState() {
@@ -64,30 +72,59 @@ class _RecommendViewState extends ConsumerState<RecommendView> {
     }
   }
 
-  Future<void> _start(RecommendedPractice rec) async {
-    final category = rec.category == 'exam'
-        ? PracticeCategory.exam
-        : PracticeCategory.practice;
-    final item = PracticeMultiItem(
-      level: rec.level,
-      lesson: '${rec.lesson}',
-      progress: rec.progress,
-      category: category,
-    );
+  void _setFilter({
+    String? level,
+    String? skill,
+    String? category,
+    String? status,
+  }) {
+    setState(() {
+      _level = level ?? _level;
+      _skill = skill ?? _skill;
+      _category = category ?? _category;
+      _statusFilter = status ?? _statusFilter;
+      _page = 1;
+    });
+  }
+
+  void _toggle(RecommendedPractice rec) {
+    final key = recommendationKey(rec);
+    setState(() {
+      if (_selected.remove(key) == null) _selected[key] = rec;
+    });
+  }
+
+  PracticeCategory _categoryOf(RecommendedPractice r) =>
+      r.category == 'exam' ? PracticeCategory.exam : PracticeCategory.practice;
+
+  Future<void> _startSelected() async {
+    final recs = _selected.values.toList();
+    if (recs.isEmpty) return;
+    final items = [
+      for (final r in recs)
+        PracticeMultiItem(
+          level: r.level,
+          lesson: '${r.lesson}',
+          progress: r.progress,
+          category: _categoryOf(r),
+        ),
+    ];
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => PracticeRunnerPage(
           options: PracticeOptions(
-            category: category,
+            category: _categoryOf(recs.first),
             multi: true,
-            items: [item],
+            items: items,
             onExit: () => Navigator.of(ctx).pop(),
           ),
         ),
       ),
     );
     // Finishing a run changes what is recommended — refresh on return.
-    if (mounted) _load();
+    if (!mounted) return;
+    setState(_selected.clear);
+    _load();
   }
 
   @override
@@ -119,24 +156,190 @@ class _RecommendViewState extends ConsumerState<RecommendView> {
           icon: Icons.eco_outlined,
           title: l10n.recommendNewUserTitle,
           sub: l10n.recommendNewUserSub,
+          cta: FilledButton.icon(
+            onPressed: () => context.push('/vocab'),
+            icon: const Icon(Icons.menu_book_outlined, size: 18),
+            label: Text(l10n.recommendNewUserCta),
+          ),
         );
       case _Status.ready:
-        return ListView.separated(
-          padding: RecommendStyles.pagePadding,
-          itemCount: _recs.length + 1,
-          separatorBuilder: (_, _) => RecommendStyles.gap12,
-          itemBuilder: (context, i) {
-            if (i == 0) {
-              return Text(
-                l10n.recommendGroupsFound(_recs.length),
-                style: RecommendStyles.resultsCount,
-              );
-            }
-            final rec = _recs[i - 1];
-            return RecommendCard(rec: rec, onStart: () => _start(rec));
-          },
-        );
+        return _ready(l10n);
     }
+  }
+
+  Widget _ready(AppLocalizations l10n) {
+    final filtered = filterRecommendations(
+      _recs,
+      level: _level,
+      skill: _skill,
+      category: _category,
+      status: _statusFilter,
+    );
+    final pages = totalPages(filtered.length);
+    final page = _page.clamp(1, pages);
+    final start = (page - 1) * recommendPageSize;
+    final slice = filtered.skip(start).take(recommendPageSize).toList();
+
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: RecommendStyles.pagePadding,
+            children: [
+              Wrap(
+                spacing: 12,
+                runSpacing: 10,
+                children: [
+                  _Filter(
+                    label: l10n.reviewLevel,
+                    value: _level,
+                    items: {
+                      'all': l10n.reviewAllLevels,
+                      for (var n = 1; n <= 6; n++) '$n': 'HSK $n',
+                    },
+                    onChanged: (v) => _setFilter(level: v),
+                  ),
+                  _Filter(
+                    label: l10n.reviewSkill,
+                    value: _skill,
+                    items: {
+                      'all': l10n.recommendAllSkills,
+                      'listening': l10n.reviewListening,
+                      'reading': l10n.reviewReading,
+                    },
+                    onChanged: (v) => _setFilter(skill: v),
+                  ),
+                  _Filter(
+                    label: l10n.reviewCategory,
+                    value: _category,
+                    items: {
+                      'all': l10n.reviewAllCategories,
+                      'practice': l10n.dashboardExercise,
+                      'exam': l10n.dashboardExam,
+                    },
+                    onChanged: (v) => _setFilter(category: v),
+                  ),
+                  _Filter(
+                    label: l10n.recommendStatus,
+                    value: _statusFilter,
+                    items: {
+                      'all': l10n.recommendAllStatuses,
+                      'Not start': l10n.recommendStatusNotStart,
+                      'Finish and success': l10n.recommendStatusFinishSuccess,
+                      'Finish and fail': l10n.recommendStatusFinishFail,
+                    },
+                    onChanged: (v) => _setFilter(status: v),
+                  ),
+                ],
+              ),
+              RecommendStyles.gap12,
+              if (filtered.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.school_outlined,
+                        size: 44,
+                        color: BrandColors.mutedText,
+                      ),
+                      RecommendStyles.gap12,
+                      Text(
+                        l10n.recommendEmptyTitle,
+                        style: RecommendStyles.stateTitle,
+                      ),
+                    ],
+                  ),
+                )
+              else ...[
+                Text(
+                  l10n.recommendGroupsFound(filtered.length),
+                  style: RecommendStyles.resultsCount,
+                ),
+                RecommendStyles.gap12,
+                for (final rec in slice) ...[
+                  RecommendCard(
+                    rec: rec,
+                    selected: _selected.containsKey(recommendationKey(rec)),
+                    onToggle: () => _toggle(rec),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+                if (pages > 1) _pager(page, pages, filtered.length),
+              ],
+            ],
+          ),
+        ),
+        if (_selected.isNotEmpty)
+          Container(
+            color: RecommendStyles.selectBarBg,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SafeArea(
+              top: false,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.recommendItemsSelected(_selected.length),
+                      style: RecommendStyles.selectBarText,
+                    ),
+                  ),
+                  FilledButton.icon(
+                    style: RecommendStyles.startButton,
+                    onPressed: _startSelected,
+                    icon: const Icon(Icons.play_arrow, size: 18),
+                    label: Text(l10n.recommendStartSelected),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _pager(int page, int pages, int total) {
+    final end = (page * recommendPageSize).clamp(0, total);
+    final start = (page - 1) * recommendPageSize + 1;
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 6,
+      runSpacing: 6,
+      children: [
+        OutlinedButton(
+          style: RecommendStyles.pageButton,
+          onPressed: page == 1 ? null : () => setState(() => _page = page - 1),
+          child: const Icon(Icons.chevron_left, size: 18),
+        ),
+        for (final n in pageNumbers(page, pages))
+          if (n == null)
+            const SizedBox(width: 28, child: Center(child: Text('…')))
+          else if (n == page)
+            FilledButton(
+              style: RecommendStyles.pageButtonActive,
+              onPressed: null,
+              child: Text('$n'),
+            )
+          else
+            OutlinedButton(
+              style: RecommendStyles.pageButton,
+              onPressed: () => setState(() => _page = n),
+              child: Text('$n'),
+            ),
+        OutlinedButton(
+          style: RecommendStyles.pageButton,
+          onPressed: page == pages
+              ? null
+              : () => setState(() => _page = page + 1),
+          child: const Icon(Icons.chevron_right, size: 18),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text('$start–$end / $total', style: RecommendStyles.skillText),
+        ),
+      ],
+    );
   }
 
   Widget _stateBox({
@@ -145,6 +348,7 @@ class _RecommendViewState extends ConsumerState<RecommendView> {
     required String sub,
     bool spinner = false,
     bool retry = false,
+    Widget? cta,
   }) {
     final l10n = AppLocalizations.of(context);
     return Center(
@@ -169,6 +373,7 @@ class _RecommendViewState extends ConsumerState<RecommendView> {
               style: RecommendStyles.stateSub,
               textAlign: TextAlign.center,
             ),
+            if (cta != null) ...[RecommendStyles.gap12, cta],
             if (retry) ...[
               RecommendStyles.gap12,
               FilledButton.tonal(
@@ -179,6 +384,43 @@ class _RecommendViewState extends ConsumerState<RecommendView> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Filter extends StatelessWidget {
+  const _Filter({
+    required this.label,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+  });
+
+  final String label;
+  final String value;
+  final Map<String, String> items;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label, style: RecommendStyles.filterLabel),
+        const SizedBox(height: 4),
+        DropdownButton<String>(
+          value: value,
+          isDense: true,
+          items: [
+            for (final e in items.entries)
+              DropdownMenuItem(value: e.key, child: Text(e.value)),
+          ],
+          onChanged: (v) {
+            if (v != null) onChanged(v);
+          },
+        ),
+      ],
     );
   }
 }

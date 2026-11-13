@@ -32,27 +32,32 @@ class BearerTokenHolder extends Notifier<String?> {
   void set(String? token) => state = token;
 }
 
-final bearerTokenProvider =
-    NotifierProvider<BearerTokenHolder, String?>(BearerTokenHolder.new);
+final bearerTokenProvider = NotifierProvider<BearerTokenHolder, String?>(
+  BearerTokenHolder.new,
+);
 
 final apiClientProvider = Provider<ApiClient>((ref) {
-  final dio = Dio(BaseOptions(
-    baseUrl: Env.apiBaseUrl,
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 20),
-    contentType: Headers.jsonContentType,
-    // Inspect status codes ourselves so we can map them to typed exceptions.
-    validateStatus: (_) => true,
-  ));
-  dio.interceptors.add(InterceptorsWrapper(
-    onRequest: (options, handler) {
-      final token = ref.read(bearerTokenProvider);
-      if (token != null && token.isNotEmpty) {
-        options.headers['Authorization'] = 'Bearer $token';
-      }
-      handler.next(options);
-    },
-  ));
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: Env.apiBaseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 20),
+      contentType: Headers.jsonContentType,
+      // Inspect status codes ourselves so we can map them to typed exceptions.
+      validateStatus: (_) => true,
+    ),
+  );
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) {
+        final token = ref.read(bearerTokenProvider);
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
+        handler.next(options);
+      },
+    ),
+  );
   return ApiClient(dio);
 });
 
@@ -74,6 +79,9 @@ class ApiClient {
 
   Future<dynamic> postRaw(String path, {Object? body}) =>
       _raw(() => _dio.post(path, data: body));
+
+  Future<dynamic> deleteRaw(String path, {Object? body}) =>
+      _raw(() => _dio.delete(path, data: body));
 
   Future<Response> _call(Future<Response> Function() request) async {
     try {

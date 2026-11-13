@@ -136,7 +136,9 @@ class _ReviewViewState extends ConsumerState<ReviewView> {
   }
 
   Widget _revealToggles(AppLocalizations l10n) {
-    return Row(
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
         OutlinedButton.icon(
           style: ReviewStyles.revealStyle(_showPinyin),
@@ -151,7 +153,6 @@ class _ReviewViewState extends ConsumerState<ReviewView> {
             _showPinyin ? l10n.studyHidePinyin : l10n.studyShowPinyin,
           ),
         ),
-        const SizedBox(width: 8),
         OutlinedButton.icon(
           style: ReviewStyles.revealStyle(_showMeaning),
           onPressed: () => setState(() => _showMeaning = !_showMeaning),
@@ -164,6 +165,12 @@ class _ReviewViewState extends ConsumerState<ReviewView> {
           label: Text(
             _showMeaning ? l10n.studyHideMeaning : l10n.studyShowMeaning,
           ),
+        ),
+        OutlinedButton.icon(
+          style: ReviewStyles.revealStyle(true),
+          onPressed: () => setState(() => _rows = [..._rows]..shuffle()),
+          icon: const Icon(Icons.shuffle, size: 16),
+          label: Text(l10n.wordSummaryShuffle),
         ),
       ],
     );
@@ -213,27 +220,30 @@ class _ReviewViewState extends ConsumerState<ReviewView> {
       padding: ReviewStyles.cardPadding,
       child: Row(
         children: [
+          Text(row.cn, style: ReviewStyles.hanzi),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(row.cn, style: ReviewStyles.hanzi),
-                if (_showPinyin && row.pinyin.isNotEmpty)
-                  Text(row.pinyin, style: ReviewStyles.pinyin),
-                if (_showMeaning && meaning.isNotEmpty)
-                  Text(meaning, style: ReviewStyles.meaning),
+                Opacity(
+                  opacity: _showPinyin ? 1 : 0,
+                  child: Text(row.pinyin, style: ReviewStyles.pinyin),
+                ),
+                const SizedBox(height: 2),
+                Opacity(
+                  opacity: _showMeaning ? 1 : 0,
+                  child: Text(
+                    meaning,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: ReviewStyles.meaning,
+                  ),
+                ),
               ],
             ),
           ),
-          if (row.level.isNotEmpty) ...[
-            const SizedBox(width: 8),
-            Container(
-              decoration: ReviewStyles.levelBadge,
-              padding: ReviewStyles.levelPadding,
-              child: Text(row.level, style: ReviewStyles.levelText),
-            ),
-          ],
           if (audioKey != null && audioKey.isNotEmpty) ...[
             const SizedBox(width: 4),
             IconButton(

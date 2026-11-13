@@ -33,23 +33,23 @@ class SettingsStyles {
 
   /// `PANEL_SELECT_CLS`: white field, learner border, `10px` radius, teal focus.
   static InputDecoration fieldDecoration() => InputDecoration(
-        filled: true,
-        fillColor: BrandColors.card,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: BrandColors.learnerBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: BrandColors.learnerBorder),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: BrandColors.navTeal),
-        ),
-      );
+    filled: true,
+    fillColor: BrandColors.card,
+    isDense: true,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.learnerBorder),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.learnerBorder),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: BrandColors.navTeal),
+    ),
+  );
 
   static const TextStyle valueStyle = TextStyle(
     fontSize: 14,

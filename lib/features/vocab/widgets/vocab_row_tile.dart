@@ -1,8 +1,8 @@
-/// Vocab module — one word row in the selection table / card list.
+/// Vocab module — one word card in the selection list.
 ///
-/// Shows hanzi, pinyin, the language-aware meaning and the HSK level, with an
-/// audio button (when the word has a recording) and a stroke-order button.
-/// Provider-free: the screen passes the play/stroke callbacks.
+/// Phone `.vcl-card` of `vocab-card-list.css`: the hanzi on the left, pinyin
+/// (teal) over a two-line meaning, then the audio and stroke-order buttons.
+/// Provider-free: the screen passes the play / stroke callbacks.
 library;
 
 import 'package:flutter/material.dart';
@@ -35,31 +35,24 @@ class VocabRowTile extends StatelessWidget {
       padding: VocabStyles.rowPadding,
       decoration: VocabStyles.rowCard,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(row.cn, style: VocabStyles.hanzi),
+          const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Flexible(child: Text(row.cn, style: VocabStyles.hanzi)),
-                    const SizedBox(width: 10),
-                    if (row.pinyin.isNotEmpty)
-                      Flexible(
-                        child: Text(row.pinyin, style: VocabStyles.pinyin),
-                      ),
-                  ],
-                ),
+                if (row.pinyin.isNotEmpty)
+                  Text(row.pinyin, style: VocabStyles.pinyin),
                 if (meaning.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text(meaning, style: VocabStyles.meaning),
-                ],
-                if (row.level.isNotEmpty) ...[
-                  const SizedBox(height: 4),
-                  Text('HSK ${row.level}', style: VocabStyles.levelBadge),
+                  const SizedBox(height: 2),
+                  Text(
+                    meaning,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: VocabStyles.meaning,
+                  ),
                 ],
               ],
             ),
@@ -72,7 +65,7 @@ class VocabRowTile extends StatelessWidget {
             ),
           IconButton(
             onPressed: onStroke,
-            icon: const Icon(Icons.gesture, color: BrandColors.primary),
+            icon: const Icon(Icons.gesture, color: BrandColors.navTeal),
             tooltip: 'Stroke order',
           ),
         ],
