@@ -258,40 +258,51 @@ class _ReviewViewState extends ConsumerState<ReviewView> {
     );
   }
 
+  /// Up to five page buttons centred on the current page.
+  List<int> _pageWindow() {
+    const span = 5;
+    var first = (_page - span ~/ 2).clamp(1, _totalPages);
+    final last = (first + span - 1).clamp(1, _totalPages);
+    first = (last - span + 1).clamp(1, _totalPages);
+    return [for (var p = first; p <= last; p++) p];
+  }
+
   Widget _pager(AppLocalizations l10n) {
     final start = (_page - 1) * reviewPageSize + 1;
     final end = (_page * reviewPageSize).clamp(0, _total);
     return Padding(
       padding: ReviewStyles.pagePadding,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          OutlinedButton(
-            style: ReviewStyles.pageStyle(false),
-            onPressed: _page > 1 ? () => _load(_page - 1) : null,
-            child: const Icon(Icons.chevron_left, size: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                style: ReviewStyles.pageStyle(false),
+                onPressed: _page > 1 ? () => _load(_page - 1) : null,
+                child: const Icon(Icons.chevron_left, size: 18),
+              ),
+              for (final p in _pageWindow()) ...[
+                const SizedBox(width: 6),
+                OutlinedButton(
+                  style: ReviewStyles.pageStyle(p == _page),
+                  onPressed: p == _page ? null : () => _load(p),
+                  child: Text('$p'),
+                ),
+              ],
+              const SizedBox(width: 6),
+              OutlinedButton(
+                style: ReviewStyles.pageStyle(false),
+                onPressed: _page < _totalPages ? () => _load(_page + 1) : null,
+                child: const Icon(Icons.chevron_right, size: 18),
+              ),
+            ],
           ),
-          for (var p = 1; p <= _totalPages; p++) ...[
-            const SizedBox(width: 6),
-            OutlinedButton(
-              style: ReviewStyles.pageStyle(p == _page),
-              onPressed: p == _page ? null : () => _load(p),
-              child: Text('$p'),
-            ),
-          ],
-          const SizedBox(width: 6),
-          OutlinedButton(
-            style: ReviewStyles.pageStyle(false),
-            onPressed: _page < _totalPages ? () => _load(_page + 1) : null,
-            child: const Icon(Icons.chevron_right, size: 18),
-          ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: Text(
-              l10n.reviewPageRange(start, end, _total),
-              style: ReviewStyles.pageInfo,
-              overflow: TextOverflow.ellipsis,
-            ),
+          const SizedBox(height: 6),
+          Text(
+            l10n.reviewPageRange(start, end, _total),
+            style: ReviewStyles.pageInfo,
           ),
         ],
       ),

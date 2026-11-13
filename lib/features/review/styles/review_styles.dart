@@ -122,6 +122,10 @@ class ReviewStyles {
   static ButtonStyle pageStyle(bool active) => OutlinedButton.styleFrom(
     backgroundColor: active ? BrandColors.navTeal : BrandColors.card,
     foregroundColor: active ? Colors.white : BrandColors.bodyText,
+    disabledBackgroundColor: active ? BrandColors.navTeal : BrandColors.card,
+    disabledForegroundColor: active
+        ? Colors.white
+        : BrandColors.mutedText.withValues(alpha: 0.5),
     side: const BorderSide(color: BrandColors.neutralBorder),
     minimumSize: const Size(40, 40),
     padding: EdgeInsets.zero,

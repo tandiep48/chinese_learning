@@ -142,6 +142,8 @@ class RecommendStyles {
     minimumSize: const Size(36, 36),
     padding: const EdgeInsets.symmetric(horizontal: 10),
     backgroundColor: BrandColors.primary,
+    disabledBackgroundColor: BrandColors.primary,
+    disabledForegroundColor: Colors.white,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     textStyle: const TextStyle(fontSize: 14.4, fontWeight: FontWeight.w600),
   );
