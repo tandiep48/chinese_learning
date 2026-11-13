@@ -77,13 +77,17 @@ class _PracticeRunnerPageState extends ConsumerState<PracticeRunnerPage> {
   @override
   void initState() {
     super.initState();
+    _audio;
     _load();
   }
+
+  // Captured up front: `ref` is unsafe to touch once the widget is unmounting.
+  late final _audio = ref.read(practiceAudioProvider);
 
   @override
   void dispose() {
     // Best-effort: stop any clip still playing when the runner leaves.
-    ref.read(practiceAudioProvider).stop();
+    _audio.stop();
     super.dispose();
   }
 

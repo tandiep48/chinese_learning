@@ -49,8 +49,17 @@ class _LessonStudyViewState extends ConsumerState<LessonStudyView> {
   @override
   void dispose() {
     _playToken++;
-    ref.read(audioPlayerProvider).stop();
+    _audio.stop();
     super.dispose();
+  }
+
+  // Captured up front: `ref` is unsafe to touch once the widget is unmounting.
+  late final _audio = ref.read(audioPlayerProvider);
+
+  @override
+  void initState() {
+    super.initState();
+    _audio;
   }
 
   void _setActive(int? index) {

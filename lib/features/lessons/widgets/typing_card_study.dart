@@ -66,14 +66,18 @@ class _TypingCardStudyState extends ConsumerState<TypingCardStudy> {
   @override
   void initState() {
     super.initState();
+    _audio;
     _typing.addListener(_onTyping);
     WidgetsBinding.instance.addPostFrameCallback((_) => _playAudio());
   }
 
+  // Captured up front: `ref` is unsafe to touch once the widget is unmounting.
+  late final _audio = ref.read(audioPlayerProvider);
+
   @override
   void dispose() {
     _typing.dispose();
-    ref.read(audioPlayerProvider).stop();
+    _audio.stop();
     super.dispose();
   }
 
